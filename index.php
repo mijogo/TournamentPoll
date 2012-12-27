@@ -1,3 +1,5 @@
 <?php
-include 'include/include.php';
+include 'include/MasterFile.php';
+$ClaseMaestra = new MasterClass();
+$ClaseMaestra->llamarFuncion();
 ?>
