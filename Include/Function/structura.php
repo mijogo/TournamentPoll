@@ -1,0 +1,121 @@
+<?php
+class structura
+{
+	function structura()
+	{}
+	
+	function head()
+	{
+		$text = "";
+		$text .="<!DOCTYPE HTML><html>\n
+\n
+<head>\n
+  <title>photo_style_two</title>\n
+  <meta name=\"description\" content=\"website description\" />\n
+  <meta name=\"keywords\" content=\"website keywords, website keywords\" />\n
+  <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n
+  <link rel=\"stylesheet\" type=\"text/css\" href=\"css/style.css\" />\n
+  <!-- modernizr enables HTML5 elements and feature detects -->\n
+  <script type=\"text/javascript\" src=\"js/modernizr-1.5.min.js\"></script>\n
+</head>\n
+";
+		
+		return $text;
+	}
+	
+	function MenuPrincipal()
+	{
+			$text = "";
+			$text .= "
+			<body>\n
+  <div id=\"main\">\n
+    <header>\n
+      <div id=\"logo\">\n
+        <div id=\"logo_text\">\n
+          <!-- class=\"logo_colour\", allows you to change the colour of the text -->\n
+          <h1><a href=\"index.html\">photo<span class=\"logo_colour\">_style_two</span></a></h1>\n
+          <h2>Simple. Contemporary. Website Template.</h2>\n
+        </div>\n
+      </div>\n
+      <nav>\n
+        <ul class=\"sf-menu\" id=\"nav\">\n
+          <li class=\"selected\"><a href=\"index.html\">Home</a></li>\n
+          <li><a href=\"about.html\">About Me</a></li>\n
+          <li><a href=\"portfolio.html\">My Portfolio</a></li>\n
+          <li><a href=\"blog.html\">Blog</a></li>\n
+          <li><a href=\"#\">Example Drop Down</a>\n
+            <ul>\n
+              <li><a href=\"#\">Drop Down One</a></li>\n
+              <li><a href=\"#\">Drop Down Two</a>\n
+                <ul>\n
+                  <li><a href=\"#\">Sub Drop Down One</a></li>\n
+                  <li><a href=\"#\">Sub Drop Down Two</a></li>\n
+                  <li><a href=\"#\">Sub Drop Down Three</a></li>\n
+                  <li><a href=\"#\">Sub Drop Down Four</a></li>\n
+                  <li><a href=\"#\">Sub Drop Down Five</a></li>\n
+                </ul>\n
+              </li>\n
+              <li><a href=\"#\">Drop Down Three</a></li>\n
+              <li><a href=\"#\">Drop Down Four</a></li>\n
+              <li><a href=\"#\">Drop Down Five</a></li>\n
+            </ul>\n
+          </li>\n
+          <li><a href=\"contact.php\">Contact Us</a></li>\n
+        </ul>\n
+      </nav>\n
+    </header>\n
+
+			";
+			return $text;
+	}
+	
+	function body($content="")
+	{
+		$text="";
+		$text .="    <div id=\"site_content\">\n
+      <div id=\"sidebar_container\">\n
+        <div class=\"gallery\">\n
+          <ul class=\"images\">\n
+            <li class=\"show\"><img width=\"450\" height=\"450\" src=\"images/1.jpg\" alt=\"photo_one\" /></li>\n
+            <li><img width=\"450\" height=\"450\" src=\"images/2.jpg\" alt=\"photo_two\" /></li>\n
+            <li><img width=\"450\" height=\"450\" src=\"images/3.jpg\" alt=\"photo_three\" /></li>\n
+            <li><img width=\"450\" height=\"450\" src=\"images/4.jpg\" alt=\"photo_four\" /></li>\n
+            <li><img width=\"450\" height=\"450\" src=\"images/5.jpg\" alt=\"photo_five\" /></li>\n
+          </ul>\n
+        </div>\n
+      </div>\n
+      <div id=\"content\">\n
+       ".$content."
+      </div>\n
+    </div>\n
+";
+		return $text;
+	}
+	
+	function foot()
+	{
+		$text = "";
+		$text ="
+		<footer>\n
+      <p>Copyright &copy; photo_style_two | <a href=\"http://www.css3templates.co.uk\">design from css3templates.co.uk</a></p>\n
+    </footer>\n
+  </div>\n
+  <p>&nbsp;</p>\n
+  <!-- javascript at the bottom for fast page loading -->\n
+  <script type=\"text/javascript\" src=\"js/jquery.js\"></script>\n
+  <script type=\"text/javascript\" src=\"js/jquery.easing-sooper.js\"></script>\n
+  <script type=\"text/javascript\" src=\"js/jquery.sooperfish.js\"></script>\n
+  <script type=\"text/javascript\" src=\"js/image_fade.js\"></script>\n
+  <script type=\"text/javascript\">\n
+    $(document).ready(function() {\n
+      $('ul.sf-menu').sooperfish();\n
+    });\n
+  </script>\n
+</body>\n
+</html>\n
+
+		";
+		return $text;
+	}
+}
+?>
