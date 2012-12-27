@@ -13,7 +13,7 @@ class PersonajeBD extends DataBase
 		return $this->insert($sql);
 	}
 
-	function read($multi=true , $cantConsulta = 0 , $Consultas = "" , $cantOrden = 0 , $Orden = "")
+	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
 		$sql="SELECT * FROM Personaje ";
 		if($cantConsulta != 0)
@@ -32,12 +32,11 @@ class PersonajeBD extends DataBase
 			$sql .= "ORDER BY ";
 			for($i=0;$i<$cantOrden;$i++)
 			{
-				$sql .= $Consulta[$i*2]." ".$Consulta[$i*2+1]." ";
-				if($i != $cantConsulta-1)
+				$sql .= $Orden [$i*2]." ".$Orden [$i*2+1]." ";
+				if($i != $cantOrden-1)
 					$sql .= ",";
 			}
 		}
-		
 		if($multi)
 		{
 			$result = $this->select($sql);
@@ -75,7 +74,7 @@ class PersonajeBD extends DataBase
 			}
 		}
 		
-		if(!$cantConsulta != 0)
+		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
 			for($i=0;$i<$cantConsulta;$i++)
