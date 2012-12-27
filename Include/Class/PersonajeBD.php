@@ -59,7 +59,7 @@ class PersonajeBD extends DataBase
 			return $Personajes;
 		}
 	}
-	
+		
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
 		$sql="UPDATE Personaje ";
