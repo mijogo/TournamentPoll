@@ -106,7 +106,14 @@ $text.=")\";
 			while(\$row = \$this->fetch(\$result))
 			{
 				\$i=0;
-				\$".$NombreTabla."s[]=new ".$NombreTabla."(\$row[\$i++],\$row[\$i++],\$row[\$i++],\$row[\$i++]);
+				\$".$NombreTabla."s[]=new ".$NombreTabla."(";
+			for($i=0;$i<count($ElementosTabla);$i++)
+			{
+				$text.= "\$row[\$i++]";
+				if($i!=count($ElementosTabla)-1)
+					$text.= ",";
+			}
+			$text.=");
 			}
 			\$this->close();
 			return $".$NombreTabla."s;
@@ -116,7 +123,14 @@ $text.=")\";
 			\$result = \$this->select(\$sql);
 			\$row = \$this->fetch(\$result);
 			\$i=0;
-			$".$NombreTabla."s= new ".$NombreTabla."(\$row[\$i++],\$row[\$i++],\$row[\$i++],\$row[\$i++]);
+			$".$NombreTabla."s= new ".$NombreTabla."(";
+			for($i=0;$i<count($ElementosTabla);$i++)
+			{
+				$text.= "\$row[\$i++]";
+				if($i!=count($ElementosTabla)-1)
+					$text.= ",";
+			}
+			$text.=");
 			\$this->close();
 			return $".$NombreTabla."s;
 		}
@@ -131,7 +145,7 @@ $text.=")\";
 			for(\$i=0;\$i<\$cantSet;\$i++)
 			{
 				\$sql .= \$Set[\$i].\" = '\".\$this->\$Set[\$i].\"' \";
-				if(\$i != \$cantConsulta-1)
+				if(\$i != \$cantSet-1)
 					\$sql .= \",\";
 			}
 		}

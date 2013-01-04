@@ -47,7 +47,7 @@ class BatallaBD extends DataBase
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Batallas[]=new Batalla($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Batallas[]=new Batalla($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
 			return $Batallas;
@@ -57,7 +57,7 @@ class BatallaBD extends DataBase
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Batallas= new Batalla($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Batallas= new Batalla($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
 			return $Batallas;
 		}
@@ -72,7 +72,7 @@ class BatallaBD extends DataBase
 			for($i=0;$i<$cantSet;$i++)
 			{
 				$sql .= $Set[$i]." = '".$this->$Set[$i]."' ";
-				if($i != $cantConsulta-1)
+				if($i != $cantSet-1)
 					$sql .= ",";
 			}
 		}

@@ -49,7 +49,7 @@ class PersonajeBD extends DataBase
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Personajes[]=new Personaje($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Personajes[]=new Personaje($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
 			return $Personajes;
@@ -59,7 +59,7 @@ class PersonajeBD extends DataBase
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Personajes= new Personaje($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Personajes= new Personaje($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
 			return $Personajes;
 		}
@@ -74,7 +74,7 @@ class PersonajeBD extends DataBase
 			for($i=0;$i<$cantSet;$i++)
 			{
 				$sql .= $Set[$i]." = '".$this->$Set[$i]."' ";
-				if($i != $cantConsulta-1)
+				if($i != $cantSet-1)
 					$sql .= ",";
 			}
 		}
