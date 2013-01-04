@@ -1,12 +1,12 @@
 <?php
-$NombreTabla="Pelea";
+$NombreTabla="Admin";
 $ElementosTabla=array();
-$ElementosTabla[]="IdPersonaje";
-$ElementosTabla[]="IdBatalla";
-$ElementosTabla[]="Votos";
-//$ElementosTabla[]="Grupo";
-//$ElementosTabla[]="Torneo";
-//$ElementosTabla[]="Activa";
+$ElementosTabla[]="Id";
+$ElementosTabla[]="User";
+$ElementosTabla[]="Pass";
+$ElementosTabla[]="Mail";
+$ElementosTabla[]="Authpass";
+$ElementosTabla[]="Nivel";
 //$ElementosTabla[]="Grupo";
 //$ElementosTabla[]="Ronda";
 
