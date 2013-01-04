@@ -1,9 +1,15 @@
 <?php
-$NombreTabla="Personaje";
+$NombreTabla="Pelea";
 $ElementosTabla=array();
-$ElementosTabla[]="Id";
-$ElementosTabla[]="Nombre";
-$ElementosTabla[]="Serie";
+$ElementosTabla[]="IdPersonaje";
+$ElementosTabla[]="IdBatalla";
+$ElementosTabla[]="Votos";
+//$ElementosTabla[]="Grupo";
+//$ElementosTabla[]="Torneo";
+//$ElementosTabla[]="Activa";
+//$ElementosTabla[]="Grupo";
+//$ElementosTabla[]="Ronda";
+
 $text = "";
 $text = "
 require_once \"".$NombreTabla."BD.php\";

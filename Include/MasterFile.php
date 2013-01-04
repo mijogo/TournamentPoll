@@ -9,10 +9,12 @@ class MasterClass
 	
 	function Trabajar()
 	{
-		$logica = new LogicV();
+		$logicaVista = new LogicV();		
+		$logicaCodigo = new LogicC();
+		$logicaCodigo->Schedule();
 		echo $this->Cabecera();	
 		echo $this->Principal();		
-		echo $this->Cuerpo($logica->logicaView());
+		echo $this->Cuerpo($logicaVista->logicaView());
 		echo $this->Pie();
 	}
 	

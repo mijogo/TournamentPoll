@@ -1,26 +1,22 @@
 <?php
 require_once "DataBase.php";
-class PersonajeBD extends DataBase
+class MenuBD extends DataBase
 {
-	function PersonajeBD(){}
+	function MenuBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Personaje (Id,Nombre,Serie,Imagen,Inscripcion,Eliminada,Grupo,Ronda) VALUES 
+	{		$sql = "INSERT INTO Menu (Id,IdDependencia,Titulo,Descripcion) VALUES 
 		(
 		'".$this->Id."',
-		'".$this->Nombre."',
-		'".$this->Serie."',
-		'".$this->Imagen."',
-		'".$this->Inscripcion."',
-		'".$this->Eliminada."',
-		'".$this->Grupo."',
-		'".$this->Ronda."')";
+		'".$this->IdDependencia."',
+		'".$this->Titulo."',
+		'".$this->Descripcion."')";
 		return $this->insert($sql);
 	}
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Personaje ";
+		$sql="SELECT * FROM Menu ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -45,29 +41,29 @@ class PersonajeBD extends DataBase
 		if($multi)
 		{
 			$result = $this->select($sql);
-			$Personajes = array();
+			$Menus = array();
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Personajes[]=new Personaje($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Menus[]=new Menu($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
-			return $Personajes;
+			return $Menus;
 		}
 		else
 		{
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Personajes= new Personaje($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Menus= new Menu($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
-			return $Personajes;
+			return $Menus;
 		}
 	}
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Personaje ";
+		$sql="UPDATE Menu ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";
