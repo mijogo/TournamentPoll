@@ -130,15 +130,6 @@ class structura
 		$text="";
 		$text .="    <div id=\"site_content\">\n
       <div id=\"sidebar_container\">\n
-        <div class=\"gallery\">\n
-          <ul class=\"images\">\n
-            <li class=\"show\"><img width=\"450\" height=\"450\" src=\"images/1.jpg\" alt=\"photo_one\" /></li>\n
-            <li><img width=\"450\" height=\"450\" src=\"images/2.jpg\" alt=\"photo_two\" /></li>\n
-            <li><img width=\"450\" height=\"450\" src=\"images/3.jpg\" alt=\"photo_three\" /></li>\n
-            <li><img width=\"450\" height=\"450\" src=\"images/4.jpg\" alt=\"photo_four\" /></li>\n
-            <li><img width=\"450\" height=\"450\" src=\"images/5.jpg\" alt=\"photo_five\" /></li>\n
-          </ul>\n
-        </div>\n
       </div>\n
       <div id=\"content\">\n
        ".$content."

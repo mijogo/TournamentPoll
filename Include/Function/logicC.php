@@ -5,11 +5,38 @@ class LogicC
 		
 	function Schedule()
 	{
-		//$this->inscripcion("Momo Deviluke","no te conozco");
-		//$this->inscripcion("Hanbei Takenaka","no te conozco");
-		//$this->inscripcion("Yuuko Kanda","no te conozco");
-		//$this->inscripcion("Kudryavka Noumi","no te conozco");
-		//$this->sorteo("Preeliminares",3);
+		/*
+		number ID
+		inscripcion 1,sorteo 2,activar Batalla 3, conteo votos 4
+		*/
+		$process = new Schedule();
+		$process ->setHecho(-1);
+		$consulta = array("Hecho");
+		$orden = array("Fecha","DESC");
+		$process=$process->read(true,1,$consulta,1,$orden); 
+		$fechaActual = fechaHoraActual();
+		$sigue=true;
+		for($i=0;$i<count($process)&&$sigue;$i++)
+		{
+			if(FechaMayor($fechaActual,$process[$i]->geFecha()))
+			{
+				if($process[$i]->geAccion()==2)
+				{
+					$target = explode(",",$process[$i]->geTarget());
+					$this->sorteo($target[0],$target[1]);
+				}
+				if($process[$i]->geAccion()==3)
+				{
+					$this->activarBatalla($process[$i]->geTarget());
+				}
+				if($process[$i]->geAccion()==4)
+				{
+					$this->ConteoVotos();
+				}
+			}
+			else
+				$sigue=false;
+		}
 	}
 	function inscripcion($Nombre="",$Serie="")
 	{
@@ -55,6 +82,75 @@ class LogicC
 						$personajesSortear[$num]->update(2,$cambio,1,$consultaUp);
 					}
 				}while(!$termino);
+			}
+		}
+		if($instancia="Repechaje")
+		{
+			$personajesSortear = new Personaje();
+			$personajesSortear->setRonda("Repechaje");
+			$personajesSortear->setGrupo("NG");			
+			$consulta = array();
+			$consulta[] = "Grupo";
+			$consulta[] = "AND";
+			$consulta[] = "Ronda";
+			$personajesSortear = $personajesSortear->read(true,2,$consulta);
+			$cantidad = count($personajesSortear)/(configuracion("Repechaje","NGrupos")-$numeroGrupo+1);
+			$consultaUp = array();
+			$consultaUp [] = "Id";
+			$cambio = array();
+			$cambio[] = "Grupo";
+
+			for($i=0;$i<$cantidad;$i++)
+			{
+				do
+				{
+					$num = rand(0,count($personajesSortear)-1);
+					$termino=false;
+					if($personajesSortear[$num]->getGrupo()=="NG")
+					{
+						$termino=true;
+						$personajesSortear[$num]->setGrupo($numeroGrupo);
+						$personajesSortear[$num]->update(1,$cambio,1,$consultaUp);
+					}
+				}while(!$termino);
+			}
+		}
+		if($instancia="Principal")
+		{
+			for($r=0;$r<configuracion("Ronda-1","NBatalla");$r++)
+			{
+				$personajesSortear = new Personaje();
+				$personajesSortear->setRonda("Ronda-1");
+				$personajesSortear->setGrupo("NG");			
+				$consulta = array();
+				$consulta[] = "Grupo";
+				$consulta[] = "AND";
+				$consulta[] = "Ronda";
+				$personajesSortear = $personajesSortear->read(true,2,$consulta);
+				$cantidad = count($personajesSortear)/(configuracion("Repechaje","NGrupos")*configuracion("Ronda-1","NBatalla")-(configuracion("Grupo",$numeroGrupo)*configuracion("Repechaje","NGrupos"))-$r);
+				$consultaUp = array();
+				$consultaUp [] = "Id";
+				$cambio = array();
+				$cambio[] = "Grupo";
+
+				for($i=0;$i<$cantidad;$i++)
+				{
+					do
+					{
+						$num = rand(0,count($personajesSortear)-1);
+						$termino=false;
+						if($personajesSortear[$num]->getGrupo()=="NG")
+						{
+							$termino=true;
+							if($r<10)
+								$termino = "0".$r;
+							else
+								$termino = $r;
+							$personajesSortear[$num]->setGrupo($numeroGrupo."-".$termino);
+							$personajesSortear[$num]->update(1,$cambio,1,$consultaUp);
+						}
+					}while(!$termino);
+				}
 			}
 		}
 	}
@@ -167,7 +263,5 @@ class LogicC
 			}
 		}
 	}
-	
-	
 }
 ?>

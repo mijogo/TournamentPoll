@@ -10,6 +10,26 @@ function configuracion($instancia,$parte)
 		
 		 
 	}
+	
+	if($instancia == "Grupo")
+	{
+		if($parte == "A")
+			$tect = 0;
+		if($parte == "B")
+			$tect = 1;
+		if($parte == "C")
+			$tect = 2;
+		if($parte == "D")
+			$tect = 3;
+		if($parte == "E")
+			$tect = 4;
+		if($parte == "F")
+			$tect = 5;
+		if($parte == "G")
+			$tect = 6;
+		if($parte == "H")
+			$tect = 7;
+	}
 	return $text;
 }
 function fechaHoraActual()
