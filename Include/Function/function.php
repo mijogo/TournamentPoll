@@ -1,10 +1,13 @@
 <?php
 function configuracion($instancia,$parte)
-{
+{//NGrupo, cantidad de grupos & second , tiene segunda & clas1 y clas2 & nextRonda1 & grupoFijo & NBatalla
+	if($parte=="second")
+		$text = false;
 	if($instancia == "Preeliminares")
 	{
 		if($parte == "NGrupos")
 			$text = 3;
+		
 		 
 	}
 	return $text;
@@ -98,6 +101,18 @@ function grafico($titulo="",$nombre="",$cantidad="",$titulos="",$datos="")
     </script>
 ";
 	return $grafic;
+}
+
+function GenerarSiguiente($actual,$Ronda)
+{
+	$actual = explode("-",$actual);
+	$cantidad = configuracion(configuracion($actual,"nextRonda1"),"NBatalla")/configuracion($actual,"NBatalla");
+	$actual[1]=$actual[1]/$cantidad;
+	$actual[1]=$actual[1]+(1/$cantidad);
+	$actual[1]=round($actual[1]);
+	if($actual[1]<10)
+	$actual[1] = "0".$actual[1];
+	return $actual[0]."-".$actual[1];
 }
 
 ?>

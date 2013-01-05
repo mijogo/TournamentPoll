@@ -85,6 +85,9 @@ class LogicC
 		$consltaPer[0]="Grupo";
 		$consltaPer[1]="AND";
 		$consltaPer[2]="Ronda";
+		$cinsultaextra[0] = "IdBatalla";
+		$ordenVoto[0]="Votos";
+		$ordenVoto[1]="DESC";
 		$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
 		for($i=0;$i<count($BatallasActivas);$i++)
 		{
@@ -107,7 +110,64 @@ class LogicC
 				$nuevaPelea->setVotos(count($ConVoto));
 				$nuevaPelea->save();
 			}
+			$dBatalla = new Pelea();
+			$dBatalla->setIdBatalla($BatallasActivas[$i]->getId());
+			$dBatalla = $dBatalla->read(true,1,$cinsultaextra,1,$ordenVoto);
+			$clas1 = configuracion($BatallasActivas[$i]->getRonda(),"clas1");
+			if(configuracion($BatallasActivas[$i]->getRonda(),"second"))
+				$clas2 = configuracion($BatallasActivas[$i]->getRonda(),"clas2");
+			else
+				$clas2 = 0;
+			$consultaPerCh[0]="Id";
+			for($j=0;$j<count($dBatalla);$j++)
+			{
+				if($j < $clas1)
+				{
+					$personajeChange = new Personaje();
+					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
+					$personajeChange = $personajeChange->read(true,1,$consultaPerCh);
+					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"));
+					if(configuracion($BatallasActivas[$i]->getRonda(),"grupoFijo"))
+					{
+						$personajeChange->setGrupo(GenerarSiguiente($personajeChange[$j]->getGrupo,$BatallasActivas[$i]->getRonda()));
+					}
+					else
+						$personajeChange->setGrupo("NG");
+					$mod = array("Grupo","Ronda");
+					$personajeChange->update(1,$mod,1,$consultaPerCh[0]);
+					if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos())
+					{
+						$clas1++;
+						$clas2++;
+					}
+				}
+				else if($j < $clas2)
+				{
+					$personajeChange = new Personaje();
+					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
+					$personajeChange = $personajeChange->read(true,1,$consultaPerCh);
+					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda2"));
+					$personajeChange->setGrupo("NG");
+					$mod = array("Grupo","Ronda");
+					$personajeChange->update(2,$mod,1,$consultaPerCh[0]);
+					if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos())
+					{
+						$clas2++;
+					}
+				}
+				else
+				{
+					$personajeChange = new Personaje();
+					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
+					$personajeChange = $personajeChange->read(true,1,$consultaPerCh);
+					$personajeChange->setEliminada(1);
+					$mod = array("Eliminada");
+					$personajeChange->update(1,$mod,1,$consultaPerCh[0]);					
+				}			
+			}
 		}
 	}
+	
+	
 }
 ?>
