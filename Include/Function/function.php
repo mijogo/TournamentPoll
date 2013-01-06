@@ -1,6 +1,7 @@
 <?php
 function configuracion($instancia,$parte)
 {//NGrupo, cantidad de grupos & second , tiene segunda & clas1 y clas2 & nextRonda1 & grupoFijo & NBatalla
+	$text = "";
 	if($parte=="second")
 		$text = false;
 	if($instancia == "Preeliminares")

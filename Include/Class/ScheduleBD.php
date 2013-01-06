@@ -46,7 +46,7 @@ class ScheduleBD extends DataBase
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Schedules[]=new Schedule($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Schedules[]=new Schedule($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
 			return $Schedules;
@@ -56,7 +56,7 @@ class ScheduleBD extends DataBase
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Schedules= new Schedule($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Schedules= new Schedule($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
 			return $Schedules;
 		}

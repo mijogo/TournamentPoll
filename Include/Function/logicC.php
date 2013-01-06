@@ -10,7 +10,7 @@ class LogicC
 			$nombre = $_POST['Nombre'];
 			$serie = $_POST['Serie'];
 			$this->inscripcion($nombre,$serie);
-			Redireccionar("?id=1");			
+			Redireccionar("?id=4");			
 		}
 	}
 		
@@ -29,21 +29,25 @@ class LogicC
 		$sigue=true;
 		for($i=0;$i<count($process)&&$sigue;$i++)
 		{
-			if(FechaMayor($fechaActual,$process[$i]->geFecha()))
+			if(FechaMayor($fechaActual,$process[$i]->getFecha())!=-1)
 			{
-				if($process[$i]->geAccion()==2)
+				if($process[$i]->getAccion()==2)
 				{
-					$target = explode(",",$process[$i]->geTarget());
+					$target = explode(",",$process[$i]->getTarget());
 					$this->sorteo($target[0],$target[1]);
 				}
-				if($process[$i]->geAccion()==3)
+				if($process[$i]->getAccion()==3)
 				{
-					$this->activarBatalla($process[$i]->geTarget());
+					$this->activarBatalla($process[$i]->getTarget());
 				}
-				if($process[$i]->geAccion()==4)
+				if($process[$i]->getAccion()==4)
 				{
 					$this->ConteoVotos();
 				}
+				$process[$i]->setHecho(1);
+				$con = array("Id");
+				$cam = array("Hecho");
+				$process[$i]->update(1,$cam,1,$con);
 			}
 			else
 				$sigue=false;
@@ -62,7 +66,7 @@ class LogicC
 	}
 	function sorteo($instancia="",$numeroGrupo="")
 	{
-		if($instancia="Preeliminares")
+		if($instancia=="Preeliminares")
 		{
 			$personajesSortear = new Personaje();
 			$personajesSortear->setInscripcion(1);
@@ -95,7 +99,7 @@ class LogicC
 				}while(!$termino);
 			}
 		}
-		if($instancia="Repechaje")
+		if($instancia=="Repechaje")
 		{
 			$personajesSortear = new Personaje();
 			$personajesSortear->setRonda("Repechaje");
@@ -126,7 +130,7 @@ class LogicC
 				}while(!$termino);
 			}
 		}
-		if($instancia="Principal")
+		if($instancia=="Principal")
 		{
 			for($r=0;$r<configuracion("Ronda-1","NBatalla");$r++)
 			{
