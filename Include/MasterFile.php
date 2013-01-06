@@ -11,14 +11,24 @@ class MasterClass
 	{
 		if(!isset($_GET['id']))
 			$_GET['id']=1;
+		if(!isset($_GET['action']))
+			$_GET['action']=1;
 
 		$logicaVista = new LogicV();		
 		$logicaCodigo = new LogicC();
-		$logicaCodigo->Schedule();
-		echo $this->Cabecera();	
-		echo $this->Principal();		
-		echo $this->Cuerpo($logicaVista->logicaView());
-		echo $this->Pie();
+		if($_GET['action']==1)
+		{
+			$logicaCodigo->Schedule();
+
+			echo $this->Cabecera();	
+			echo $this->Principal();		
+			echo $this->Cuerpo($logicaVista->logicaView());
+			echo $this->Pie();
+		}
+		if($_GET['action']==2)
+		{
+			$logicaCodigo->trabaja();
+		}
 	}
 	
 	function Cabecera()

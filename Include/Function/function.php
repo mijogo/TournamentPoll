@@ -135,4 +135,13 @@ function GenerarSiguiente($actual,$Ronda)
 	return $actual[0]."-".$actual[1];
 }
 
+function Redireccionar($url="")
+{
+	echo "<head>
+<script languaje=\"JavaScript\">
+location.href='".$url."';
+</script>
+</head>";
+}
+
 ?>

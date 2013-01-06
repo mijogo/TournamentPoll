@@ -3,6 +3,17 @@ class LogicC
 {
 	function LogicC(){}
 		
+	function trabaja()
+	{
+		if($_GET['id']==4)
+		{
+			$nombre = $_POST['Nombre'];
+			$serie = $_POST['Serie'];
+			$this->inscripcion($nombre,$serie);
+			Redireccionar("?id=1");			
+		}
+	}
+		
 	function Schedule()
 	{
 		/*
