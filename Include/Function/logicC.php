@@ -18,12 +18,12 @@ class LogicC
 	{
 		/*
 		number ID
-		inscripcion 1,sorteo 2,activar Batalla 3, conteo votos 4
+		inscripcion 1,sorteo 2,activar Batalla 3, conteo votos 4,cambiar estado torneo 5,crear Batallas 6
 		*/
 		$process = new Schedule();
 		$process ->setHecho(-1);
 		$consulta = array("Hecho");
-		$orden = array("Fecha","DESC");
+		$orden = array("Fecha","ASC");
 		$process=$process->read(true,1,$consulta,1,$orden); 
 		$fechaActual = fechaHoraActual();
 		$sigue=true;
@@ -44,6 +44,15 @@ class LogicC
 				{
 					$this->ConteoVotos();
 				}
+				if($process[$i]->getAccion()==5)
+				{
+					$this->changeChampionship($process[$i]->getTarget());
+				}
+				if($process[$i]->getAccion()==6)
+				{
+					$this->creacionBatallas();
+				}
+
 				$process[$i]->setHecho(1);
 				$con = array("Id");
 				$cam = array("Hecho");
@@ -71,17 +80,11 @@ class LogicC
 			$personajesSortear = new Personaje();
 			$personajesSortear->setInscripcion(1);
 			$personajesSortear->setRonda("Nominacion");
-			$consulta = array();
-			$consulta[] = "Inscripcion";
-			$consulta[] = "AND";
-			$consulta[] = "Ronda";
+			$consulta = array("Inscripcion","AND","Ronda");
 			$personajesSortear = $personajesSortear->read(true,2,$consulta);
 			$cantidad = count($personajesSortear)/(configuracion("Preeliminares","NGrupos")-$numeroGrupo+1);
-			$consultaUp = array();
-			$consultaUp [] = "Id";
-			$cambio = array();
-			$cambio[] = "Ronda";
-			$cambio[] = "Grupo";
+			$consultaUp = array("Id");
+			$cambio = array("Ronda","Grupo");
 
 			for($i=0;$i<$cantidad;$i++)
 			{
@@ -92,8 +95,14 @@ class LogicC
 					if($personajesSortear[$num]->getRonda()=="Nominacion")
 					{
 						$termino=true;
+						if($numeroGrupo<10)
+						{
+							$grupoPoner = "0".$numeroGrupo;
+						}
+						else
+							$grupoPoner = $numeroGrupo;
 						$personajesSortear[$num]->setRonda("Preeliminares");
-						$personajesSortear[$num]->setGrupo($numeroGrupo);
+						$personajesSortear[$num]->setGrupo($grupoPoner);
 						$personajesSortear[$num]->update(2,$cambio,1,$consultaUp);
 					}
 				}while(!$termino);
@@ -110,10 +119,8 @@ class LogicC
 			$consulta[] = "Ronda";
 			$personajesSortear = $personajesSortear->read(true,2,$consulta);
 			$cantidad = count($personajesSortear)/(configuracion("Repechaje","NGrupos")-$numeroGrupo+1);
-			$consultaUp = array();
-			$consultaUp [] = "Id";
-			$cambio = array();
-			$cambio[] = "Grupo";
+			$consultaUp = array("Id");
+			$cambio = array("Grupo");
 
 			for($i=0;$i<$cantidad;$i++)
 			{
@@ -137,17 +144,11 @@ class LogicC
 				$personajesSortear = new Personaje();
 				$personajesSortear->setRonda("Ronda-1");
 				$personajesSortear->setGrupo("NG");			
-				$consulta = array();
-				$consulta[] = "Grupo";
-				$consulta[] = "AND";
-				$consulta[] = "Ronda";
+				$consulta = array("Grupo","AND","Ronda");
 				$personajesSortear = $personajesSortear->read(true,2,$consulta);
 				$cantidad = count($personajesSortear)/(configuracion("Repechaje","NGrupos")*configuracion("Ronda-1","NBatalla")-(configuracion("Grupo",$numeroGrupo)*configuracion("Repechaje","NGrupos"))-$r);
-				$consultaUp = array();
-				$consultaUp [] = "Id";
-				$cambio = array();
-				$cambio[] = "Grupo";
-
+				$consultaUp = array("Id");
+				$cambio = array("Grupo");
 				for($i=0;$i<$cantidad;$i++)
 				{
 					do
@@ -206,7 +207,7 @@ class LogicC
 			$PersonajesContados->setGrupo($BatallasActivas[$i]->getGrupo());
 			$PersonajesContados->setRonda($BatallasActivas[$i]->getRonda());
 			$PersonajesContados=$PersonajesContados->read(true,2,$consltaPer);
-			for($j=0;$j<count($PersonajesContados);$i++)
+			for($j=0;$j<count($PersonajesContados);$j++)
 			{
 				$ConVoto = new Voto();
 				$ConVoto->setIdBatalla($BatallasActivas[$i]->getId());
@@ -229,14 +230,14 @@ class LogicC
 				$clas2 = configuracion($BatallasActivas[$i]->getRonda(),"clas2");
 			else
 				$clas2 = 0;
-			$consultaPerCh[0]="Id";
+			$consultaPerCh=array("Id");
 			for($j=0;$j<count($dBatalla);$j++)
 			{
 				if($j < $clas1)
 				{
 					$personajeChange = new Personaje();
 					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
-					$personajeChange = $personajeChange->read(true,1,$consultaPerCh);
+					$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
 					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"));
 					if(configuracion($BatallasActivas[$i]->getRonda(),"grupoFijo"))
 					{
@@ -245,8 +246,8 @@ class LogicC
 					else
 						$personajeChange->setGrupo("NG");
 					$mod = array("Grupo","Ronda");
-					$personajeChange->update(1,$mod,1,$consultaPerCh[0]);
-					if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos())
+					$personajeChange->update(2,$mod,1,$consultaPerCh);
+					if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos()&&$j+1==$clas1)
 					{
 						$clas1++;
 						$clas2++;
@@ -260,8 +261,8 @@ class LogicC
 					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda2"));
 					$personajeChange->setGrupo("NG");
 					$mod = array("Grupo","Ronda");
-					$personajeChange->update(2,$mod,1,$consultaPerCh[0]);
-					if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos())
+					$personajeChange->update(2,$mod,1,$consultaPerCh);
+					if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos()&&$j+1==$clas2)
 					{
 						$clas2++;
 					}
@@ -270,12 +271,98 @@ class LogicC
 				{
 					$personajeChange = new Personaje();
 					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
-					$personajeChange = $personajeChange->read(true,1,$consultaPerCh);
+					$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
 					$personajeChange->setEliminada(1);
 					$mod = array("Eliminada");
-					$personajeChange->update(1,$mod,1,$consultaPerCh[0]);					
+					$personajeChange->update(1,$mod,1,$consultaPerCh);					
 				}			
 			}
+			$BatallasActivas->setActiva(1);
+			$setBatalla = array("Activa");
+			$consultaBatalla = array("Id");
+			$BatallasActivas->update(1,$setBatalla,1,$consultaBatalla);
+		}
+	}
+	
+	function changeChampionship($newStatus)
+	{
+		$buscarTorneo = new Torneo();
+		$buscarTorneo = $buscarTorneo->read();
+		for($i=0;$i<count($buscarTorneo);$i++)
+		{
+			if($buscarTorneo[$i]->getStatus()>0)
+			{
+				$set=array("Status");
+				$con=array("Id");
+				$buscarTorneo[$i]->setStatus($newStatus);
+				$buscarTorneo[$i]->update(1,$set,1,$con);
+			}
+		}
+	}
+	
+	function creacionBatallas()
+	{
+		$IdToneo=0;
+		$buscarTorneo = new Torneo();
+		$buscarTorneo = $buscarTorneo->read();
+		for($i=0;$i<count($buscarTorneo);$i++)
+		{
+			if($buscarTorneo[$i]->getStatus()>0)
+			{
+				$IdToneo = $buscarTorneo[$i]->getId();
+			}
+		}
+		
+		$instancia = "Preeliminares";
+		$sigue = true;		
+		$fecha = "2013-01-01";
+		while($sigue)
+		{
+			$cantidad = configuracion($instancia,"NGrupos");
+			if($instancia=="Preeliminares"||$instancia=="Repechaje"||$instancia=="Final")
+			{
+				for($i=0;$i<$cantidad;$i++)
+				{
+					$nuevaBatalla = new Batalla();
+					$nuevaBatalla->setFecha($fecha);
+					$nuevaBatalla->setRonda($instancia);
+					if($i<9)
+						$grupo = "0".($i+1);
+					else
+						$grupo = $i+1;
+					$nuevaBatalla->setGrupo($grupo);
+					$nuevaBatalla->setTorneo($IdToneo);
+					$nuevaBatalla->setActiva(-1);
+					$nuevaBatalla->save();
+				}
+			}
+			else
+			{
+				$cantidadBatalla = configuracion($instancia,"NBatalla");
+				for($i=0;$i<$cantidad;$i++)
+				{
+					for($j=0;$j<$cantidadBatalla;$j++)
+					{
+						$nuevaBatalla = new Batalla();
+						$nuevaBatalla->setFecha($fecha);
+						$nuevaBatalla->setRonda($instancia);
+						if($j<9)
+							$grupo = "0".($j+1);
+						else
+							$grupo = $j+1;
+						$nuevaBatalla->setGrupo(configuracion("Rev Grupo",$i)."-".$grupo);
+						$nuevaBatalla->setTorneo($IdToneo);
+						$nuevaBatalla->setActiva(-1);
+						$nuevaBatalla->save();
+					}		
+				}
+			}
+			if(configuracion($instancia,"second"))
+				$instancia = configuracion($instancia,"nextRonda2");
+			else 
+				$instancia = configuracion($instancia,"nextRonda1");
+			if($instancia =="Termino")
+			 	$sigue=false;
 		}
 	}
 }

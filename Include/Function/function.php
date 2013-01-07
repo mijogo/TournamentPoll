@@ -8,11 +8,77 @@ function configuracion($instancia,$parte)
 	{
 		if($parte == "NGrupos")
 			$text = 3;
-		
-		 
+		if($parte == "second")
+			$text = true;
+		if($parte == "clas1")
+			$text = 4;
+		if($parte == "clas2")
+			$text = 4;
+		if($parte == "nextRonda1")
+			$text = "Ronda-1";
+		if($parte == "nextRonda2")
+			$text = "Repechaje";
+		if($parte == "grupoFijo")
+			$text = false;
 	}
-	
-	if($instancia == "Grupo")
+	else if($instancia == "Repechaje")
+	{
+		if($parte == "NGrupos")
+			$text = 3;
+		if($parte == "second")
+			$text = false;
+		if($parte == "clas1")
+			$text = 4;
+		if($parte == "nextRonda1")
+			$text = "Ronda-1";
+		if($parte == "grupoFijo")
+			$text = false;
+	}
+	else if($instancia == "Ronda-1")
+	{
+		if($parte == "NGrupos")
+			$text = 2;
+		if($parte == "second")
+			$text = false;
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "nextRonda1")
+			$text = "Ronda-2";
+		if($parte == "grupoFijo")
+			$text = false;
+		if($parte == "NBatalla")
+			$text = 3;
+	}
+	else if($instancia == "Ronda-2")
+	{
+		if($parte == "NGrupos")
+			$text = 2;
+		if($parte == "second")
+			$text = false;
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "nextRonda1")
+			$text = "Final";
+		if($parte == "grupoFijo")
+			$text = true;
+		if($parte == "NBatalla")
+			$text = 1;
+	}
+	else if($instancia == "Final")
+	{
+		if($parte == "NGrupos")
+			$text = 1;
+		if($parte == "second")
+			$text = false;
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "nextRonda1")
+			$text = "Termino";
+		if($parte == "grupoFijo")
+			$text = false;
+	}
+
+	else if($instancia == "Grupo")
 	{
 		if($parte == "A")
 			$tect = 0;
@@ -31,6 +97,26 @@ function configuracion($instancia,$parte)
 		if($parte == "H")
 			$tect = 7;
 	}
+	else if($instancia == "Rev Grupo")
+	{
+		if($parte == 0)
+			$text= "A";
+		if($parte == 1)
+			$text= "B";
+		if($parte == 2)
+			$text= "C";
+		if($parte == 3)
+			$text= "D";
+		if($parte == 4)
+			$text= "E";
+		if($parte == 5)
+			$text= "F";
+		if($parte == 6)
+			$text= "G";
+		if($parte == 7)
+			$text= "H";
+	}
+
 	return $text;
 }
 function fechaHoraActual()

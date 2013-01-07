@@ -46,7 +46,7 @@ class TorneoBD extends DataBase
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Torneos[]=new Torneo($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Torneos[]=new Torneo($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
 			return $Torneos;
@@ -56,7 +56,7 @@ class TorneoBD extends DataBase
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Torneos= new Torneo($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Torneos= new Torneo($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
 			return $Torneos;
 		}

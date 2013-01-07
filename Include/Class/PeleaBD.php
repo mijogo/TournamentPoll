@@ -44,7 +44,7 @@ class PeleaBD extends DataBase
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Peleas[]=new Pelea($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Peleas[]=new Pelea($row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
 			return $Peleas;
@@ -54,7 +54,7 @@ class PeleaBD extends DataBase
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Peleas= new Pelea($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Peleas= new Pelea($row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
 			return $Peleas;
 		}

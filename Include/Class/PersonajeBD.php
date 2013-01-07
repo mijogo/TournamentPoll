@@ -89,6 +89,7 @@ class PersonajeBD extends DataBase
 					$sql .= $Consulta[$i*2+1]." ";
 			}
 		}
+
 		return $this->insert($sql);
 	}
 }
