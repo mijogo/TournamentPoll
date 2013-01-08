@@ -18,5 +18,8 @@ include_once "Class/Ip.php";
 include_once "Class/IpBD.php";
 include_once "Class/Admin.php";
 include_once "Class/AdminBD.php";
+include_once "Class/MenuAdmin.php";
+include_once "Class/MenuAdminBD.php";
+
 
 ?>

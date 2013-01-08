@@ -38,8 +38,6 @@ function configuracion($instancia,$parte)
 	{
 		if($parte == "NGrupos")
 			$text = 2;
-		if($parte == "second")
-			$text = false;
 		if($parte == "clas1")
 			$text = 1;
 		if($parte == "nextRonda1")
@@ -81,21 +79,21 @@ function configuracion($instancia,$parte)
 	else if($instancia == "Grupo")
 	{
 		if($parte == "A")
-			$tect = 0;
+			$text = 0;
 		if($parte == "B")
-			$tect = 1;
+			$text = 1;
 		if($parte == "C")
-			$tect = 2;
+			$text = 2;
 		if($parte == "D")
-			$tect = 3;
+			$text = 3;
 		if($parte == "E")
-			$tect = 4;
+			$text = 4;
 		if($parte == "F")
-			$tect = 5;
+			$text = 5;
 		if($parte == "G")
-			$tect = 6;
+			$text = 6;
 		if($parte == "H")
-			$tect = 7;
+			$text = 7;
 	}
 	else if($instancia == "Rev Grupo")
 	{
@@ -213,7 +211,7 @@ function grafico($titulo="",$nombre="",$cantidad="",$titulos="",$datos="")
 function GenerarSiguiente($actual,$Ronda)
 {
 	$actual = explode("-",$actual);
-	$cantidad = configuracion(configuracion($actual,"nextRonda1"),"NBatalla")/configuracion($actual,"NBatalla");
+	$cantidad = configuracion($Ronda,"NBatalla")/configuracion(configuracion($Ronda,"nextRonda1"),"NBatalla");
 	$actual[1]=$actual[1]/$cantidad;
 	$actual[1]=$actual[1]+(1/$cantidad);
 	$actual[1]=round($actual[1]);

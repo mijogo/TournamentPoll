@@ -1,12 +1,12 @@
 <?php
-$NombreTabla="Admin";
+$NombreTabla="MenuAdmin";
 $ElementosTabla=array();
 $ElementosTabla[]="Id";
-$ElementosTabla[]="User";
-$ElementosTabla[]="Pass";
-$ElementosTabla[]="Mail";
-$ElementosTabla[]="Authpass";
-$ElementosTabla[]="Nivel";
+$ElementosTabla[]="IdDependencia";
+$ElementosTabla[]="Titulo";
+$ElementosTabla[]="Descripcion";
+//$ElementosTabla[]="Authpass";
+//$ElementosTabla[]="Nivel";
 //$ElementosTabla[]="Grupo";
 //$ElementosTabla[]="Ronda";
 
