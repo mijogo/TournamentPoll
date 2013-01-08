@@ -5,6 +5,38 @@ class LogicC
 		
 	function trabaja()
 	{
+		if($_GET['id']==-1)
+		{
+			$nuevoAdmin = new Admin();
+			$nuevoAdmin->setUser($_POST['login']);
+			$nuevoAdmin->setPass(md5($_POST['password']));
+			$nuevoAdmin->setMail($_POST['mail']);
+			$nuevoAdmin->setAuthPass(0);
+			$nuevoAdmin->setNivel(1);
+			$nuevoAdmin->save();
+			Redireccionar("?id=0");
+
+		}
+		if($_GET['id']==0)
+		{
+			$nuestrosAdmin = new Admin();
+			$nuestrosAdmin = $nuestrosAdmin->read();
+			for($i=0;$i<count($nuestrosAdmin);$i++)
+			{
+				if($nuestrosAdmin[$i]->getUser()==$_POST['login'])
+				{
+
+					if($nuestrosAdmin[$i]->getPass()==md5($_POST['password']))
+					{ 
+						if($nuestrosAdmin[$i]->getAuthPass()==AUTHPASS)
+						{
+							setcookie("user", $nuestrosAdmin[$i]->getId());
+						}
+					}
+				}
+			}
+			Redireccionar("?id=1");
+		}
 		if($_GET['id']==4)
 		{
 			$nombre = $_POST['Nombre'];

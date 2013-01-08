@@ -47,7 +47,7 @@ class AdminBD extends DataBase
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Admins[]=new Admin($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Admins[]=new Admin($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
 			return $Admins;
@@ -57,7 +57,7 @@ class AdminBD extends DataBase
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Admins= new Admin($row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Admins= new Admin($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
 			return $Admins;
 		}

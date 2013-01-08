@@ -9,25 +9,49 @@ class MasterClass
 	
 	function Trabajar()
 	{
-		if(!isset($_GET['id']))
-			$_GET['id']=1;
 		if(!isset($_GET['action']))
 			$_GET['action']=1;
 
-		$logicaVista = new LogicV();		
-		$logicaCodigo = new LogicC();
-		if($_GET['action']==1)
+		if(!isset($_COOKIE['user']))
 		{
-			$logicaCodigo->Schedule();
+			if(!isset($_GET['id']))
+				$_GET['id']=0;
 
-			echo $this->Cabecera();	
-			echo $this->Principal();		
-			echo $this->Cuerpo($logicaVista->logicaView());
-			echo $this->Pie();
+			if($_GET['id']==-1&&$_GET['action']==1)
+				echo $this->estructura->registro();			
+			else if($_GET['id']==-1&&$_GET['action']==2)
+			{
+				$logicaCodigo = new LogicC();
+				$logicaCodigo->trabaja();
+			}
+			else if($_GET['id']==0&&$_GET['action']==2)
+			{
+				$logicaCodigo = new LogicC();
+				$logicaCodigo->trabaja();
+			}
+			else
+				echo $this->estructura->login();
 		}
-		if($_GET['action']==2)
+		else
 		{
-			$logicaCodigo->trabaja();
+			if(!isset($_GET['id']))
+				$_GET['id']=1;
+
+			$logicaVista = new LogicV();		
+			$logicaCodigo = new LogicC();
+			if($_GET['action']==1)
+			{
+				$logicaCodigo->Schedule();
+
+				echo $this->Cabecera();	
+				echo $this->Principal();		
+				echo $this->Cuerpo($logicaVista->logicaView());
+				echo $this->Pie();
+			}
+			if($_GET['action']==2)
+			{
+				$logicaCodigo->trabaja();
+			}
 		}
 	}
 	

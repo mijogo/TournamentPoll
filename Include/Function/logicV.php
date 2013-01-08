@@ -8,7 +8,6 @@ class LogicV
 	function logicaView()
 	{
 		$text = "";
-		
 		if($_GET['id']==4)
 		{
 			$text="";
