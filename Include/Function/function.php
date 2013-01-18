@@ -4,6 +4,16 @@ function configuracion($instancia,$parte)
 	$text = "";
 	if($parte=="second")
 		$text = false;
+		
+	if($instancia == "Config")
+	{
+		//cantidad en minutos de la duracion del match
+		if($parte == "Duracion Batalla")
+			$text = 1320;
+		//el tiempo extra que toma sacar los resultados en minutos
+		if($parte == "Extra conteo")
+			$text = 20;
+	}
 	if($instancia == "Preeliminares")
 	{
 		if($parte == "NGrupos")
@@ -303,6 +313,53 @@ function fechaGenerador($nombreFecha="")
 		}
 	}
 	return selected($nombreFecha."Anio",$anio)."-".selected($nombreFecha."Mes",$mes)."-".selected($nombreFecha."Dia",$dis)." ".selected($nombreFecha."Hora",$hora).":".selected($nombreFecha."Min",$min)." ".selected($nombreFecha."Seg",$seg);
+}
+
+function fechaGeneradorwoHora($nombreFecha="")
+{
+	for($i=2010;$i<2030;$i++)
+	{
+		
+		$anio[$i-2010][0]=$i;
+		$anio[$i-2010][1]=$i;
+	}
+	for($i=1;$i<13;$i++)
+	{
+		if($i<10)
+		{
+			$mes[$i-1][0]="0".$i;
+			$mes[$i-1][1]="0".$i;
+		}
+		else
+		{
+			$mes[$i-1][0]=$i;
+			$mes[$i-1][1]=$i;
+		}
+	}
+	for($i=1;$i<32;$i++)
+	{
+		if($i<10)
+		{
+			$dis[$i-1][0]="0".$i;
+			$dis[$i-1][1]="0".$i;
+		}
+		else
+		{
+			$dis[$i-1][0]=$i;
+			$dis[$i-1][1]=$i;
+		}
+	}
+	return selected($nombreFecha."Anio",$anio)."-".selected($nombreFecha."Mes",$mes)."-".selected($nombreFecha."Dia",$dis);
+}
+
+
+function cambioFecha($actual,$min)
+{
+	$actual = explode(" ",$actual);
+	$fecha1 = explode("-",$actual[0]);
+	$fecha2 = explode(":",$actual[1]);
+	$timestamp = mktime($fecha2[0], $fecha2[1]+$min,$fecha2[2], $fecha1[1],$fecha1[2], $fecha1[0]);
+    return date('Y-m-d H:i:s', $timestamp);
 }
 
 ?>

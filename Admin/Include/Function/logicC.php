@@ -37,13 +37,85 @@ class LogicC
 			}
 			Redireccionar("?id=1");
 		}
+		if($_GET['id']==3)
+		{
+			$Fecha=$_POST['FechaAnio']."-".$_POST['FechaMes']."-".$_POST['FechaDia']." ".$_POST['FechaHora'].":".$_POST['FechaMin'].":".$_POST['FechaSeg'];
+
+			if($_POST['Accion']==2)
+			{
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(2);
+				$newSchedule->setFecha($Fecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget($_POST['Extra']);
+				$newSchedule->save();		
+			}
+			
+			if($_POST['Accion']==3)
+			{
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(3);
+				$newSchedule->setFecha($Fecha);
+				$newSchedule->setHecho(-1);
+				$onlyFecha = explode(" ",$Fecha); 
+				$newSchedule->setTarget($onlyFecha[0]);
+				$newSchedule->save();
+				
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(5);
+				$newSchedule->setFecha($Fecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget(3);
+				$newSchedule->save();
+					
+				$newFecha=cambioFecha($Fecha,configuracion("Config","Duracion Batalla"));
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(5);
+				$newSchedule->setFecha($newFecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget(1);
+				$newSchedule->save();
+				
+				$newFecha=cambioFecha($newFecha,configuracion("Config","Extra conteo"));
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(4);
+				$newSchedule->setFecha($newFecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->save();
+			}
+			
+			if($_POST['Accion']==5)
+			{
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(5);
+				$newSchedule->setFecha($Fecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget($_POST['Extra']);
+				$newSchedule->save();
+			}
+			
+			if($_POST['Accion']==6)
+			{
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(6);
+				$newSchedule->setFecha($Fecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->save();
+			}
+			Redireccionar("?id=3");
+		}
 		if($_GET['id']==4)
 		{
-			$nombre = $_POST['Nombre'];
-			$serie = $_POST['Serie'];
-			$this->inscripcion($nombre,$serie);
-			Redireccionar("?id=4");			
+			$usarBatalla = new Batalla();
+			$usarBatalla->setId($_POST['Id']);
+			$consulta = array("Id");
+			$Fecha = $_POST['FechaAnio']."-".$_POST['FechaMes']."-".$_POST['FechaDia'];
+			$usarBatalla->setFecha($Fecha);
+			$set = array("Fecha");
+			$usarBatalla->update(1,$set,1,$consulta);
+			//Redireccionar("?id=4");
 		}
+
 	}
 		
 	function Schedule()
@@ -76,6 +148,7 @@ class LogicC
 				{
 					$this->ConteoVotos();
 				}
+				//0 desactivado,1 standby,2 nominaciones,3 batallas activas
 				if($process[$i]->getAccion()==5)
 				{
 					$this->changeChampionship($process[$i]->getTarget());

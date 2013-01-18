@@ -40,6 +40,7 @@ class BatallaBD extends DataBase
 					$sql .= ",";
 			}
 		}
+
 		if($multi)
 		{
 			$result = $this->select($sql);
