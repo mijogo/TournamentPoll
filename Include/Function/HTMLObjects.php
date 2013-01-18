@@ -47,4 +47,16 @@ function input($nombre,$tipo)
 	$text = "<input type=\"".$tipo."\" name=\"".$nombre."\">";
 	return $text;
 }
+
+function selected($name ="",$values="")
+{
+	$text = "";
+	$text .="<SELECT NAME=\"".$name."\">";
+	for($i=0;$i<count($values);$i++)
+	{
+		$text .="<OPTION VALUE=\"".$values[$i][0]."\">".$values[$i][1];
+	}
+	$text .="</SELECT>";
+	return $text;
+}
 ?>

@@ -229,4 +229,80 @@ location.href='".$url."';
 </head>";
 }
 
+function fechaGenerador($nombreFecha="")
+{
+	for($i=2010;$i<2030;$i++)
+	{
+		
+		$anio[$i-2010][0]=$i;
+		$anio[$i-2010][1]=$i;
+	}
+	for($i=1;$i<13;$i++)
+	{
+		if($i<10)
+		{
+			$mes[$i-1][0]="0".$i;
+			$mes[$i-1][1]="0".$i;
+		}
+		else
+		{
+			$mes[$i-1][0]=$i;
+			$mes[$i-1][1]=$i;
+		}
+	}
+	for($i=1;$i<32;$i++)
+	{
+		if($i<10)
+		{
+			$dis[$i-1][0]="0".$i;
+			$dis[$i-1][1]="0".$i;
+		}
+		else
+		{
+			$dis[$i-1][0]=$i;
+			$dis[$i-1][1]=$i;
+		}
+	}
+	for($i=0;$i<24;$i++)
+	{
+		if($i<10)
+		{
+			$hora[$i][0]="0".$i;
+			$hora[$i][1]="0".$i;
+		}
+		else
+		{
+			$hora[$i][0]=$i;
+			$hora[$i][1]=$i;
+		}
+	}
+	for($i=0;$i<60;$i++)
+	{
+		if($i<10)
+		{
+			$min[$i][0]="0".$i;
+			$min[$i][1]="0".$i;
+		}
+		else
+		{
+			$min[$i][0]=$i;
+			$min[$i][1]=$i;
+		}
+	}
+	for($i=0;$i<60;$i++)
+	{
+		if($i<10)
+		{
+			$seg[$i][0]="0".$i;
+			$seg[$i][1]="0".$i;
+		}
+		else
+		{
+			$seg[$i][0]=$i;
+			$seg[$i][1]=$i;
+		}
+	}
+	return selected($nombreFecha."Anio",$anio)."-".selected($nombreFecha."Mes",$mes)."-".selected($nombreFecha."Dia",$dis)." ".selected($nombreFecha."Hora",$hora).":".selected($nombreFecha."Min",$min)." ".selected($nombreFecha."Seg",$seg);
+}
+
 ?>
