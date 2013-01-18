@@ -42,7 +42,7 @@ function table($datos)
 	$text .="</table>";
 	return $text;
 }
-function input($nombre,$tipo)
+function input($nombre,$tipo,$value="")
 {
 	$text = "<input type=\"".$tipo."\" name=\"".$nombre."\">";
 	return $text;

@@ -113,7 +113,7 @@ class LogicC
 			$usarBatalla->setFecha($Fecha);
 			$set = array("Fecha");
 			$usarBatalla->update(1,$set,1,$consulta);
-			//Redireccionar("?id=4");
+			Redireccionar("?id=4");
 		}
 
 	}

@@ -7,10 +7,69 @@ class LogicC
 	{
 		if($_GET['id']==4)
 		{
-			$nombre = $_POST['Nombre'];
-			$serie = $_POST['Serie'];
-			$this->inscripcion($nombre,$serie);
-			Redireccionar("?id=4");			
+			if($_GET['trato']==1)
+			{
+				$nombre = $_POST['Nombre'];
+				$serie = $_POST['Serie'];
+				$this->inscripcion($nombre,$serie);
+				Redireccionar("?id=4");		
+			}
+			if($_GET['trato']==2)
+			{
+				$buscarTorneo = new Torneo();
+				$buscarTorneo = $buscarTorneo->read();
+				for($i=0;$i<count($buscarTorneo);$i++)
+				{
+					if($buscarTorneo[$i]->getStatus()>0)
+					{
+						$esteTorneo = $buscarTorneo[$i];
+					}
+				}
+				if($esteTorneo->getStatus()==3)
+				{
+					$buscarIp = new Ip();
+					$buscarIp->setIp(getRealIP());
+					$buscarIp=$buscarIp->read(true,1,array("Ip"));
+					$esta = false;
+					for($i=0;$i<count($buscarIp);$buscarIp++)
+					{
+						$fechaB = explode(" ",$buscarIp->getFecha());
+						$fechaA = fechaHoraActual("Y-m-d");
+						if($fechaB == $fechaA)
+						{
+							$esta = true;
+						}
+					}
+					if(!$esta)
+					{
+						$newIp = new Ip();
+						$newIp->setFecha(fechaHoraActual());
+						$newIp->setTiempo(20);
+						$newIp->setIp(getRealIP());
+						$newIp->setUsada(1);
+						$newIp->save();
+						
+						$BatallasActivas = new Batalla();
+						$BatallasActivas->setActiva(0);
+						$consulta = array("Activa");
+						$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
+						
+						for($i=0;$i<count($BatallasActivas);$i++)
+						{
+							for($j=0;$j<count($_POST['$BatallasActivas[$i]->getGrupo()']);$j++)
+							{
+								$agregarVotos = new voto();
+								$agregarVotos->setIdBatalla($BatallasActivas[$i]->getGrupo());
+								$agregarVotos->setFecha(fechaHoraActual());
+								$agregarVotos->setIdPersonaje($_POST['$BatallasActivas[$i]->getGrupo()'][$j]);
+								$agregarVotos->setIp($newIp->getIp());
+								$agregarVotos->save();
+							}
+						}
+					}
+				}
+				Redireccionar("?id=1");	
+			}
 		}
 	}
 		

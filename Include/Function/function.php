@@ -127,9 +127,9 @@ function configuracion($instancia,$parte)
 
 	return $text;
 }
-function fechaHoraActual()
+function fechaHoraActual($format="Y-m-d H:i:s")
 {
-	return date('Y-m-d H:i:s');
+	return date($format);
 }
 function FechaMayor($fecha1,$fecha2)
 {
@@ -362,4 +362,14 @@ function cambioFecha($actual,$min)
     return date('Y-m-d H:i:s', $timestamp);
 }
 
+function getRealIP() 
+{
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))
+            return $_SERVER['HTTP_CLIENT_IP'];
+           
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+       
+        return $_SERVER['REMOTE_ADDR'];
+ }
 ?>
