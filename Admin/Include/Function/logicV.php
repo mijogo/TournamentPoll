@@ -114,6 +114,91 @@ class LogicV
 			$text1 .= table($valS);
 			$text .= div($text1);
 		}		
+		
+		if($_GET['id']==5)
+		{		
+			$opciones[0][0]=-1;	
+			$opciones[0][1]="Rechazada";
+			$opciones[1][0]=0;
+			$opciones[1][1]="Pendiente";
+			$opciones[2][0]=1;
+			$opciones[2][1]="Aceptada";
+			$text = "Ver Nominaciones";
+			
+	$valS="";
+			$text1="Pendientes";
+			$valS[0][0]="Nombre";
+			$valS[0][1]="Serie";
+			$valS[0][2]="Cambio";
+			
+			$datoPersonaje = new Personaje();
+			$datoPersonaje->setInscripcion(0);
+			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"));
+			
+			for($i=0;$i<count($datoPersonaje);$i++)
+			{
+				$valS[$i+1][0]=$datoPersonaje[$i]->getNombre();	
+				$valS[$i+1][1]=$datoPersonaje[$i]->getSerie();	
+				$valS[$i+1][2]=input("changePersonaje[]","checkbox",$datoPersonaje[$i]->getId());	
+			}
+
+
+			$text1 .= table($valS);
+			$text1 .= selected("change",$opciones);
+			$text1 .= input("submit","submit");
+
+			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
+			$text .= "<br><br>";
+			$valS="";
+			$text1="Aceptadas";
+			$valS[0][0]="Nombre";
+			$valS[0][1]="Serie";
+			$valS[0][2]="Cambio";
+			
+			$datoPersonaje = new Personaje();
+			$datoPersonaje->setInscripcion(1);
+			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"));
+			
+			for($i=0;$i<count($datoPersonaje);$i++)
+			{
+				$valS[$i+1][0]=$datoPersonaje[$i]->getNombre();	
+				$valS[$i+1][1]=$datoPersonaje[$i]->getSerie();	
+				$valS[$i+1][2]=input("changePersonaje[]","checkbox",$datoPersonaje[$i]->getId());	
+			}
+
+
+			$text1 .= table($valS);
+			$text1 .= selected("change",$opciones);
+			$text1 .= input("submit","submit");
+
+			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
+			$text .= "<br><br>";
+			$valS="";
+			$text1="Rechazadas";
+			$valS[0][0]="Nombre";
+			$valS[0][1]="Serie";
+			$valS[0][2]="Cambio";
+			
+			$datoPersonaje = new Personaje();
+			$datoPersonaje->setInscripcion(-1);
+			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"));
+			
+			for($i=0;$i<count($datoPersonaje);$i++)
+			{
+				$valS[$i+1][0]=$datoPersonaje[$i]->getNombre();	
+				$valS[$i+1][1]=$datoPersonaje[$i]->getSerie();	
+				$valS[$i+1][2]=input("changePersonaje[]","checkbox",$datoPersonaje[$i]->getId());	
+			}
+
+
+			$text1 .= table($valS);
+			$text1 .= selected("change",$opciones);
+			$text1 .= input("submit","submit");
+
+			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
+			$text .= "<br><br>";
+
+		}		
 		return $text;
 	}
 }

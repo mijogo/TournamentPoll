@@ -17,13 +17,13 @@ function configuracion($instancia,$parte)
 	if($instancia == "Preeliminares")
 	{
 		if($parte == "NGrupos")
-			$text = 3;
+			$text = 6;
 		if($parte == "second")
 			$text = true;
 		if($parte == "clas1")
-			$text = 4;
+			$text = 5;
 		if($parte == "clas2")
-			$text = 4;
+			$text = 5;
 		if($parte == "nextRonda1")
 			$text = "Ronda-1";
 		if($parte == "nextRonda2")
@@ -38,7 +38,7 @@ function configuracion($instancia,$parte)
 		if($parte == "second")
 			$text = false;
 		if($parte == "clas1")
-			$text = 4;
+			$text = 2;
 		if($parte == "nextRonda1")
 			$text = "Ronda-1";
 		if($parte == "grupoFijo")
@@ -47,7 +47,7 @@ function configuracion($instancia,$parte)
 	else if($instancia == "Ronda-1")
 	{
 		if($parte == "NGrupos")
-			$text = 2;
+			$text = 3;
 		if($parte == "clas1")
 			$text = 1;
 		if($parte == "nextRonda1")
@@ -60,19 +60,36 @@ function configuracion($instancia,$parte)
 	else if($instancia == "Ronda-2")
 	{
 		if($parte == "NGrupos")
-			$text = 2;
+			$text = 3;
 		if($parte == "second")
 			$text = false;
 		if($parte == "clas1")
 			$text = 1;
 		if($parte == "nextRonda1")
-			$text = "Final";
+			$text = "Ronda-3";
+		if($parte == "grupoFijo")
+			$text = true;
+		if($parte == "NBatalla")
+			$text = 2;
+	}
+	
+	else if($instancia == "Ronda-3")
+	{
+		if($parte == "NGrupos")
+			$text = 3;
+		if($parte == "second")
+			$text = false;
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "nextRonda1")
+			$text = "Final-1";
 		if($parte == "grupoFijo")
 			$text = true;
 		if($parte == "NBatalla")
 			$text = 1;
 	}
-	else if($instancia == "Final")
+
+	else if($instancia == "Final-1")
 	{
 		if($parte == "NGrupos")
 			$text = 1;

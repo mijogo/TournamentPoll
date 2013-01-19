@@ -44,7 +44,10 @@ function table($datos)
 }
 function input($nombre,$tipo,$value="")
 {
-	$text = "<input type=\"".$tipo."\" name=\"".$nombre."\">";
+	$text = "<input type=\"".$tipo."\" name=\"".$nombre."\"";
+	if($value != "")
+		$text .= " value=\"".$value."\"";
+	$text .=">";
 	return $text;
 }
 

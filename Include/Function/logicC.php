@@ -378,7 +378,7 @@ class LogicC
 		while($sigue)
 		{
 			$cantidad = configuracion($instancia,"NGrupos");
-			if($instancia=="Preeliminares"||$instancia=="Repechaje"||$instancia=="Final")
+			if($instancia=="Preeliminares"||$instancia=="Repechaje"||$instancia=="Final-1"||$instancia=="Final-2"||$instancia=="Final-3"||$instancia=="Final-4")
 			{
 				for($i=0;$i<$cantidad;$i++)
 				{
@@ -416,12 +416,13 @@ class LogicC
 					}		
 				}
 			}
+			if($instancia =="Termino")
+			 	$sigue=false;
+
 			if(configuracion($instancia,"second"))
 				$instancia = configuracion($instancia,"nextRonda2");
 			else 
 				$instancia = configuracion($instancia,"nextRonda1");
-			if($instancia =="Termino")
-			 	$sigue=false;
 		}
 	}
 }
