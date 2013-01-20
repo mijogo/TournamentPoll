@@ -62,7 +62,7 @@ class LogicV
 					{
 						$datosPer[$j+1][0] = $buscarPersonajes[$j]->getNombre();
 						$datosPer[$j+1][1] = $buscarPersonajes[$j]->getSerie();
-						$datosPer[$j+1][2] = input($BatallasActivas[$i]->getGrupo(),"checkbox",$buscarPersonajes[$j]->getId());								
+						$datosPer[$j+1][2] = input($BatallasActivas[$i]->getGrupo()."[]","checkbox",$buscarPersonajes[$j]->getId());								
 					}
 					$text1 .=  table($datosPer);
 				}

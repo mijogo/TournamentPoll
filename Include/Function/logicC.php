@@ -29,19 +29,19 @@ class LogicC
 				{
 					$buscarIp = new Ip();
 					$buscarIp->setIp(getRealIP());
-					$buscarIp=$buscarIp->read(true,1,array("Ip"));
+					$buscarIp=$buscarIp->read(true,1,array("IP"));
 					$esta = false;
-					for($i=0;$i<count($buscarIp);$buscarIp++)
+					for($i=0;$i<count($buscarIp);$i++)
 					{
-						$fechaB = explode(" ",$buscarIp->getFecha());
+						$fechaB = explode(" ",$buscarIp[$i]->getFecha());
 						$fechaA = fechaHoraActual("Y-m-d");
-						if($fechaB == $fechaA)
+						if($fechaB[0] == $fechaA)
 						{
 							$esta = true;
 						}
 					}
-					if(!$esta)
-					{
+					//if(!$esta)
+					//{
 						$newIp = new Ip();
 						$newIp->setFecha(fechaHoraActual());
 						$newIp->setTiempo(20);
@@ -56,17 +56,17 @@ class LogicC
 						
 						for($i=0;$i<count($BatallasActivas);$i++)
 						{
-							for($j=0;$j<count($_POST['$BatallasActivas[$i]->getGrupo()']);$j++)
+							for($j=0;$j<count($_POST[$BatallasActivas[$i]->getGrupo()]);$j++)
 							{
 								$agregarVotos = new voto();
-								$agregarVotos->setIdBatalla($BatallasActivas[$i]->getGrupo());
+								$agregarVotos->setIdBatalla($BatallasActivas[$i]->getId());
 								$agregarVotos->setFecha(fechaHoraActual());
-								$agregarVotos->setIdPersonaje($_POST['$BatallasActivas[$i]->getGrupo()'][$j]);
+								$agregarVotos->setIdPersonaje($_POST[$BatallasActivas[$i]->getGrupo()][$j]);
 								$agregarVotos->setIp($newIp->getIp());
 								$agregarVotos->save();
 							}
 						}
-					}
+					//}
 				}
 				Redireccionar("?id=1");	
 			}
