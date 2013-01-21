@@ -23,7 +23,7 @@ function configuracion($instancia,$parte)
 		if($parte == "clas1")
 			$text = 5;
 		if($parte == "clas2")
-			$text = 5;
+			$text = 10;
 		if($parte == "nextRonda1")
 			$text = "Ronda-1";
 		if($parte == "nextRonda2")

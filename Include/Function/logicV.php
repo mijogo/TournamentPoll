@@ -70,7 +70,39 @@ class LogicV
 				$text .= form($text1,"inscipcion","?id=4&action=2&trato=2");			
 			}
 
-		}		
+		}
+		if($_GET['id']==9)
+		{
+			$batallasF = new Batalla();
+			$batallasF->setActiva(1);
+			$batallasF = $batallasF->read(true,1,array("Activa"),1,array("Fecha","ASC"));
+			for($i=0;$i<count($batallasF);$i++)
+			{
+				$text1= "Ronda ".$batallasF[$i]->getRonda()." Grupo ".$batallasF[$i]->getGrupo()."<br>";
+				$peleasB = new Pelea();
+				$peleasB->setIdBatalla($batallasF[$i]->getId());
+				$peleasB = $peleasB->read(true,1,array("IdBatalla"),1,array("Votos","DESC"));
+				$tableData="";
+				$tableData[0][0] = "Pos";				
+				$tableData[0][1] = "Nombre";				
+				$tableData[0][2] = "Serie";				
+				$tableData[0][3] = "Voto";
+
+				for($j=0;$j<count($peleasB);$j++)
+				{
+					$personajeU = new Personaje();
+					$personajeU->setId($peleasB[$j]->getIdPersonaje());
+					$personajeU = $personajeU->read(false,1,array("Id"));
+					$tableData[$j+1][0]=$j+1;
+					$tableData[$j+1][1]=$personajeU->getNombre();
+					$tableData[$j+1][2]=$personajeU->getSerie();
+					$tableData[$j+1][3]=$peleasB[$j]->getVotos();
+				}
+				$text1 .= table($tableData);
+				$text1 .= "<br>";
+				$text .= $text1;
+			}
+		}	
 		return $text;
 	}
 }
