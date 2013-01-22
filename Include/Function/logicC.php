@@ -190,7 +190,14 @@ class LogicC
 					if($personajesSortear[$num]->getGrupo()=="NG")
 					{
 						$termino=true;
-						$personajesSortear[$num]->setGrupo($numeroGrupo);
+						if($numeroGrupo<10)
+						{
+							$grupoPoner = "0".$numeroGrupo;
+						}
+						else
+							$grupoPoner = $numeroGrupo;
+
+						$personajesSortear[$num]->setGrupo($grupoPoner);
 						$personajesSortear[$num]->update(1,$cambio,1,$consultaUp);
 					}
 				}while(!$termino);
@@ -424,6 +431,117 @@ class LogicC
 			else 
 				$instancia = configuracion($instancia,"nextRonda1");
 		}
+	}
+	
+	function datosGrafo($batalla,$intervalo,$horaInicio,$horaLimite,$limitePersonaje,$enAccion)
+	{
+		if($enAccion)
+		{
+			$batallaActual = new Batalla();
+			$batallaActual->setId($batalla);
+			$batallaActual = $batallaActual->read(false,1,array("Id"));
+			
+			$personajeProbar = new Personaje();
+			$personajeProbar->setRonda($batallaActual->getRonda());
+			$personajeProbar->setGrupo($batallaActual->getGrupo());
+			$personajeProbar = $personajeProbar->read(true,2,array("Ronda","AND","Grupo"));
+			
+			for($i=0;$i<count($personajeProbar);$i++)
+			{
+				$cantVotos[$i]["Id"]=$personajeProbar[$i]->getId();
+				$cantVotos[$i]["Votos"]=0;	
+			}
+			
+			$votosContar = new Voto();
+			$votosContar->setIdBatalla($batalla);
+			$votosContar = $votosContar->read(true,1,array("IdBatalla"));
+			
+			for($i=0;$i<count($votosContar);$i++)
+			{
+				$esta = false;
+				for($j=0;$j<count($cantVotos)&&!$esta;$j++)
+				{
+					if($votosContar[$i]->getIdPersonaje() == $cantVotos[$j]["Id"])
+					{
+						$cantVotos[$j]["Votos"]++;
+						$esta=true;
+					}
+				}
+			}
+		}
+		else
+		{
+			$batallaActual = new Batalla();
+			$batallaActual->setId($batalla);
+			$batallaActual = $batallaActual->read(false,1,array("Id"));
+			
+			$personajeProbar = new Pelea();
+			$personajeProbar->setIdBatalla($batallaActual->getId());
+			$personajeProbar = $personajeProbar->read(true,1,array("IdBatalla"));
+			
+			for($i=0;$i<count($personajeProbar);$i++)
+			{
+				$cantVotos[$i]["Id"]=$personajeProbar[$i]->getIdPersonaje();
+				$cantVotos[$i]["Votos"]=0;	
+			}
+			
+			$votosContar = new Voto();
+			$votosContar->setIdBatalla($batalla);
+			$votosContar = $votosContar->read(true,1,array("IdBatalla"));
+			
+			for($i=0;$i<count($votosContar);$i++)
+			{
+				$esta = false;
+				for($j=0;$j<count($cantVotos)&&!$esta;$j++)
+				{
+					if($votosContar[$i]->getIdPersonaje() == $cantVotos[$j]["Id"])
+					{
+						$cantVotos[$j]["Votos"]++;
+						$esta=true;
+					}
+				}
+			}
+		}
+		for($i=0,$cambio =false;$i<count($cantVotos)&& $cambio;$i++)
+		{
+			$cambio =false;
+			for($j=0;$j<count($cantVotos)-1;$i++)
+			{
+				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
+				{
+					$cambio=true;
+					$temp=$cantVotos[$j];
+					$cantVotos[$j] = $cantVotos[$j+1];
+					$cantVotos[$j+1] = $temp;
+				}
+			}
+		}
+		
+		$titulos = array();
+		$titulos[] = "Hora";
+		for($u=0;$u<count($cantVotos)&&$u<$limitePersonaje;$u++)
+		{
+			$personajeAv = new Personaje();
+			$personajeAv->setId($cantVotos[$u]["Id"]);
+			$personajeAv = $personajeAv->read(false,1,array("Id"));
+			
+			$titulos[] = $personajeAv->getNombre();
+		}
+		
+		$Fecha = $batallaActual->getFecha()." ".$horaInicio;
+		$FechaLimite = cambioFecha($Fecha,$horaLimite);
+		$datosGeneral[0][0]=$horaInicio;
+		for($u=1;$u<count($titulos);$u++)	
+		{
+			$datosGeneral[0][$u]=0;
+		}
+		$sigue=true;
+		$i=0;
+		$j=1;
+			$retornar = array();
+		$retornar[] = $titulos;
+		$retornar[] = $datosGeneral;
+		return $retornar;
 	}
 }
 ?>

@@ -4,7 +4,7 @@ class structura
 	function structura()
 	{}
 	
-	function head()
+	function head($script="")
 	{
 		$text = "";
 		$text .="<!DOCTYPE HTML><html>\n
@@ -17,6 +17,7 @@ class structura
   <link rel=\"stylesheet\" type=\"text/css\" href=\"css/style.css\" />\n
   <!-- modernizr enables HTML5 elements and feature detects -->\n
   <script type=\"text/javascript\" src=\"js/modernizr-1.5.min.js\"></script>\n
+  ".$script."
 </head>\n
 ";
 		

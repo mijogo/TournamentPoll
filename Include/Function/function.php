@@ -185,7 +185,7 @@ function FechaMayor($fecha1,$fecha2)
 		return -1;	
 }
 
-function grafico($titulo="",$nombre="",$cantidad="",$titulos="",$datos="")
+function grafico($titulo="",$nombre="",$titulos="",$datos="")
 {
 	$grafic = "";
 	$grafic .= "    <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>
@@ -199,7 +199,7 @@ function grafico($titulo="",$nombre="",$cantidad="",$titulos="",$datos="")
         	if($i==0)
         		$grafic .= "[";
         	$grafic .= "'".$titulos[$i]."'";
-        	if($i==$cantidad-1)
+        	if($i==count($titulos)-1)
         		$grafic.="]";
         	$grafic.=",";
         }
@@ -214,9 +214,9 @@ function grafico($titulo="",$nombre="",$cantidad="",$titulos="",$datos="")
         			$grafic .= "'".$datos[$j][$i]."'";
         		else
         			$grafic .= $datos[$j][$i];   			
-        		if($i==$cantidad-1)
+        		if($i==count($titulos)-1)
         			$grafic.="]";
-        		if(!($i==$cantidad-1&&$j==count($datos)-1))
+        		if(!($i==count($titulos)-1&&$j==count($datos)-1))
         			$grafic.=",";
         	}
         	$grafic .= "\n";

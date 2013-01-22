@@ -33,7 +33,15 @@ class MasterClass
 	
 	function Cabecera()
 	{
-		return $this->estructura->head();
+		if($_GET['id']==10)
+		{
+			$moreLogicaCodigo = new LogicC();
+
+			$datos = $moreLogicaCodigo->datosGrafo(184,20,"01:00:00",1320,8,false);
+			return $this->estructura->head(grafico("Mega Grafo","grafV",$datos[0],$datos[1]));
+		}
+		else
+			return $this->estructura->head();
 	}
 	
 	function Principal()
