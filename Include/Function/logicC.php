@@ -454,7 +454,7 @@ class LogicC
 			
 			$votosContar = new Voto();
 			$votosContar->setIdBatalla($batalla);
-			$votosContar = $votosContar->read(true,1,array("IdBatalla"));
+			$votosContar = $votosContar->read(true,1,array("IdBatalla"),1,array("Fecha","ASC"));
 			
 			for($i=0;$i<count($votosContar);$i++)
 			{
@@ -487,7 +487,7 @@ class LogicC
 			
 			$votosContar = new Voto();
 			$votosContar->setIdBatalla($batalla);
-			$votosContar = $votosContar->read(true,1,array("IdBatalla"));
+			$votosContar = $votosContar->read(true,1,array("IdBatalla"),1,array("Fecha","ASC"));
 			
 			for($i=0;$i<count($votosContar);$i++)
 			{
@@ -538,19 +538,20 @@ class LogicC
 		$sigue=true;
 		$i=0;
 		$j=1;
-		while($sigue)
+		while($sigue&&$j<100)
 		{
 			$Fecha = cambioFecha($Fecha,$intervalo);
+
 			$datosGeneral[$j]=$datosGeneral[$j-1];
 			$hora=explode(" ",$Fecha);
 			$datosGeneral[$j][0]=$hora[1];
 			$sigue2=true;
 			while($sigue2)
 			{
-				if(count($votosContar)!=$i&&FechaMayor($Fecha,$votosContar[$i]->getFecha())!=1)
+				if(count($votosContar)!=$i&&FechaMayor($Fecha,$votosContar[$i]->getFecha())!=-1)
 				{
 					$vamos=true;
-					for($k=0;$k<count($cantVotos)&&$vamos;$k++)
+					for($k=0;$k<count($titulos)-1&&$vamos;$k++)
 					{
 						if($cantVotos[$k]["Id"]==$votosContar[$i]->getIdPersonaje())
 						{
@@ -563,13 +564,14 @@ class LogicC
 				else
 					$sigue2=false;
 			}
-			if(count($votosContar)==$i&&FechaMayor($Fecha,$FechaLimite)!=-1)
+			if((count($votosContar)==$i&&$enAccion)||FechaMayor($Fecha,$FechaLimite)!=-1)
 			{
 				$sigue=false;
 				
 			}
 			$j++;
 		}
+
 		$retornar = array();
 		$retornar[] = $titulos;
 		$retornar[] = $datosGeneral;
