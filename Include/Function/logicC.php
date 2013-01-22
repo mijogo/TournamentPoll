@@ -538,7 +538,39 @@ class LogicC
 		$sigue=true;
 		$i=0;
 		$j=1;
-			$retornar = array();
+		while($sigue)
+		{
+			$Fecha = cambioFecha($Fecha,$intervalo);
+			$datosGeneral[$j]=$datosGeneral[$j-1];
+			$hora=explode(" ",$Fecha);
+			$datosGeneral[$j][0]=$hora[1];
+			$sigue2=true;
+			while($sigue2)
+			{
+				if(count($votosContar)!=$i&&FechaMayor($Fecha,$votosContar[$i]->getFecha())!=1)
+				{
+					$vamos=true;
+					for($k=0;$k<count($cantVotos)&&$vamos;$k++)
+					{
+						if($cantVotos[$k]["Id"]==$votosContar[$i]->getIdPersonaje())
+						{
+							$vamos=false;
+							$datosGeneral[$j][$k+1]++;
+						}
+					}
+					$i++;
+				}
+				else
+					$sigue2=false;
+			}
+			if(count($votosContar)==$i&&FechaMayor($Fecha,$FechaLimite)!=-1)
+			{
+				$sigue=false;
+				
+			}
+			$j++;
+		}
+		$retornar = array();
 		$retornar[] = $titulos;
 		$retornar[] = $datosGeneral;
 		return $retornar;
