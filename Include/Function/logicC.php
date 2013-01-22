@@ -316,7 +316,7 @@ class LogicC
 				{
 					$personajeChange = new Personaje();
 					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
-					$personajeChange = $personajeChange->read(true,1,$consultaPerCh);
+					$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
 					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda2"));
 					$personajeChange->setGrupo("NG");
 					$mod = array("Grupo","Ronda");
