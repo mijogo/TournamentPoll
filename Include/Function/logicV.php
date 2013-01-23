@@ -105,7 +105,10 @@ class LogicV
 		}	
 		if($_GET['id']==10)
 		{
-			$text=div("","grafV","","width: 900px; height: 500px;");
+			$text=div("","grafV1","","width: 900px; height: 500px;");
+			$text.=div("","grafV2","","width: 900px; height: 500px;");
+			$text.=div("","grafV3","","width: 900px; height: 500px;");
+
 		}
 
 		return $text;

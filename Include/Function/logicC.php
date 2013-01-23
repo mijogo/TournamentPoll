@@ -433,13 +433,19 @@ class LogicC
 		}
 	}
 	
-	function datosGrafo($batalla,$intervalo,$horaInicio,$horaLimite,$limitePersonaje,$enAccion)
+	function datosGrafo($batalla,$intervalo,$horaInicio,$horaLimite,$limitePersonaje)
 	{
+		$batallaActual = new Batalla();
+		$batallaActual->setId($batalla);
+		$batallaActual = $batallaActual->read(false,1,array("Id"));
+		
+		if($batallaActual->getActiva()==0)
+			$enAccion=true;
+		else
+			$enAccion=false;
+
 		if($enAccion)
 		{
-			$batallaActual = new Batalla();
-			$batallaActual->setId($batalla);
-			$batallaActual = $batallaActual->read(false,1,array("Id"));
 			
 			$personajeProbar = new Personaje();
 			$personajeProbar->setRonda($batallaActual->getRonda());
@@ -470,11 +476,7 @@ class LogicC
 			}
 		}
 		else
-		{
-			$batallaActual = new Batalla();
-			$batallaActual->setId($batalla);
-			$batallaActual = $batallaActual->read(false,1,array("Id"));
-			
+		{			
 			$personajeProbar = new Pelea();
 			$personajeProbar->setIdBatalla($batallaActual->getId());
 			$personajeProbar = $personajeProbar->read(true,1,array("IdBatalla"));
@@ -502,10 +504,11 @@ class LogicC
 				}
 			}
 		}
-		for($i=0,$cambio =false;$i<count($cantVotos)&& $cambio;$i++)
+		$cambio =true;
+		for($i=0;$i<count($cantVotos)&& $cambio;$i++)
 		{
 			$cambio =false;
-			for($j=0;$j<count($cantVotos)-1;$i++)
+			for($j=0;$j<count($cantVotos)-1;$j++)
 			{
 				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
 				{

@@ -37,8 +37,11 @@ class MasterClass
 		{
 			$moreLogicaCodigo = new LogicC();
 
-			$datos = $moreLogicaCodigo->datosGrafo(192,20,"01:00:00",1320,8,true);
-			return $this->estructura->head(grafico("Mega Grafo","grafV",$datos[0],$datos[1]));
+			$datos1 = $moreLogicaCodigo->datosGrafo(193,20,"01:00:00",1320,8);
+			$datos2 = $moreLogicaCodigo->datosGrafo(196,20,"01:00:00",1320,8);
+			$datos3 = $moreLogicaCodigo->datosGrafo(199,20,"01:00:00",1320,8);
+
+			return $this->estructura->head(grafico("Mega Grafo","grafV1",$datos1[0],$datos1[1]).grafico("Mega Grafo","grafV2",$datos2[0],$datos2[1]).grafico("Mega Grafo","grafV3",$datos3[0],$datos3[1]));
 		}
 		else
 			return $this->estructura->head();
