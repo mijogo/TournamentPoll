@@ -57,7 +57,7 @@ function configuracion($instancia,$parte)
 		if($parte == "NBatalla")
 			$text = 3;
 	}
-	else if($instancia == "Ronda-2")
+/*	else if($instancia == "Ronda-2")
 	{
 		if($parte == "NGrupos")
 			$text = 3;
@@ -71,9 +71,9 @@ function configuracion($instancia,$parte)
 			$text = true;
 		if($parte == "NBatalla")
 			$text = 2;
-	}
+	}*/
 	
-	else if($instancia == "Ronda-3")
+	else if($instancia == "Ronda-2")
 	{
 		if($parte == "NGrupos")
 			$text = 3;
@@ -101,6 +101,8 @@ function configuracion($instancia,$parte)
 			$text = "Termino";
 		if($parte == "grupoFijo")
 			$text = false;
+		if($parte == "NBatalla")
+			$text = 1;
 	}
 
 	else if($instancia == "Grupo")
@@ -237,14 +239,29 @@ function grafico($titulo="",$nombre="",$titulos="",$datos="")
 
 function GenerarSiguiente($actual,$Ronda)
 {
-	$actual = explode("-",$actual);
-	$cantidad = configuracion($Ronda,"NBatalla")/configuracion(configuracion($Ronda,"nextRonda1"),"NBatalla");
-	$actual[1]=$actual[1]/$cantidad;
-	$actual[1]=$actual[1]+(1/$cantidad);
-	$actual[1]=round($actual[1]);
-	if($actual[1]<10)
-	$actual[1] = "0".$actual[1];
-	return $actual[0]."-".$actual[1];
+	$topo = explode("-",$Ronda);
+	if($topo[0] == "Ronda")
+	{
+		$actual = explode("-",$actual);
+		$cantidad = configuracion($Ronda,"NBatalla")/configuracion(configuracion($Ronda,"nextRonda1"),"NBatalla");
+		$actual[1]=$actual[1]/$cantidad;
+		$actual[1]=$actual[1];
+		$actual[1]=ceil($actual[1]);
+		if($actual[1]<10)
+			$actual[1] = "0".$actual[1];
+		return $actual[0]."-".$actual[1];
+	}
+	else
+	{
+		$cantidad = configuracion($Ronda,"NBatalla")/configuracion(configuracion($Ronda,"nextRonda1"),"NBatalla");
+		$actual=$actual/$cantidad;
+		$actual=$actual;
+		$actual=ceil($actual);
+		if($actual<10)
+			$actual = "0".$actual;
+		return $actual;
+
+	}
 }
 
 function Redireccionar($url="")

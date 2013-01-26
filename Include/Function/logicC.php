@@ -235,6 +235,43 @@ class LogicC
 				}
 			}
 		}
+		if($instancia=="Final")
+		{
+			$personajesSortear = new Personaje();
+			$personajesSortear->setRonda("Final-1");
+			$personajesSortear->setGrupo("NG");			
+			$consulta = array();
+			$consulta[] = "Grupo";
+			$consulta[] = "AND";
+			$consulta[] = "Ronda";
+			$personajesSortear = $personajesSortear->read(true,2,$consulta);
+			$cantidad = count($personajesSortear)/(configuracion("Final-1","NGrupos")-$numeroGrupo+1);
+			$consultaUp = array("Id");
+			$cambio = array("Grupo");
+
+			for($i=0;$i<$cantidad;$i++)
+			{
+				do
+				{
+					$num = rand(0,count($personajesSortear)-1);
+					$termino=false;
+					if($personajesSortear[$num]->getGrupo()=="NG")
+					{
+						$termino=true;
+						if($numeroGrupo<10)
+						{
+							$grupoPoner = "0".$numeroGrupo;
+						}
+						else
+							$grupoPoner = $numeroGrupo;
+
+						$personajesSortear[$num]->setGrupo($grupoPoner);
+						$personajesSortear[$num]->update(1,$cambio,1,$consultaUp);
+					}
+				}while(!$termino);
+			}
+
+		}		
 	}
 	
 	function activarBatalla($fecha)
