@@ -342,7 +342,9 @@ class LogicC
 					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
 					$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
 					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"));
-					if(configuracion(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"),"grupoFijo"))
+					if(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1")=="Termino")
+						$personajeChange->setGrupo("Campeona");
+					else if(configuracion(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"),"grupoFijo"))
 					{
 						$personajeChange->setGrupo(GenerarSiguiente($personajeChange->getGrupo(),$BatallasActivas[$i]->getRonda()));
 					}

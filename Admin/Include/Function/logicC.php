@@ -247,7 +247,14 @@ class LogicC
 					if($personajesSortear[$num]->getGrupo()=="NG")
 					{
 						$termino=true;
-						$personajesSortear[$num]->setGrupo($numeroGrupo);
+						if($numeroGrupo<10)
+						{
+							$grupoPoner = "0".$numeroGrupo;
+						}
+						else
+							$grupoPoner = $numeroGrupo;
+
+						$personajesSortear[$num]->setGrupo($grupoPoner);
 						$personajesSortear[$num]->update(1,$cambio,1,$consultaUp);
 					}
 				}while(!$termino);
@@ -285,6 +292,43 @@ class LogicC
 				}
 			}
 		}
+		if($instancia=="Final")
+		{
+			$personajesSortear = new Personaje();
+			$personajesSortear->setRonda("Final-1");
+			$personajesSortear->setGrupo("NG");			
+			$consulta = array();
+			$consulta[] = "Grupo";
+			$consulta[] = "AND";
+			$consulta[] = "Ronda";
+			$personajesSortear = $personajesSortear->read(true,2,$consulta);
+			$cantidad = count($personajesSortear)/(configuracion("Final-1","NGrupos")-$numeroGrupo+1);
+			$consultaUp = array("Id");
+			$cambio = array("Grupo");
+
+			for($i=0;$i<$cantidad;$i++)
+			{
+				do
+				{
+					$num = rand(0,count($personajesSortear)-1);
+					$termino=false;
+					if($personajesSortear[$num]->getGrupo()=="NG")
+					{
+						$termino=true;
+						if($numeroGrupo<10)
+						{
+							$grupoPoner = "0".$numeroGrupo;
+						}
+						else
+							$grupoPoner = $numeroGrupo;
+
+						$personajesSortear[$num]->setGrupo($grupoPoner);
+						$personajesSortear[$num]->update(1,$cambio,1,$consultaUp);
+					}
+				}while(!$termino);
+			}
+
+		}		
 	}
 	
 	function activarBatalla($fecha)
@@ -355,7 +399,9 @@ class LogicC
 					$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
 					$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
 					$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"));
-					if(configuracion(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"),"grupoFijo"))
+					if(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1")=="Termino")
+						$personajeChange->setGrupo("Campeona");
+					else if(configuracion(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"),"grupoFijo"))
 					{
 						$personajeChange->setGrupo(GenerarSiguiente($personajeChange->getGrupo(),$BatallasActivas[$i]->getRonda()));
 					}
@@ -481,6 +527,154 @@ class LogicC
 			else 
 				$instancia = configuracion($instancia,"nextRonda1");
 		}
+	}
+	
+	function datosGrafo($batalla,$intervalo,$horaInicio,$horaLimite,$limitePersonaje)
+	{
+		$batallaActual = new Batalla();
+		$batallaActual->setId($batalla);
+		$batallaActual = $batallaActual->read(false,1,array("Id"));
+		
+		if($batallaActual->getActiva()==0)
+			$enAccion=true;
+		else
+			$enAccion=false;
+
+		if($enAccion)
+		{
+			
+			$personajeProbar = new Personaje();
+			$personajeProbar->setRonda($batallaActual->getRonda());
+			$personajeProbar->setGrupo($batallaActual->getGrupo());
+			$personajeProbar = $personajeProbar->read(true,2,array("Ronda","AND","Grupo"));
+			
+			for($i=0;$i<count($personajeProbar);$i++)
+			{
+				$cantVotos[$i]["Id"]=$personajeProbar[$i]->getId();
+				$cantVotos[$i]["Votos"]=0;	
+			}
+			
+			$votosContar = new Voto();
+			$votosContar->setIdBatalla($batalla);
+			$votosContar = $votosContar->read(true,1,array("IdBatalla"),1,array("Fecha","ASC"));
+			
+			for($i=0;$i<count($votosContar);$i++)
+			{
+				$esta = false;
+				for($j=0;$j<count($cantVotos)&&!$esta;$j++)
+				{
+					if($votosContar[$i]->getIdPersonaje() == $cantVotos[$j]["Id"])
+					{
+						$cantVotos[$j]["Votos"]++;
+						$esta=true;
+					}
+				}
+			}
+		}
+		else
+		{			
+			$personajeProbar = new Pelea();
+			$personajeProbar->setIdBatalla($batallaActual->getId());
+			$personajeProbar = $personajeProbar->read(true,1,array("IdBatalla"));
+			
+			for($i=0;$i<count($personajeProbar);$i++)
+			{
+				$cantVotos[$i]["Id"]=$personajeProbar[$i]->getIdPersonaje();
+				$cantVotos[$i]["Votos"]=0;	
+			}
+			
+			$votosContar = new Voto();
+			$votosContar->setIdBatalla($batalla);
+			$votosContar = $votosContar->read(true,1,array("IdBatalla"),1,array("Fecha","ASC"));
+			
+			for($i=0;$i<count($votosContar);$i++)
+			{
+				$esta = false;
+				for($j=0;$j<count($cantVotos)&&!$esta;$j++)
+				{
+					if($votosContar[$i]->getIdPersonaje() == $cantVotos[$j]["Id"])
+					{
+						$cantVotos[$j]["Votos"]++;
+						$esta=true;
+					}
+				}
+			}
+		}
+		$cambio =true;
+		for($i=0;$i<count($cantVotos)&& $cambio;$i++)
+		{
+			$cambio =false;
+			for($j=0;$j<count($cantVotos)-1;$j++)
+			{
+				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
+				{
+					$cambio=true;
+					$temp=$cantVotos[$j];
+					$cantVotos[$j] = $cantVotos[$j+1];
+					$cantVotos[$j+1] = $temp;
+				}
+			}
+		}
+		
+		$titulos = array();
+		$titulos[] = "Hora";
+		for($u=0;$u<count($cantVotos)&&$u<$limitePersonaje;$u++)
+		{
+			$personajeAv = new Personaje();
+			$personajeAv->setId($cantVotos[$u]["Id"]);
+			$personajeAv = $personajeAv->read(false,1,array("Id"));
+			
+			$titulos[] = $personajeAv->getNombre();
+		}
+		
+		$Fecha = $batallaActual->getFecha()." ".$horaInicio;
+		$FechaLimite = cambioFecha($Fecha,$horaLimite);
+		$datosGeneral[0][0]=$horaInicio;
+		for($u=1;$u<count($titulos);$u++)	
+		{
+			$datosGeneral[0][$u]=0;
+		}
+		$sigue=true;
+		$i=0;
+		$j=1;
+		while($sigue&&$j<100)
+		{
+			$Fecha = cambioFecha($Fecha,$intervalo);
+
+			$datosGeneral[$j]=$datosGeneral[$j-1];
+			$hora=explode(" ",$Fecha);
+			$datosGeneral[$j][0]=$hora[1];
+			$sigue2=true;
+			while($sigue2)
+			{
+				if(count($votosContar)!=$i&&FechaMayor($Fecha,$votosContar[$i]->getFecha())!=-1)
+				{
+					$vamos=true;
+					for($k=0;$k<count($titulos)-1&&$vamos;$k++)
+					{
+						if($cantVotos[$k]["Id"]==$votosContar[$i]->getIdPersonaje())
+						{
+							$vamos=false;
+							$datosGeneral[$j][$k+1]++;
+						}
+					}
+					$i++;
+				}
+				else
+					$sigue2=false;
+			}
+			if((count($votosContar)==$i&&$enAccion)||FechaMayor($Fecha,$FechaLimite)!=-1)
+			{
+				$sigue=false;
+				
+			}
+			$j++;
+		}
+
+		$retornar = array();
+		$retornar[] = $titulos;
+		$retornar[] = $datosGeneral;
+		return $retornar;
 	}
 }
 ?>
