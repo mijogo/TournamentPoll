@@ -5,14 +5,10 @@ class DataBase
 	
 	function connect()
 	{
-		$server="localhost";
-		$username="root";
-		$pass="";
-		$mydb="PollTournament";
-		$this->con = mysql_connect($server,$username,$pass);
+		$this->con = mysql_connect(SERVER,USER,PASS);
 		if (!$this->con)
 			die('Could not connect: ' . mysql_error());
-		mysql_select_db($mydb, $this->con);
+		mysql_select_db(MYDB, $this->con);
 	}
 	function close()
 	{
