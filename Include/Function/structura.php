@@ -7,20 +7,48 @@ class structura
 	function head($script="")
 	{
 		$text = "";
-		$text .="<!DOCTYPE HTML><html>\n
-\n
-<head>\n
-  <title>Tournament Poll</title>\n
-  <meta name=\"description\" content=\"website description\" />\n
-  <meta name=\"keywords\" content=\"website keywords, website keywords\" />\n
-  <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n
-  <link rel=\"stylesheet\" type=\"text/css\" href=\"css/style.css\" />\n
-  <!-- modernizr enables HTML5 elements and feature detects -->\n
-  <script type=\"text/javascript\" src=\"js/modernizr-1.5.min.js\"></script>\n
-  ".$script."
-</head>\n
+		$text .="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+<html xmlns=\"http://www.w3.org/1999/xhtml\">
+
+<head>
+<meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\" />
+<meta name=\"description\" content=\"website description\" />
+<meta name=\"keywords\" content=\"website keywords, website keywords\" />
+<title>Sin título 1</title>
+<link href=\"css/style_class.css\" rel=\"stylesheet\" type=\"text/css\" />
+  <!-- modernizr enables HTML5 elements and feature detects -->
+  <script type=\"text/javascript\" src=\"js/modernizr-1.5.min.js\"></script>
+<script type=\"text/javascript\">
+<!--
+function actualizaReloj(){  
+marcacion = new Date()  
+Hora = marcacion.getHours()  
+Minutos = marcacion.getMinutes()  
+Segundos = marcacion.getSeconds()  
+Anio = marcacion.getFullYear()
+Mes = marcacion.getMonth()
+Dia = marcacion.getDay()
+if (Hora<=9) 
+Hora = \"0\" + Hora
+if (Minutos<=9) 
+Minutos = \"0\" + Minutos
+if (Segundos<=9) 
+Segundos = \"0\" + Segundos
+if (Mes <=9) 
+Mes = \"0\" + Mes 
+if (Dia <=9) 
+Dia = \"0\" + Dia
+DiaA = \"<div class='masGrandesL'>\"+Dia+\"/\"+Mes+\"/\"+Anio+\"<div/>\"
+HoraA = \"<div class='grandes'>\"+Hora+\":\"+Minutos+\":\"+Segundos+\"<div/>\"
+Total = DiaA+HoraA 
+document.getElementById('Fecha_Reloj').innerHTML = Total 
+setTimeout(\"actualizaReloj()\",1000)  
+} 
+-->
+</script>
+".$script."
+</head>
 ";
-		
 		return $text;
 	}
 	
@@ -29,19 +57,16 @@ class structura
 			$MenuActual = new Menu();
 			$MenuActual = $MenuActual->read();
 			$text = "";
-			$text .= "
-			<body>\n
-  <div id=\"main\">\n
-    <header>\n
-      <div id=\"logo\">\n
-        <div id=\"logo_text\">\n
-          <!-- class=\"logo_colour\", allows you to change the colour of the text -->\n
-          <h1><a href=\"index.html\">Tournament <span class=\"logo_colour\"> Poll</span></a></h1>\n
-          <h2>Template Basic</h2>\n
-        </div>\n
-      </div>\n
-      <nav>\n
-        <ul class=\"sf-menu\" id=\"nav\">\n";
+			$text .= "<body onload=\"actualizaReloj()\">
+<div id=\"page\">
+<div id=\"Header\">
+<div id=\"Banner\">
+	<a href=\"pruebas.html\">
+	<img height=\"200\" src=\"images/Banner.png\" width=\"900\" /></a></div>
+<div id=\"Menu\">
+ <nav>
+        <ul class=\"sf-menu\" id=\"nav\">
+          \n";
         
         for($i=0;$i<count($MenuActual);$i++)
         {
@@ -94,48 +119,52 @@ class structura
 
         	}
         }
-        /*
-          <li class=\"selected\"><a href=\"index.html\">Home</a></li>\n
-          <li><a href=\"about.html\">About Me</a></li>\n
-          <li><a href=\"portfolio.html\">My Portfolio</a></li>\n
-          <li><a href=\"blog.html\">Blog</a></li>\n
-          <li><a href=\"#\">Example Drop Down</a>\n
-            <ul>\n
-              <li><a href=\"#\">Drop Down One</a></li>\n
-              <li><a href=\"#\">Drop Down Two</a>\n
-                <ul>\n
-                  <li><a href=\"#\">Sub Drop Down One</a></li>\n
-                  <li><a href=\"#\">Sub Drop Down Two</a></li>\n
-                  <li><a href=\"#\">Sub Drop Down Three</a></li>\n
-                  <li><a href=\"#\">Sub Drop Down Four</a></li>\n
-                  <li><a href=\"#\">Sub Drop Down Five</a></li>\n
-                </ul>\n
-              </li>\n
-              <li><a href=\"#\">Drop Down Three</a></li>\n
-              <li><a href=\"#\">Drop Down Four</a></li>\n
-              <li><a href=\"#\">Drop Down Five</a></li>\n
-            </ul>\n
-          </li>\n
-          <li><a href=\"contact.php\">Contact Us</a></li>\n
-          */
        $text .= " </ul>\n
-      </nav>\n
-    </header>\n
-
-			";
-			return $text;
+      </nav>
+</div>
+</div>
+";
+					return $text;
 	}
 	
 	function body($content="")
 	{
 		$text="";
-		$text .="    <div id=\"site_content\">\n
-      <div id=\"sidebar_container\">\n
-      </div>\n
-      <div id=\"content\">\n
-       ".$content."
-      </div>\n
-    </div>\n
+		$text .="<div id=\"Content\">
+	<div id=\"Principal\">
+ ".$content."
+	</div>
+	<div id=\"Sec\">
+<div class=\"burbujas\">
+<h5>Last Match Result</h5>
+<div class=\"fight\">
+<table>
+	<tr>
+	<td width=\"200px\">Tamako Kitashirakawa</td>
+	<td>43</td>
+	</tr>
+	<tr>
+	<td>Anko Kitashirakawa</td>
+	<td>72</td>
+	</tr>
+</table>
+</div>
+</div>
+<div class=\"burbujas\">
+<h5>Next Match</h5>
+<div class=\"fight\">Miss Anime Tournament 2013<br/>
+Nominations<br/>
+<br/>
+april 15th 2013
+</div>
+</div>
+<div class=\"burbujas\">
+<h5>Current Time (GMT)</h5>
+<div class=\"fight\"><table><tr><td id=\"Fecha_Reloj\"></td></tr></table></div>
+</div>
+</div>
+<div class=\"empuja\">&nbsp;</div>
+</div>
 ";
 		return $text;
 	}
@@ -143,26 +172,24 @@ class structura
 	function foot()
 	{
 		$text = "";
-		$text ="
-		<footer>\n
-      <p>Copyright &copy; photo_style_two | <a href=\"http://www.css3templates.co.uk\">design from css3templates.co.uk</a></p>\n
-    </footer>\n
-  </div>\n
-  <p>&nbsp;</p>\n
-  <!-- javascript at the bottom for fast page loading -->\n
-  <script type=\"text/javascript\" src=\"js/jquery.js\"></script>\n
-  <script type=\"text/javascript\" src=\"js/jquery.easing-sooper.js\"></script>\n
-  <script type=\"text/javascript\" src=\"js/jquery.sooperfish.js\"></script>\n
-  <script type=\"text/javascript\" src=\"js/image_fade.js\"></script>\n
-  <script type=\"text/javascript\">\n
-    $(document).ready(function() {\n
-      $('ul.sf-menu').sooperfish();\n
-    });\n
-  </script>\n
-</body>\n
-</html>\n
+		$text ="<div id=\"Foot\">
+Aca iria los agradecimiento y las redes sociales<br/>
+tambien se le podrian agregar otras cosas</div>
+</div>
+  <!-- javascript at the bottom for fast page loading -->
+  <script type=\"text/javascript\" src=\"js/jquery.js\"></script>
+  <script type=\"text/javascript\" src=\"js/jquery.easing-sooper.js\"></script>
+  <script type=\"text/javascript\" src=\"js/jquery.sooperfish.js\"></script>
+  <script type=\"text/javascript\" src=\"js/image_fade.js\"></script>
+  <script type=\"text/javascript\">
+    $(document).ready(function() {
+      $('ul.sf-menu').sooperfish();
+    });
+  </script>
+</body>
 
-		";
+</html>
+";
 		return $text;
 	}
 }
