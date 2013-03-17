@@ -13,6 +13,9 @@ function configuracion($instancia,$parte)
 		//el tiempo extra que toma sacar los resultados en minutos
 		if($parte == "Extra conteo")
 			$text = 20;
+		//N° Nominaciones
+		if($parte == "NNominaciones")
+			$text = 5;
 	}
 	if($instancia == "Preeliminares")
 	{
@@ -30,6 +33,8 @@ function configuracion($instancia,$parte)
 			$text = "Repechaje";
 		if($parte == "grupoFijo")
 			$text = false;
+		if($parte == "LimiteVoto")
+			$text = 8;
 	}
 	else if($instancia == "Repechaje")
 	{

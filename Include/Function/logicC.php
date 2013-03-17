@@ -9,10 +9,13 @@ class LogicC
 		{
 			if($_GET['trato']==1)
 			{
-				$nombre = $_POST['Nombre'];
-				$serie = $_POST['Serie'];
-				$this->inscripcion($nombre,$serie);
-				Redireccionar("?id=4");		
+				for($i=0;$i<count($_POST['Serie']);$i++)
+				{
+					$nombre = $_POST['Nombre'][$i];
+					$serie = $_POST['Serie'][$i];
+					$this->inscripcion($nombre,$serie);
+				}
+				Redireccionar("?id=4");	
 			}
 			if($_GET['trato']==2)
 			{
@@ -40,8 +43,8 @@ class LogicC
 							$esta = true;
 						}
 					}
-					//if(!$esta)
-					//{
+					if(!$esta)
+					{
 						$newIp = new Ip();
 						$newIp->setFecha(fechaHoraActual());
 						$newIp->setTiempo(20);
@@ -54,19 +57,38 @@ class LogicC
 						$consulta = array("Activa");
 						$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
 						
+						$voto = $_POST['votacion'];
+						$VBata = split(";",$voto);
+						for($i=0;$i<count($VBata);$i++)
+						{
+							$VBata[$i]=split("-",$VBata);
+							for($j=2;$j<count($VBata[$i]);$j++)
+							{
+								if($j==2)
+								{
+									if(substr($VBata[$i][$j],1)!="")
+										$capVoto[substr($VBata[$i][0],1)][]=substr($VBata[$i][$j],1);
+								}
+								else
+								{
+									$capVoto[substr($VBata[$i][0],1)][]=$VBata[$i][$j];
+								}
+							}
+						}
+						
 						for($i=0;$i<count($BatallasActivas);$i++)
 						{
-							for($j=0;$j<count($_POST[$BatallasActivas[$i]->getGrupo()]);$j++)
+							for($j=0;$j<count($capVoto[$BatallasActivas[$i]->getId()]);$j++)
 							{
 								$agregarVotos = new voto();
 								$agregarVotos->setIdBatalla($BatallasActivas[$i]->getId());
 								$agregarVotos->setFecha(fechaHoraActual());
-								$agregarVotos->setIdPersonaje($_POST[$BatallasActivas[$i]->getGrupo()][$j]);
+								$agregarVotos->setIdPersonaje($capVoto[$BatallasActivas[$i]->getId()][$j]);
 								$agregarVotos->setIp($newIp->getIp());
 								$agregarVotos->save();
 							}
 						}
-					//}
+					}
 				}
 				Redireccionar("?id=1");	
 			}

@@ -26,17 +26,7 @@ class LogicV
 
 			if($esteTorneo->getStatus() == 2)
 			{
-				$text.="Nominaciones<br>";
-				$datos[0][0]="Nombre";
-				$datos[0][1]=input("Nombre","text");
-				
-				$datos[1][0]="Serie";
-				$datos[1][1]=input("Serie","text");
-
-				$datos[2][0]="";
-				$datos[2][1]=input("submit","submit");
-				$text1 = table($datos);
-				$text .= form($text1,"inscipcion","?id=4&action=2&trato=1");
+				$text.=Nominaciones(configuracion("Config","NNominaciones"));
 			}
 			if($esteTorneo->getStatus() == 3)
 			{
@@ -44,32 +34,34 @@ class LogicV
 				$BatallasActivas->setActiva(0);
 				$consulta = array("Activa");
 				$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
-				$text .= "Votaciones<br>";
+				$text .= "<h6>".fechaHoraActual("Y-m-d")."</h6>
+				<h1>Nominaciones</h1>";
 				$text1 = "";
+				$idBataAr=array();
 				for($i=0;$i<count($BatallasActivas);$i++)
 				{
-					$text1 .= "Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br>";
+					$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br></h3>";
 					$buscarPersonajes = new Personaje();
 					$buscarPersonajes->setRonda($BatallasActivas[$i]->getRonda());
 					$buscarPersonajes->setGrupo($BatallasActivas[$i]->getGrupo());
 					$consulta = array("Ronda","AND","Grupo");
 					$buscarPersonajes = $buscarPersonajes->read(true,2,$consulta);
-					$datosPer = "";
-					$datosPer[0][0] = "Nombre";
-					$datosPer[0][1] = "Serie";
-					$datosPer[0][2] = "Vote";					
+					$secuencia="";
 					for($j=0;$j<count($buscarPersonajes);$j++)
 					{
-						$datosPer[$j+1][0] = $buscarPersonajes[$j]->getNombre();
-						$datosPer[$j+1][1] = $buscarPersonajes[$j]->getSerie();
-						$datosPer[$j+1][2] = input($BatallasActivas[$i]->getGrupo()."[]","checkbox",$buscarPersonajes[$j]->getId());								
+						$secuencia .= $buscarPersonajes[$j]->getId();
+						if($j+1!=count($buscarPersonajes))
+							$secuencia .= "-";
 					}
-					$text1 .=  table($datosPer);
+				
+					for($j=0;$j<count($buscarPersonajes);$j++)
+					{
+						$text1 .= botonVoto($BatallasActivas[$i]->getId(),$buscarPersonajes[$j]->getId(),$secuencia,$buscarPersonajes[$j]->getNombre());							
+					}
+					$idBataAr[] = $BatallasActivas[$i]->getId();
 				}
-				$text1 .=  input("submit","submit");
-				$text .= form($text1,"inscipcion","?id=4&action=2&trato=2");			
+				$text .=  div($text1.formVoto("Votar","?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
 			}
-
 		}
 		if($_GET['id']==9)
 		{

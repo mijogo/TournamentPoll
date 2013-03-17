@@ -62,4 +62,53 @@ function selected($name ="",$values="")
 	$text .="</SELECT>";
 	return $text;
 }
+
+function botonVoto($idBatalla,$idPersonaje,$idPersonajesBatalla,$content)
+{
+	$text = "";
+	$text .="<div id=\"B".$idBatalla."-".$idPersonaje."\" class=\"botoncito\">
+<button class=\"button\" onclick=\"change('B".$idBatalla."-".$idPersonaje."','".$idPersonajesBatalla."')\">
+".$content."
+</button>
+</div>";
+	return $text;
+}
+
+function formVoto($nameForm,$action,$batallas,$limite)
+{
+	$text = "";
+	$text .="<form name=\"".$nameForm."\" action=\"".$action."\">
+<input type=\"hidden\" value=\"";
+for($i=0;$i<count($batallas);$i++)
+{
+	$text .="B".$batallas."-L0/".$limite."-V";
+	if($i+1!=count($batallas))
+		$text .=";";
+}
+$text .="\" name=\"votacion\" />
+</form>
+";
+	return $text;
+}
+
+function Nominaciones($cant)
+{
+	$text ="";
+	$text .="
+<h1>Nominaciones</h1>
+<div class=\"fight\">
+";
+	$datos[0][0]="Nombre";
+	$datos[0][1]="Series";
+for($i=0;$i<$cant;$i++)
+{
+	$datos[$i+1][0]=input("Nombre[]","text");
+	$datos[$i+1][1]=input("Serie[]","text");
+}
+$datos[$cant+1][0]="";
+$datos[$cant+1][1]=input("submit","submit");
+$text1 = table($datos);
+$text .= form($text1,"inscipcion","?id=4&action=2&trato=1");
+$text .="</div>";
+}
 ?>
