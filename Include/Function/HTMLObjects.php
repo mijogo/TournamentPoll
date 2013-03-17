@@ -110,5 +110,6 @@ $datos[$cant+1][1]=input("submit","submit");
 $text1 = table($datos);
 $text .= form($text1,"inscipcion","?id=4&action=2&trato=1");
 $text .="</div>";
+return $text;
 }
 ?>

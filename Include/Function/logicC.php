@@ -11,9 +11,12 @@ class LogicC
 			{
 				for($i=0;$i<count($_POST['Serie']);$i++)
 				{
-					$nombre = $_POST['Nombre'][$i];
-					$serie = $_POST['Serie'][$i];
-					$this->inscripcion($nombre,$serie);
+					if($_POST['Nombre'][$i]!=""&&$_POST['Serie'][$i]!="")
+					{
+						$nombre = $_POST['Nombre'][$i];
+						$serie = $_POST['Serie'][$i];
+						$this->inscripcion($nombre,$serie);
+					}
 				}
 				Redireccionar("?id=4");	
 			}
