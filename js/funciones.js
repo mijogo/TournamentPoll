@@ -6,7 +6,7 @@
 	Anio = marcacion.getUTCFullYear()
 	Mes = marcacion.getUTCMonth()
 	Dia = marcacion.getUTCDay()
-	/*if (Hora<=9) 
+	if (Hora<=9) 
 		Hora = "0" + Hora
 	if (Minutos<=9) 
 		Minutos = "0" + Minutos
@@ -15,7 +15,7 @@
 	if (Mes <=9) 
 		Mes = "0" + Mes 
 	if (Dia <=9) 
-		Dia = "0" + Dia*/
+		Dia = "0" + Dia
 	DiaA = "<div class='masGrandesL'>"+Dia+"/"+Mes+"/"+Anio+"<div/>"
 	HoraA = "<div class='grandes'>"+Hora+":"+Minutos+":"+Segundos+"<div/>"
 	Total = DiaA+HoraA 

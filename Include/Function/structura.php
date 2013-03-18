@@ -100,42 +100,22 @@ class structura
 					return $text;
 	}
 	
-	function body($content="")
+	function body($widget="",$content="")
 	{
 		$text="";
 		$text .="<div id=\"Content\">
 	<div id=\"Principal\">
  ".$content."
 	</div>
-	<div id=\"Sec\">
-<div class=\"burbujas\">
-<h5>Last Match Result</h5>
-<div class=\"fight\">
-<table>
-	<tr>
-	<td width=\"200px\">Tamako Kitashirakawa</td>
-	<td>43</td>
-	</tr>
-	<tr>
-	<td>Anko Kitashirakawa</td>
-	<td>72</td>
-	</tr>
-</table>
+	<div id=\"Sec\">";
+	for($i=0;$i<count($widget);$i++)
+	{
+		$text .="<div class=\"burbujas\">".$widget[$i]."
 </div>
-</div>
-<div class=\"burbujas\">
-<h5>Next Match</h5>
-<div class=\"fight\">Miss Anime Tournament 2013<br/>
-Nominations<br/>
-<br/>
-april 15th 2013
-</div>
-</div>
-<div class=\"burbujas\">
-<h5>Current Time (GMT)</h5>
-<div class=\"fight\"><table><tr><td id=\"Fecha_Reloj\"></td></tr></table></div>
-</div>
-</div>
+";
+	}
+
+$text .="</div>
 <div class=\"empuja\">&nbsp;</div>
 </div>
 ";

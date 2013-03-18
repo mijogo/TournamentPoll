@@ -27,15 +27,36 @@ function form($content="",$name="",$action="",$method="POST")
 	return $text;
 }
 
-function table($datos)
+function table($datos,$width="")
 {
 	$text ="<table>";
+	if($width!="")
+	{
+		$cuantos=split(";",$width);
+		for($i=0;$i<count($cuantos);$i++)
+			$cuantos[$i]=split("-",$cuantos[$i]);
+	}
 	for($i=0;$i<count($datos);$i++)
 	{
 		$text .="<tr>";
 		for($j=0;$j<count($datos[$i]);$j++)
 		{
-			$text .="<td>".$datos[$i][$j]."</td>";
+			if($j==0 && $width!="")
+			{
+				$hay=0;
+				for($k=0;$k<count($cuantos);$k++)
+				{
+					if($cuantos[$k][0]==$i)
+					{
+						$text .="<td width=\"".$cuantos[$k][1]."px\">".$datos[$i][$j]."</td>";
+						$hay++;
+					}
+					if($hay==0)
+						$text .="<td>".$datos[$i][$j]."</td>";
+				}
+			}
+			else
+				$text .="<td>".$datos[$i][$j]."</td>";
 		}
 		$text .="</tr>";
 	}

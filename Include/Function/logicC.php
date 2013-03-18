@@ -644,5 +644,77 @@ class LogicC
 		$retornar[] = $datosGeneral;
 		return $retornar;
 	}
+	
+	function widget1()
+	{
+		$buscarTorneo = new Torneo();
+		$buscarTorneo = $buscarTorneo->read();
+		$hay = 0;
+				$text = "
+		<h5>Last Match Result</h5>";
+		for($i=0;$i<count($buscarTorneo);$i++)
+		{
+			if($buscarTorneo[$i]->getStatus()>0)
+			{
+				$esteTorneo = $buscarTorneo[$i];
+				$hay++;
+			}
+		}
+		$text1="";
+		if($hay>0)
+		{
+			$BBatalla = new Batalla();
+			$BBatalla->setTorneo($esteTorneo->getId());
+			$BBatalla->setActiva(1);
+			$BBatalla = $BBatalla->read(true,2,array("Torneo","Activa"),1,array("Fecha","DESC"));
+			if(count($BBatalla)>0)
+			{
+				$fechaCuenta = $BBatalla[0]->getFecha();
+				$i=0;
+				while($fechaCuenta==$BBatalla[$i]->getFecha())
+				{
+					$text1 .= "<h5>".$BBatalla[$i]->getRonda()."  ".$BBatalla[$i]->getGrupo()."</h5>";
+					$peleasB = new Pelea();
+					$peleasB->setIdBatalla($BBatalla[$i]->getId());
+					$peleasB = $peleasB->read(true,1,array("IdBatalla"),1,array("Votos","DESC"));
+					for($j=0;$j<count($peleasB);$j++)
+					{
+						$personaje = new Personaje();
+						$personaje->setId($peleasB[$j]->getIdPersonaje());
+						$personaje = $personaje->read(false,1,"Id");
+						$datos[$j][0]=$personaje->getNombre();
+						$datos[$j][1]=$peleasB[$j]->getVotos();
+					}
+					$i++;
+					$text1 .= table($datos,"1-200");
+				}
+				$text .= div($text1,"","fight");
+			}
+			else
+				$text .= div("No han habido enfrentamientos aun","","fight");
+		}
+		else
+			$text .= div("Aun no ha comenzado este torneo","","fight");
+		return $text;
+	}
+	function widget2()
+	{
+		$text = "<h5>Next Match</h5>
+<div class=\"fight\">Miss Anime Tournament 2013<br/>
+Nominations<br/>
+<br/>
+april 15th 2013
+</div>
+";
+return $text;
+	}
+	function widget3()
+	{
+	$text = "<h5>Current Time (GMT)</h5>
+<div class=\"fight\"><table><tr><td id=\"Fecha_Reloj\"></td></tr></table></div>
+";
+	return $text;
+	}
+
 }
 ?>
