@@ -16,6 +16,18 @@ function configuracion($instancia,$parte)
 		//N° Nominaciones
 		if($parte == "NNominaciones")
 			$text = 5;
+		//Intervalo entre medicion y medicion en minutos
+		if($parte == "Intervalo")
+			$text = 20;
+		//marca la hora de inicio de los match
+		if($parte == "Hora Inicio")
+			$text = "1:00:00";
+		//duracion del contador durante un match
+		if($parte == "Duracion Live")
+			$text = 2000;
+		//duracion del contador durante un match
+		if($parte == "Max Miembros Grafo")
+			$text = 10;
 	}
 	if($instancia == "Preeliminares")
 	{

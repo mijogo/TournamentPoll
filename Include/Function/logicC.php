@@ -61,10 +61,10 @@ class LogicC
 						$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
 						
 						$voto = $_POST['votacion'];
-						$VBata = split(";",$voto);
+						$VBata = explode(";",$voto);
 						for($i=0;$i<count($VBata);$i++)
 						{
-							$VBata[$i]=split("-",$VBata);
+							$VBata[$i]=explode("-",$VBata);
 							for($j=2;$j<count($VBata[$i]);$j++)
 							{
 								if($j==2)
@@ -645,6 +645,44 @@ class LogicC
 		return $retornar;
 	}
 	
+	function batallaDatosAccion($batalla)
+	{
+		$batallaActual = new Batalla();
+		$batallaActual->setId($batalla);
+		$batallaActual = $batallaActual->read(false,1,array("Id"));
+
+		$personajeProbar = new Personaje();
+		$personajeProbar->setRonda($batallaActual->getRonda());
+		$personajeProbar->setGrupo($batallaActual->getGrupo());
+		$personajeProbar = $personajeProbar->read(true,2,array("Ronda","AND","Grupo"));
+			
+		for($i=0;$i<count($personajeProbar);$i++)
+		{
+			$cantVotos[$i]["Id"]=$personajeProbar[$i]->getId();
+			$extraerVotos = new Voto();
+			$extraerVotos->setIdBatalla($batalla);
+			$extraerVotos->setIdPersonaje($cantVotos[$i]["Id"]);
+			$extraerVotos = $extraerVotos->read(true,2,array("IdBatalla","AND","IdPersonaje"));
+			$cantVotos[$i]["Votos"]=count($extraerVotos);	
+		}
+		
+		for($i=0;$i<count($cantVotos)&& $cambio;$i++)
+		{
+			for($j=0;$j<count($cantVotos)-1;$j++)
+			{
+				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
+				{
+					$cambio=true;
+					$temp=$cantVotos[$j];
+					$cantVotos[$j] = $cantVotos[$j+1];
+					$cantVotos[$j+1] = $temp;
+				}
+			}
+		}
+		
+		return $cantVotos;
+	}
+	
 	function widget1()
 	{
 		$buscarTorneo = new Torneo();
@@ -666,7 +704,7 @@ class LogicC
 			$BBatalla = new Batalla();
 			$BBatalla->setTorneo($esteTorneo->getId());
 			$BBatalla->setActiva(1);
-			$BBatalla = $BBatalla->read(true,2,array("Torneo","Activa"),1,array("Fecha","DESC"));
+			$BBatalla = $BBatalla->read(true,2,array("Torneo","AND","Activa"),1,array("Fecha","DESC"));
 			if(count($BBatalla)>0)
 			{
 				$fechaCuenta = $BBatalla[0]->getFecha();
@@ -699,15 +737,71 @@ class LogicC
 	}
 	function widget2()
 	{
-		$text = "<h5>Next Match</h5>
-<div class=\"fight\">Miss Anime Tournament 2013<br/>
-Nominations<br/>
-<br/>
-april 15th 2013
-</div>
-";
-return $text;
+		$text ="";
+		$text .= "<h5>Next Event</h5>";
+		$text .= "<div class=\"fight\">Miss Anime Tournament 2013<br/>";
+		$reSchedule = new Schedule();
+		$reSchedule->setHecho(-1);
+		$reSchedule = $reSchedule->read(true,1,array("Hecho"),1,array("Fecha","ASC"));
+		if(count($reSchedule)!=0)
+		{
+			$Sale = false;
+			$i=0;
+			while(!$Sale && $i<count($reSchedule))
+			{
+				if($reSchedule[$i]->getAccion()==5)
+				{
+					if($reSchedule[$i]->getTarget()==2)
+					{
+						$text .= "Nominations<br/>
+						".$reSchedule[$i]->getFecha()."<br/>";
+						$Sale=true;
+					}
+				}
+				elseif($reSchedule[$i]->getAccion()==2)
+				{
+					$Deque = explode(",",$reSchedule[$i]->getTarget());
+					$text .= "Sorteo<br/>
+					Ronda ".$Deque[0]." Grupo ".$Deque[1]."<br/>
+						".$reSchedule[$i]->getFecha()."<br/>";
+					$Sale=true;
+				}
+				elseif($reSchedule[$i]->getAccion()==3)
+				{
+					$text .= "Enfrentamiento<br/>
+						".$reSchedule[$i]->getFecha()."<br/>";
+					$Enfrentamiento = new Batalla();
+					$Enfrentamiento->setFecha($reSchedule[$i]->getFecha());
+					$Enfrentamiento = $Enfrentamiento->read(true,1,array("Fecha"));
+					for($k=0;$k<count($Enfrentamiento);$k++)
+					{
+						$text .= "<h5>".$Enfrentamiento[$k]->getRonda()."  ".$Enfrentamiento[$k]->getGrupo()."</h5>";
+						$personajesBR = new Personaje();
+						$personajesBR->setRonda($Enfrentamiento[$k]->getRonda());
+						$personajesBR->setGrupo($Enfrentamiento[$k]->getGrupo());
+						$personajesBR=$personajesBR->read(true,2,array("Ronda","AND","Grupo"));
+						for($j=0;$j<count($personajesBR);$j++)
+						{
+							$text .= $personajesBR[$j]->getNombre()."(".$personajesBR[$j]->getSerie().")</br>";
+						}
+					}
+					$Sale=true;
+				}
+				$i++;
+			}
+			if($i==count($reSchedule))
+			{
+				$text .= "No hay eventos disponibles<br/>";
+			}
+		}
+		else
+		{
+			$text .= "No hay eventos disponibles<br/>";
+		}
+		$text .= "</div>";
+		return $text;
 	}
+	
 	function widget3()
 	{
 	$text = "<h5>Current Time (GMT)</h5>

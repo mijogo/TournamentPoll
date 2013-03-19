@@ -43,6 +43,41 @@ class MasterClass
 
 			return $this->estructura->head(grafico("Mega Grafo","grafV1",$datos1[0],$datos1[1]).grafico("Mega Grafo","grafV2",$datos2[0],$datos2[1]).grafico("Mega Grafo","grafV3",$datos3[0],$datos3[1]));
 		}
+		elseif($_GET['id']==1)
+		{
+			$IdToneo=0;
+			$buscarTorneo = new Torneo();
+			$buscarTorneo = $buscarTorneo->read();
+			$hay=0;
+			for($i=0;$i<count($buscarTorneo);$i++)
+			{
+				if($buscarTorneo[$i]->getStatus()>0)
+				{
+					$esteTorneo = $buscarTorneo[$i];
+					$hay++;
+				}
+			}
+			
+			if($hay!=0&&$esteTorneo->getStatus()==3)
+			{
+				$cualesBatalla = new Batalla();
+				$cualesBatalla->setActiva(0);
+				$cualesBatalla = $cualesBatalla->read(true,1,array("Activa"));
+
+				$moreLogicaCodigo = new LogicC();
+				$text2="";
+				for($i=0;$i<count($cualesBatalla);$i++)
+				{
+					$datos1=$moreLogicaCodigo->datosGrafo($cualesBatalla[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Live"),configuracion("Config","Max Miembros Grafo"));
+					$text2.=grafico("Grupo ".$cualesBatalla[$i]->getGrupo(),"graf".$cualesBatalla[$i]->getId(),$datos1[0],$datos1[1]);
+				}
+				return $this->estructura->head($text2);
+			}
+			else
+			{
+				return $this->estructura->head();
+			}
+		}
 		else
 			return $this->estructura->head();
 	}

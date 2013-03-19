@@ -8,6 +8,77 @@ class LogicV
 	function logicaView()
 	{
 		$text = "";
+		if($_GET['id']==1)
+		{
+			$hay=0;
+			for($i=0;$i<count($buscarTorneo);$i++)
+			{
+				if($buscarTorneo[$i]->getStatus()>0)
+				{
+					$esteTorneo = $buscarTorneo[$i];
+					$hay++;
+				}
+			}
+			if($hay!=0)
+			{
+				if($esteTorneo->getStatus() == 1)
+				{	
+					$text.="<h6>".fechaHoraActual("Y-m-d")."</h6>
+					<h1>No hay nada disputandose</h1>";
+				}
+
+				if($esteTorneo->getStatus() == 2)
+				{
+					$text.="<h6>".fechaHoraActual("Y-m-d")."</h6>
+					<h1>Periodo de Nominaciones</h1>";
+				}
+				if($esteTorneo->getStatus() == 3)
+				{
+					$cualesBatalla = new Batalla();
+					$cualesBatalla->setActiva(0);
+					$cualesBatalla = $cualesBatalla->read(true,1,array("Activa"));
+					$cambio =false;
+					$text.="<h6>".fechaHoraActual("Y-m-d")."</h6>";
+					$pruebaLogica = new LogicC();
+					for($i=0;$i<count($cualesBatalla);$i++)
+					{	
+						$datosUtilizar = $pruebaLogica->batallaDatosAccion($cualesBatalla[$i]->getId());
+						for($j=0;$j<count($datosUtilizar);$j++)
+						{
+							$PersonajeUtil = new Personaje();
+							$PersonajeUtil->setId($datosUtilizar[$j]["Id"]);
+							$PersonajeUtil = $PersonajeUtil->read(false,1,array("Id"));
+							$text2=img($PersonajeUtil->getImagen(),"","","","bordes");
+							$queBonito[$j][0]=div($text2,"","elem");
+							$text2=div($PersonajeUtil->getNombre(),"","Grandes");
+							$queBonito[$j][1]=div($text2,"","elem");
+							if($j==0||$Valor>0)
+							{
+								if($datosUtilizar[$j]["Votos"]!=0&&($j==0||$datosUtilizar[$j]["Votos"]==$Valor))
+								{
+									$text2=div($datosUtilizar[$j]["Votos"],"","masGrandesR");
+									$queBonito[$j][2]=div($text2,"","elem");
+									$Valor=$datosUtilizar[$j]["Votos"];
+								}
+								else
+								{
+									$text2=div($datosUtilizar[$j]["Votos"],"","masGrandes");
+									$queBonito[$j][2]=div($text2,"","elem");
+									$Valor=0;								
+								}
+							}
+							else
+							{
+								$text2=div($datosUtilizar[$j]["Votos"],"","masGrandes");
+								$queBonito[$j][2]=div($text2,"","elem");
+							}
+						}
+						$text1 = table($queBonito);
+						$text .= "<h1>Ronda ".$cualesBatalla[$i]->getRonda()." Grupo ".$cualesBatalla[$i]->getGrupo()."</h1>".div($text1,"","fight").div("","graf".$cualesBatalla[$i]->getId(),"","width: 450px; height: 200px;");
+					} 
+				}
+			}
+		}
 		if($_GET['id']==4)
 		{
 			$buscarTorneo = new Torneo();

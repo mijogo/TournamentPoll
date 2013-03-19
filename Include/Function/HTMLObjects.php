@@ -133,4 +133,20 @@ $text .= form($text1,"inscipcion","?id=4&action=2&trato=1");
 $text .="</div>";
 return $text;
 }
+
+function img($src,$height="",$width="",$id="",$class="")
+{
+	$text = "<img scr=\"".$src."\" alt="" ";
+	if($id!="")
+		$text .= " id=\"$id\" ";
+	if($class!="")
+		$text .= " class=\"$class\" ";
+	if($height!="")
+		$text .= " height=\"$height\" ";
+	if($width!="")
+		$text .= " width=\"$width\" ";
+
+	$text .= ">\n";
+	return $text;
+	}
 ?>
