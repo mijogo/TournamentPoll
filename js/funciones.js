@@ -178,3 +178,53 @@ function changeR(a,miembros)
 	content = content[1].split("<")
 	document.getElementById(a).innerHTML="<button class='button' onclick=\"change('"+a+"','"+miembros+"')\">"+content[0]+"</button>"
 }
+
+function Instancia(instancia,cantidad)
+{
+	if(instancia=="Ronda-1"||instancia=="Ronda-2"||instancia=="Ronda-3"||instancia=="Ronda-4"||instancia=="Ronda-5")
+	{
+		var text = ""
+		text+="<div class=\"botoncito\"><button class=\"buttonAct\" onclick=\"regresar()\">"+instancia+"</button></div>"
+		for(var i=1;i<=cantidad;i++)
+		{
+			var QU ="";
+			if(i==1)
+				QU = "A";
+			if(i==2)
+				QU = "B";
+			if(i==3)
+				QU = "C";
+			if(i==4)
+				QU = "D";
+			if(i==5)
+				QU = "E";
+			if(i==6)
+				QU = "F";
+			if(i==7)
+				QU = "G";
+			if(i==8)
+				QU = "H";
+			text += "<div class=\"botoncito\"><button class=\"button\" onclick=\"ingresar('"+instancia+"','"+QU+"')\">"+QU+"</button></div>";	
+		}
+	}
+	else
+	{
+		var text="";
+		text += "<div class=\"botoncito\"><button class=\"buttonAct\" onclick=\"regresar()\">"+instancia+"</button></div>";
+		for(var i=1;i<=cantidad;i++)
+		{
+			text += "<div class=\"botoncito\"><button class=\"button\" onclick=\"ingresar('"+instancia+"','"+i+"')\">"+i+"</button></div>";	
+		}
+	}
+	document.getElementById("cambiar").innerHTML = text;
+}
+
+function regresar()
+{
+	location.href='?id=9';
+}
+
+function ingresar(instancia,grupo)
+{
+	location.href="?id=9&trato=2&instancia="+instancia+"&grupo="+grupo;
+}

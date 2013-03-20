@@ -683,6 +683,39 @@ class LogicC
 		return $cantVotos;
 	}
 	
+	function batallaDatosPasada($batalla)
+	{
+		$batallaActual = new Batalla();
+		$batallaActual->setId($batalla);
+		$batallaActual = $batallaActual->read(false,1,array("Id"));
+
+		$peleaConseguir = new Pelea();
+		$peleaConseguir->setIdBatalla($batalla);
+		$peleaConseguir = $peleaConseguir->read(true,1,array("IdBatalla"));
+			
+		for($i=0;$i<count($peleaConseguir);$i++)
+		{
+			$cantVotos[$i]["Id"]=$peleaConseguir[$i]->getIdPersonaje();
+			$cantVotos[$i]["Votos"]=$peleaConseguir[$i]->getVotos();	
+		}
+		
+		for($i=0;$i<count($cantVotos)&& $cambio;$i++)
+		{
+			for($j=0;$j<count($cantVotos)-1;$j++)
+			{
+				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
+				{
+					$cambio=true;
+					$temp=$cantVotos[$j];
+					$cantVotos[$j] = $cantVotos[$j+1];
+					$cantVotos[$j+1] = $temp;
+				}
+			}
+		}
+		return $cantVotos;
+	}
+
+	
 	function widget1()
 	{
 		$buscarTorneo = new Torneo();

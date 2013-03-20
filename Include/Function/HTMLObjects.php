@@ -95,6 +95,17 @@ function botonVoto($idBatalla,$idPersonaje,$idPersonajesBatalla,$content)
 	return $text;
 }
 
+function botonEscoger($content,$instancia,$cantidad)
+{
+	$text = "";
+	$text .="<div class=\"botoncito\">
+<button class=\"button\" onclick=\"Instancia('".$instancia."','".$cantidad."')\">
+".$content."
+</button>
+</div>";
+	return $text;
+}
+
 function formVoto($nameForm,$action,$batallas,$limite)
 {
 	$text = "";
@@ -136,7 +147,7 @@ return $text;
 
 function img($src,$height="",$width="",$id="",$class="")
 {
-	$text = "<img scr=\"".$src."\" alt="" ";
+	$text = "<img scr=\"".$src."\" alt=\"\" ";
 	if($id!="")
 		$text .= " id=\"$id\" ";
 	if($class!="")
