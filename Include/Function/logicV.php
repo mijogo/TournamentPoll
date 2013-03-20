@@ -223,14 +223,11 @@ class LogicV
 								$personajesB = $personajesB->read(true,2,array("Ronda","AND","Grupo"));
 								if(count($personajesB)!=0)
 								{
-									for($j=0;$j<count($datosNec);$j++)
+									for($j=0;$j<count($personajesB);$j++)
 									{
-										$PersonajeUtil = new Personaje();
-										$PersonajeUtil->setId($datosNec[$j]["Id"]);
-										$PersonajeUtil = $PersonajeUtil->read(false,1,array("Id"));
-										$text2=img($PersonajeUtil->getImagen(),"","","","bordes");
+										$text2=img($personajesB[$j]->getImagen(),"","","","bordes");
 										$queBonito[$j][0]=div($text2,"","elem");
-										$text2=div($PersonajeUtil->getNombre(),"","Grandes");
+										$text2=div($personajesB[$j]->getNombre()."(".$personajesB[$j]->getSerie().")","","Grandes");
 										$queBonito[$j][1]=div($text2,"","elem");
 									}
 									$text1 .= table($queBonito);
@@ -291,14 +288,11 @@ class LogicV
 								$personajesB = $personajesB->read(true,2,array("Ronda","AND","Grupo"));
 								if(count($personajesB)!=0)
 								{
-									for($j=0;$j<count($datosNec);$j++)
+									for($j=0;$j<count($personajesB);$j++)
 									{
-										$PersonajeUtil = new Personaje();
-										$PersonajeUtil->setId($datosNec[$j]["Id"]);
-										$PersonajeUtil = $PersonajeUtil->read(false,1,array("Id"));
-										$text2=img($PersonajeUtil->getImagen(),"","","","bordes");
+										$text2=img($personajesB[$j]->getImagen(),"","","","bordes");
 										$queBonito[$j][0]=div($text2,"","elem");
-										$text2=div($PersonajeUtil->getNombre(),"","Grandes");
+										$text2=div($personajesB[$j]->getNombre()."(".$personajesB[$j]->getSerie().")","","Grandes");
 										$queBonito[$j][1]=div($text2,"","elem");
 									}
 									$text1 .= table($queBonito);

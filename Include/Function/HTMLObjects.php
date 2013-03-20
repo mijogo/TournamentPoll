@@ -147,7 +147,7 @@ return $text;
 
 function img($src,$height="",$width="",$id="",$class="")
 {
-	$text = "<img scr=\"".$src."\" alt=\"\" ";
+	$text = "<img src=\"".$src."\" alt=\"\" ";
 	if($id!="")
 		$text .= " id=\"$id\" ";
 	if($class!="")
@@ -157,7 +157,7 @@ function img($src,$height="",$width="",$id="",$class="")
 	if($width!="")
 		$text .= " width=\"$width\" ";
 
-	$text .= ">\n";
+	$text .= "/>\n";
 	return $text;
 	}
 ?>
