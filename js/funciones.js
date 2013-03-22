@@ -25,7 +25,7 @@
 
 function change(a,miembros)
 {
-	var leer = document.habda.asda.value;
+	var leer = document.Votar.votacion.value;
 	var batallas = leer .split(";")
 	for (var i=0;i<batallas.length;i++)
 	{

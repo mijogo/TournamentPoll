@@ -64,7 +64,7 @@ class LogicC
 						$VBata = explode(";",$voto);
 						for($i=0;$i<count($VBata);$i++)
 						{
-							$VBata[$i]=explode("-",$VBata);
+							$VBata[$i]=explode("-",$VBata[$i]);
 							for($j=2;$j<count($VBata[$i]);$j++)
 							{
 								if($j==2)
@@ -665,9 +665,10 @@ class LogicC
 			$extraerVotos = $extraerVotos->read(true,2,array("IdBatalla","AND","IdPersonaje"));
 			$cantVotos[$i]["Votos"]=count($extraerVotos);	
 		}
-		
+		$cambio=true;
 		for($i=0;$i<count($cantVotos)&& $cambio;$i++)
 		{
+			$cambio=false;
 			for($j=0;$j<count($cantVotos)-1;$j++)
 			{
 				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
@@ -679,7 +680,6 @@ class LogicC
 				}
 			}
 		}
-		
 		return $cantVotos;
 	}
 	

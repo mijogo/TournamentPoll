@@ -106,18 +106,20 @@ function botonEscoger($content,$instancia,$cantidad)
 	return $text;
 }
 
-function formVoto($nameForm,$action,$batallas,$limite)
+function formVoto($action,$batallas,$limite)
 {
 	$text = "";
-	$text .="<form name=\"".$nameForm."\" action=\"".$action."\">
+	$nameForm = "Votar";
+	$text .="<form name=\"".$nameForm."\" action=\"".$action."\" method=\"post\">
 <input type=\"hidden\" value=\"";
 for($i=0;$i<count($batallas);$i++)
 {
-	$text .="B".$batallas."-L0/".$limite."-V";
+	$text .="B".$batallas[$i]."-L0/".$limite."-V";
 	if($i+1!=count($batallas))
 		$text .=";";
 }
 $text .="\" name=\"votacion\" />
+".input("Enviar","submit","Votar")."
 </form>
 ";
 	return $text;

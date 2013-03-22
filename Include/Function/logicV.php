@@ -139,7 +139,7 @@ class LogicV
 					}
 					$idBataAr[] = $BatallasActivas[$i]->getId();
 				}
-				$text .=  div($text1.formVoto("Votar","?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
+				$text .=  div($text1.formVoto("?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
 			}
 		}
 		if($_GET['id']==9)
