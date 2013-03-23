@@ -59,10 +59,8 @@ function change(a,miembros)
 						esta = true
 					if(!esta)
 					{
-						var content = document.getElementById(miem[0]+"-"+todos[j]).innerHTML
-						content = content.split(">")
-						content = content[1].split("<")
-						document.getElementById(miem[0]+"-"+todos[j]).innerHTML="<button class='buttonDes'>"+content[0]+"</button>"
+						var content = document.getElementById("R"+todos[j]).innerHTML
+						document.getElementById(miem[0]+"-"+todos[j]).innerHTML="<button id='R"+todos[j]+"' class='buttonDes'>"+content+"</button>"
 					}
 				}
 			}
@@ -89,15 +87,13 @@ function change(a,miembros)
 			document.Votar.votacion.value = usar
 		}
 	}
-	var content = document.getElementById(a).innerHTML
-	content = content.split(">")
-	content = content[1].split("<")
-	document.getElementById(a).innerHTML="<button class='buttonAct' onclick=\"changeR('"+a+"','"+miembros+"')\">"+content[0]+"</button>"
+	var content = document.getElementById("R"+miem[1]).innerHTML
+	document.getElementById(a).innerHTML="<button class='buttonAct' id='R"+miem[1]+"' onclick=\"changeR('"+a+"','"+miembros+"')\">"+content+"</button>"
 }
 
 function changeR(a,miembros)
 {
-	var leer = document.habda.asda.value;
+	var leer = document.Votar.votacion.value;
 	var batallas = leer .split(";")
 	for (var i=0;i<batallas.length;i++)
 	{
@@ -131,10 +127,8 @@ function changeR(a,miembros)
 						esta = true
 					if(!esta)
 					{
-						var content = document.getElementById(miem[0]+"-"+todos[j]).innerHTML
-						content = content.split(">")
-						content = content[1].split("<")
-						document.getElementById(miem[0]+"-"+todos[j]).innerHTML="<button class='button' onclick=\"change('"+miem[0]+"-"+todos[j]+"','"+miembros+"')\">"+content[0]+"</button>"
+						var content = document.getElementById("R"+todos[j]).innerHTML
+						document.getElementById(miem[0]+"-"+todos[j]).innerHTML="<button class='button' id = 'R"+todos[j]+"'onclick=\"change('"+miem[0]+"-"+todos[j]+"','"+miembros+"')\">"+content+"</button>"
 					}
 				}
 			}
@@ -173,10 +167,8 @@ function changeR(a,miembros)
 			document.Votar.votacion.value = usar
 		}
 	}
-	var content = document.getElementById(a).innerHTML
-	content = content.split(">")
-	content = content[1].split("<")
-	document.getElementById(a).innerHTML="<button class='button' onclick=\"change('"+a+"','"+miembros+"')\">"+content[0]+"</button>"
+	var content = document.getElementById("R"+miem[1]).innerHTML
+	document.getElementById(a).innerHTML="<button class='button' id = 'R"+miem[1]+"'onclick=\"change('"+a+"','"+miembros+"')\">"+content+"</button>"
 }
 
 function Instancia(instancia,cantidad)

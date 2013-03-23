@@ -78,46 +78,49 @@ class MasterClass
 				return $this->estructura->head();
 			}
 		}
-		elseif($_GET['id']==1)
+		elseif($_GET['id']==9)
 		{
-			$utilLogic = new logicC();
-			$text .="<h1>Enfrentamiento</h1>";
-			$text1="";
-			$batallasB = new Batalla();
-			$batallasB->setRonda($_GET['instancia']);
-			$instancia = $_GET['instancia'];
-			$grupo = $_GET['grupo'];
-			$batallasB = $batallasB->read(true,1,array("Ronda"));
-			$moreLogicaCodigo = new LogicC();
-			$text2="";
-
-			for($i=0;$i<count($batallasB);$i++)
+			if(isset($_GET['trato'])&&$_GET['trato']==2)
 			{
-				if($instancia=="Ronda-1"||$instancia=="Ronda-2"||$instancia=="Ronda-3"||$instancia=="Ronda-4"||$instancia=="Ronda-5")
+				$utilLogic = new logicC();
+				$batallasB = new Batalla();
+				$batallasB->setRonda($_GET['instancia']);
+				$instancia = $_GET['instancia'];
+				$grupo = $_GET['grupo'];
+				$batallasB = $batallasB->read(true,1,array("Ronda"));
+				$moreLogicaCodigo = new LogicC();
+				$text2="";
+	
+				for($i=0;$i<count($batallasB);$i++)
 				{
-					if(substr($batallasB[$i]->getGrupo(),0,1)==$grupo)
+					if($instancia=="Ronda-1"||$instancia=="Ronda-2"||$instancia=="Ronda-3"||$instancia=="Ronda-4"||$instancia=="Ronda-5")
 					{
-						if($batallasB[$i]->getActiva()==1)
+						if(substr($batallasB[$i]->getGrupo(),0,1)==$grupo)
 						{
-							$datos1=$moreLogicaCodigo->datosGrafo($batallasB[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Batalla"),configuracion("Config","Max Miembros Grafo"));
-							$text2.=grafico("Grupo ".$batallasB[$i]->getGrupo(),"graf".$batallasB[$i]->getId(),$datos1[0],$datos1[1]);
+							if($batallasB[$i]->getActiva()==1)
+							{
+								$datos1=$moreLogicaCodigo->datosGrafo($batallasB[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Batalla"),configuracion("Config","Max Miembros Grafo"));
+								$text2.=grafico("Grupo ".$batallasB[$i]->getGrupo(),"graf".$batallasB[$i]->getId(),$datos1[0],$datos1[1]);
+							}
+						}
+					}
+					else
+					{
+						if($batallasB[$i]->getGrupo()==$grupo)
+						{
+							if($batallasB[$i]->getActiva()==1)
+							{
+								$datos1=$moreLogicaCodigo->datosGrafo($batallasB[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Batalla"),configuracion("Config","Max Miembros Grafo"));
+								$text2.=grafico("Grupo ".$batallasB[$i]->getGrupo(),"graf".$batallasB[$i]->getId(),$datos1[0],$datos1[1]);							
+							}
 						}
 					}
 				}
-				else
-				{
-					if($batallasB[$i]->getGrupo()==$grupo)
-					{
-						$text1 .="<h6>Grupo ".$batallasB[$i]->getGrupo()." Fecha ".$batallasB[$i]->getFecha()."</h6>";
-						if($batallasB[$i]->getActiva()==1)
-						{
-							$datos1=$moreLogicaCodigo->datosGrafo($batallasB[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Batalla"),configuracion("Config","Max Miembros Grafo"));
-							$text2.=grafico("Grupo ".$batallasB[$i]->getGrupo(),"graf".$batallasB[$i]->getId(),$datos1[0],$datos1[1]);							
-						}
-					}
-				}
+				return $this->estructura->head($text2);
 			}
-			return $this->estructura->head($text2);
+			else
+				return $this->estructura->head();
+
 		}
 		else
 			return $this->estructura->head();

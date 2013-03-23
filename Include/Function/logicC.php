@@ -698,9 +698,10 @@ class LogicC
 			$cantVotos[$i]["Id"]=$peleaConseguir[$i]->getIdPersonaje();
 			$cantVotos[$i]["Votos"]=$peleaConseguir[$i]->getVotos();	
 		}
-		
+		$cambio = true;
 		for($i=0;$i<count($cantVotos)&& $cambio;$i++)
 		{
+			$cambio = false;
 			for($j=0;$j<count($cantVotos)-1;$j++)
 			{
 				if($cantVotos[$j]["Votos"]<$cantVotos[$j+1]["Votos"])
@@ -721,8 +722,7 @@ class LogicC
 		$buscarTorneo = new Torneo();
 		$buscarTorneo = $buscarTorneo->read();
 		$hay = 0;
-				$text = "
-		<h5>Last Match Result</h5>";
+		$text = "<h5>Last Match Result</h5>";
 		for($i=0;$i<count($buscarTorneo);$i++)
 		{
 			if($buscarTorneo[$i]->getStatus()>0)
@@ -742,7 +742,7 @@ class LogicC
 			{
 				$fechaCuenta = $BBatalla[0]->getFecha();
 				$i=0;
-				while($fechaCuenta==$BBatalla[$i]->getFecha())
+				while(count($BBatalla)>$i&&$fechaCuenta==$BBatalla[$i]->getFecha())
 				{
 					$text1 .= "<h5>".$BBatalla[$i]->getRonda()."  ".$BBatalla[$i]->getGrupo()."</h5>";
 					$peleasB = new Pelea();
@@ -752,11 +752,12 @@ class LogicC
 					{
 						$personaje = new Personaje();
 						$personaje->setId($peleasB[$j]->getIdPersonaje());
-						$personaje = $personaje->read(false,1,"Id");
+						$personaje = $personaje->read(false,1,array("Id"));
 						$datos[$j][0]=$personaje->getNombre();
 						$datos[$j][1]=$peleasB[$j]->getVotos();
 					}
 					$i++;
+
 					$text1 .= table($datos,"1-200");
 				}
 				$text .= div($text1,"","fight");

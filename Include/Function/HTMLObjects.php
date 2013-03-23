@@ -32,9 +32,9 @@ function table($datos,$width="")
 	$text ="<table>";
 	if($width!="")
 	{
-		$cuantos=split(";",$width);
+		$cuantos=explode(";",$width);
 		for($i=0;$i<count($cuantos);$i++)
-			$cuantos[$i]=split("-",$cuantos[$i]);
+			$cuantos[$i]=explode("-",$cuantos[$i]);
 	}
 	for($i=0;$i<count($datos);$i++)
 	{
@@ -63,11 +63,13 @@ function table($datos,$width="")
 	$text .="</table>";
 	return $text;
 }
-function input($nombre,$tipo,$value="")
+function input($nombre,$tipo,$value="",$class="")
 {
 	$text = "<input type=\"".$tipo."\" name=\"".$nombre."\"";
 	if($value != "")
 		$text .= " value=\"".$value."\"";
+	if($class!= "")
+		$text .= " class=\"".$class."\"";
 	$text .=">";
 	return $text;
 }
@@ -88,7 +90,7 @@ function botonVoto($idBatalla,$idPersonaje,$idPersonajesBatalla,$content)
 {
 	$text = "";
 	$text .="<div id=\"B".$idBatalla."-".$idPersonaje."\" class=\"botoncito\">
-<button class=\"button\" onclick=\"change('B".$idBatalla."-".$idPersonaje."','".$idPersonajesBatalla."')\">
+<button class=\"button\" id =\"R".$idPersonaje."\" onclick=\"change('B".$idBatalla."-".$idPersonaje."','".$idPersonajesBatalla."')\">
 ".$content."
 </button>
 </div>";
@@ -119,7 +121,7 @@ for($i=0;$i<count($batallas);$i++)
 		$text .=";";
 }
 $text .="\" name=\"votacion\" />
-".input("Enviar","submit","Votar")."
+".input("Enviar","submit","Votar","subboto")."
 </form>
 ";
 	return $text;

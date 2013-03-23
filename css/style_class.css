@@ -256,18 +256,17 @@ clear:both;
 	border: 1px solid #FFF;
 	padding:10px;
 }
-
-.button { border-top: 1px solid #f2f59d; background: #d0d465; background: -webkit-gradient(linear, left top, left bottom, from(#969c3e), to(#d0d465)); background: -moz-linear-gradient(top, #969c3e, #d0d465); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white; vertical-align: middle; } 
-
-.button:hover { border-top: 1px solid #9bb4f5; background: #6585d4; background: -webkit-gradient(linear, left top, left bottom, from(#3e599c), to(#6585d4)); background: -moz-linear-gradient(top, #3e599c, #6585d4); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white; vertical-align: middle; } 
+.button { background: #FF9933; padding:  5px 5px; box-shadow: 3px 3px 3px #313E; color:white; border: 2px solid #FFF;border-radius: 5px; width:450px; height:80px;font-size:medium;}
+.buttonAct { background: #335491; padding: 5px 5px; box-shadow: 3px 3px 3px #313E; color:white; border: 2px solid #FFF;border-radius: 5px; width:450px; height:80px;font-size:medium;}
+.buttonDes { background: #C94040; padding: 5px 5px; box-shadow: 3px 3px 3px #313E; color:white; border: 2px solid #FFF;border-radius: 5px; width:450px; height:80px;font-size:medium;}
+.subboto { background: #339F6A; padding: 5px 5px; box-shadow: 3px 3px 3px #313E; color:white; border: 2px solid #FFF;border-radius: 5px; width:100px; height:40px;font-size:medium;}
+/*.button { border-top: 1px solid #f2f59d; background: #d0d465; background: -webkit-gradient(linear, left top, left bottom, from(#969c3e), to(#d0d465)); background: -moz-linear-gradient(top, #969c3e, #d0d465); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white; vertical-align: middle; } 
 
 .buttonAct { border-top: 1px solid #9bb4f5; background: #6585d4; background: -webkit-gradient(linear, left top, left bottom, from(#3e599c), to(#6585d4)); background: -moz-linear-gradient(top, #3e599c, #6585d4); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white; vertical-align: middle; } 
  
-.buttonAct:hover { border-top: 1px solid #f2f59d; background: #d0d465; background: -webkit-gradient(linear, left top, left bottom, from(#969c3e), to(#d0d465)); background: -moz-linear-gradient(top, #969c3e, #d0d465); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white;vertical-align: middle; } 
-
- .buttonDes { border-top: 1px solid #f79797; background: #d66565; background: -webkit-gradient(linear, left top, left bottom, from(#9c3e3e), to(#d66565)); background: -moz-linear-gradient(top, #9c3e3e, #d66565); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white;vertical-align: middle; }
- 
- .botoncito {
+.buttonDes { border-top: 1px solid #f79797; background: #d66565; background: -webkit-gradient(linear, left top, left bottom, from(#9c3e3e), to(#d66565)); background: -moz-linear-gradient(top, #9c3e3e, #d66565); padding: 10.5px 21px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,.4) 0 1px 0;color:white;vertical-align: middle; }
+ */
+.botoncito {
 	margin:10px 0px;
 }
  /*
