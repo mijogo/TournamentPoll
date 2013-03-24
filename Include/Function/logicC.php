@@ -722,7 +722,7 @@ class LogicC
 		$buscarTorneo = new Torneo();
 		$buscarTorneo = $buscarTorneo->read();
 		$hay = 0;
-		$text = "<h5>Last Match Result</h5>";
+		$text = "<h5>Resultado del ultimo enfrentamiento</h5>";
 		for($i=0;$i<count($buscarTorneo);$i++)
 		{
 			if($buscarTorneo[$i]->getStatus()>0)
@@ -772,7 +772,7 @@ class LogicC
 	function widget2()
 	{
 		$text ="";
-		$text .= "<h5>Next Event</h5>";
+		$text .= "<h5>Proximo evento</h5>";
 		$text .= "<div class=\"fight\">Miss Anime Tournament 2013<br/>";
 		$reSchedule = new Schedule();
 		$reSchedule->setHecho(-1);
@@ -838,7 +838,7 @@ class LogicC
 	
 	function widget3()
 	{
-	$text = "<h5>Current Time (GMT)</h5>
+	$text = "<h5>Hora Actual (GMT)</h5>
 <div class=\"fight\"><table><tr><td id=\"Fecha_Reloj\"></td></tr></table></div>
 ";
 	return $text;

@@ -35,7 +35,7 @@ function configuracion($instancia,$parte)
 		if($parte == "Max Miembros Grafo")
 			$text = 10;
 	}
-	if($instancia == "Preeliminares")
+	if($instancia == "Preliminares")
 	{
 		if($parte == "NGrupos")
 			$text = 6;

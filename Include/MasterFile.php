@@ -33,17 +33,7 @@ class MasterClass
 	
 	function Cabecera()
 	{
-		if($_GET['id']==10)
-		{
-			$moreLogicaCodigo = new LogicC();
-
-			$datos1 = $moreLogicaCodigo->datosGrafo(193,20,"01:00:00",1320,8);
-			$datos2 = $moreLogicaCodigo->datosGrafo(196,20,"01:00:00",1320,8);
-			$datos3 = $moreLogicaCodigo->datosGrafo(199,20,"01:00:00",1320,8);
-
-			return $this->estructura->head(grafico("Mega Grafo","grafV1",$datos1[0],$datos1[1]).grafico("Mega Grafo","grafV2",$datos2[0],$datos2[1]).grafico("Mega Grafo","grafV3",$datos3[0],$datos3[1]));
-		}
-		elseif($_GET['id']==1)
+		if($_GET['id']==1)
 		{
 			$IdToneo=0;
 			$buscarTorneo = new Torneo();
@@ -71,11 +61,11 @@ class MasterClass
 					$datos1=$moreLogicaCodigo->datosGrafo($cualesBatalla[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Live"),configuracion("Config","Max Miembros Grafo"));
 					$text2.=grafico("Grupo ".$cualesBatalla[$i]->getGrupo(),"graf".$cualesBatalla[$i]->getId(),$datos1[0],$datos1[1]);
 				}
-				return $this->estructura->head($text2);
+				return $this->estructura->head("Certamen Brolicones",$text2);
 			}
 			else
 			{
-				return $this->estructura->head();
+				return $this->estructura->head("Certamen Brolicones");
 			}
 		}
 		elseif($_GET['id']==9)
@@ -116,14 +106,14 @@ class MasterClass
 						}
 					}
 				}
-				return $this->estructura->head($text2);
+				return $this->estructura->head("Certamen Brolicones",$text2);
 			}
 			else
-				return $this->estructura->head();
+				return $this->estructura->head("Certamen Brolicones");
 
 		}
 		else
-			return $this->estructura->head();
+			return $this->estructura->head("Certamen Brolicones");
 	}
 	
 	function Principal()

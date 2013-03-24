@@ -4,7 +4,7 @@ class structura
 	function structura()
 	{}
 	
-	function head($script="")
+	function head($Nombre="",$script="")
 	{
 		$text = "";
 		$text .="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
@@ -14,7 +14,7 @@ class structura
 <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\" />
 <meta name=\"description\" content=\"website description\" />
 <meta name=\"keywords\" content=\"website keywords, website keywords\" />
-<title>Sin título 1</title>
+<title>".$Nombre."</title>
 <link href=\"css/style_class.css\" rel=\"stylesheet\" type=\"text/css\" />
   <!-- modernizr enables HTML5 elements and feature detects -->
   <script type=\"text/javascript\" src=\"js/modernizr-1.5.min.js\"></script>

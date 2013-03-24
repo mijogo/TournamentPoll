@@ -87,7 +87,7 @@ class LogicV
 			}
 			
 		}
-		if($_GET['id']==4)
+		if($_GET['id']==5)
 		{
 			$buscarTorneo = new Torneo();
 			$buscarTorneo = $buscarTorneo->read();
@@ -144,14 +144,14 @@ class LogicV
 				$text .=  div($text1.formVoto("?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
 			}
 		}
-		if($_GET['id']==9)
+		if($_GET['id']==7)
 		{
 			if(!isset($_GET['trato']) || $_GET['trato']==1)
 			{
-				$text .="<h1>Seleccione los enfrentamiento</h1>";
+				$text .="<h1>Seleccione los enfrentamientos</h1>";
 				$text1="";
 				$sigue=true;
-				$instancia="Preeliminares";
+				$instancia="Preliminares";
 				while($sigue)
 				{
 					$text1.=botonEscoger($instancia,$instancia,configuracion($instancia,"NGrupos"));
@@ -311,7 +311,6 @@ class LogicV
 				}
 				$text = div($text,"","fight");
 			}
-
 		}
 		/*
 		for($j=0;$j<count($datosUtilizar);$j++)
@@ -381,13 +380,13 @@ class LogicV
 				$text .= $text1;
 			}
 		}	*/
-		if($_GET['id']==10)
+		/*if($_GET['id']==10)
 		{
 			$text=div("","grafV1","","width: 900px; height: 500px;");
 			$text.=div("","grafV2","","width: 900px; height: 500px;");
 			$text.=div("","grafV3","","width: 900px; height: 500px;");
 
-		}
+		}*/
 
 		return $text;
 	}

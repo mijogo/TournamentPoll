@@ -4,8 +4,8 @@
 	Minutos = marcacion.getUTCMinutes()  
 	Segundos = marcacion.getUTCSeconds()  
 	Anio = marcacion.getUTCFullYear()
-	Mes = marcacion.getUTCMonth()
-	Dia = marcacion.getUTCDay()
+	Mes = marcacion.getUTCMonth()+1
+	Dia = marcacion.getUTCDate()
 	if (Hora<=9) 
 		Hora = "0" + Hora
 	if (Minutos<=9) 
