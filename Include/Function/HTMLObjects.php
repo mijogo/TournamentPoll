@@ -29,7 +29,7 @@ function form($content="",$name="",$action="",$method="POST")
 
 function table($datos,$width="")
 {
-	$text ="<table>";
+	$text ="<table>\n";
 	if($width!="")
 	{
 		$cuantos=explode(";",$width);
@@ -38,46 +38,46 @@ function table($datos,$width="")
 	}
 	for($i=0;$i<count($datos);$i++)
 	{
-		$text .="<tr>";
+		$text .="<tr>\n";
 		for($j=0;$j<count($datos[$i]);$j++)
 		{
-			if($j==0 && $width!="")
+			if($i==0 && $width!="")
 			{
 				$hay=0;
 				for($k=0;$k<count($cuantos);$k++)
 				{
-					if($cuantos[$k][0]==$i)
+					if($cuantos[$k][0]==$j)
 					{
-						$text .="<td width=\"".$cuantos[$k][1]."px\">".$datos[$i][$j]."</td>";
+						$text .="<td width=\"".$cuantos[$k][1]."px\">".$datos[$i][$j]."</td>\n";
 						$hay++;
 					}
-					if($hay==0)
-						$text .="<td>".$datos[$i][$j]."</td>";
 				}
+				if($hay==0)
+					$text .="<td>".$datos[$i][$j]."</td>\n";
 			}
 			else
-				$text .="<td>".$datos[$i][$j]."</td>";
+				$text .="<td>".$datos[$i][$j]."</td>\n";
 		}
-		$text .="</tr>";
+		$text .="</tr>\n";
 	}
-	$text .="</table>";
+	$text .="</table>\n";
 	return $text;
 }
-function input($nombre,$tipo,$value="",$class="")
+function input($nombre,$tipo,$value="",$class="",$extra="")
 {
 	$text = "<input type=\"".$tipo."\" name=\"".$nombre."\"";
 	if($value != "")
 		$text .= " value=\"".$value."\"";
 	if($class!= "")
 		$text .= " class=\"".$class."\"";
-	$text .=">";
+	$text .=" ".$extra.">";
 	return $text;
 }
 
-function selected($name ="",$values="")
+function selected($name ="",$values="",$extra="")
 {
 	$text = "";
-	$text .="<SELECT NAME=\"".$name."\">";
+	$text .="<SELECT NAME=\"".$name."\" ".$extra." >";
 	for($i=0;$i<count($values);$i++)
 	{
 		$text .="<OPTION VALUE=\"".$values[$i][0]."\">".$values[$i][1];

@@ -128,11 +128,11 @@ location.href='".$url."';
 
 function fechaGenerador($nombreFecha="")
 {
-	for($i=2010;$i<2030;$i++)
+	for($i=2013;$i<2030;$i++)
 	{
 		
-		$anio[$i-2010][0]=$i;
-		$anio[$i-2010][1]=$i;
+		$anio[$i-2013][0]=$i;
+		$anio[$i-2013][1]=$i;
 	}
 	for($i=1;$i<13;$i++)
 	{

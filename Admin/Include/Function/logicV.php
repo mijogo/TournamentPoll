@@ -8,6 +8,11 @@ class LogicV
 	function logicaView()
 	{
 		$text = "";
+		if($_GET['id']==1)
+		{
+			$text .= div(input("Enviar","button","Crear Batallas","opcionesBoton","onclick=\"hacer(1)\""),"","fight");
+			$text .= div(input("Enviar","button","Poner Fecha Batalla","opcionesBoton","onclick=\"hacer(2)\""),"","fight");
+		}
 		if($_GET['id']==3)
 		{
 			$text1 = "Ingresar una nueva accion";
@@ -23,16 +28,25 @@ class LogicV
 			
 						
 			$datos[0][0]="Accion";
-			$datos[0][1]=selected("Accion",$values);
+			$datos[0][1]=selected("Accion",$values,"onclick=\"mod()\"");
 			
 			$datos[1][0]="Fecha";
 			$datos[1][1]=fechaGenerador("Fecha");
-
+			
 			$datos[2][0]="Extra";
-			$datos[2][1]=input("Extra","text");
+			$value2[0][0]="Preeliminares";
+			$value2[0][1]="Preeliminares";
+			$value2[1][0]="Repechaje";
+			$value2[1][1]="Repechaje";
+			$value2[2][0]="Principal";
+			$value2[2][1]="Principal";
+			$value2[3][0]="Final";
+			$value2[3][1]="Final";
+
+			$datos[2][1]=div(selected("Extra",$value2)." Grupo ".input("text","Extra2"),"Modi");
 
 			$datos[3][0]="";
-			$datos[3][1]=input("submit","submit");
+			$datos[3][1]=input("Enviar","submit","Enviar","subboto");
 			$text1 .= table($datos);
 			$text .= div(form($text1,"inscipcion","?id=3&action=2"));
 			$text1="";
@@ -63,16 +77,16 @@ class LogicV
 			$text1 = "Cambie la fecha a una batalla";
 			
 						
-			$datos[0][0]="Id";
-			$datos[0][1]=input("Id","text");
+			//$datos[0][0]="Id";
+			//$datos[0][1]=input("Id","text");
 			
-			$datos[1][0]="Fecha";
-			$datos[1][1]=fechaGeneradorwoHora("Fecha");
+			$datos[0][0]="Fecha";
+			$datos[0][1]=fechaGeneradorwoHora("Fecha");
 
-			$datos[2][0]="";
-			$datos[2][1]=input("submit","submit");
+			$datos[1][0]="";
+			$datos[1][1]=input("Enviar","submit","Cambiar","subboto");
 			$text1 .= table($datos);
-			$text .= div(form($text1,"inscipcion","?id=4&action=2"));
+
 
 			
 			$buscarTorneo = new Torneo();
@@ -84,8 +98,6 @@ class LogicV
 					$esteTorneo = $buscarTorneo[$i];
 				}
 			}
-	
-			$text1="";
 			$valS[0][0]="Fecha";
 			$valS[0][1]="Ronda";
 			$valS[0][2]="Grupo";
@@ -109,10 +121,12 @@ class LogicV
 					$valS[$i+1][3]="Activa";
 				if($datoBatalla[$i]->getActiva()==1)
 					$valS[$i+1][3]="Finalizado";
-				$valS[$i+1][4]=$datoBatalla[$i]->getId();			
+				$valS[$i+1][4]=$datoBatalla[$i]->getId();	
+				$valS[$i+1][5]=input("changeBatalla[]","checkbox",$datoBatalla[$i]->getId());	
 			}
-			$text1 .= table($valS);
-			$text .= div($text1);
+			$text1 .= table($valS,"0-80;1-100;2-50;3-80;4-40;5-20");
+			$text .= div(form($text1,"inscipcion","?id=4&action=2"));
+			//$text .= div($text0);
 		}		
 		
 		if($_GET['id']==5)

@@ -47,7 +47,7 @@ class LogicC
 				$newSchedule->setAccion(2);
 				$newSchedule->setFecha($Fecha);
 				$newSchedule->setHecho(-1);
-				$newSchedule->setTarget($_POST['Extra']);
+				$newSchedule->setTarget($_POST['Extra'].",".$_POST['Extra2']);
 				$newSchedule->save();		
 			}
 			
@@ -105,15 +105,18 @@ class LogicC
 			Redireccionar("?id=3");
 		}
 		if($_GET['id']==4)
-		{
-			$usarBatalla = new Batalla();
-			$usarBatalla->setId($_POST['Id']);
-			$consulta = array("Id");
-			$Fecha = $_POST['FechaAnio']."-".$_POST['FechaMes']."-".$_POST['FechaDia'];
-			$usarBatalla->setFecha($Fecha);
-			$set = array("Fecha");
-			$usarBatalla->update(1,$set,1,$consulta);
-			Redireccionar("?id=4");
+		{	
+			for($r=0;$r<count($_POST['changeBatalla']);$r++)
+			{
+				$usarBatalla = new Batalla();
+				$usarBatalla->setId($_POST['changeBatalla'][$r]);
+				$consulta = array("Id");
+				$Fecha = $_POST['FechaAnio']."-".$_POST['FechaMes']."-".$_POST['FechaDia'];
+				$usarBatalla->setFecha($Fecha);
+				$set = array("Fecha");
+				$usarBatalla->update(1,$set,1,$consulta);
+				Redireccionar("?id=4");
+			}
 		}
 		if($_GET['id']==5)
 		{
@@ -126,7 +129,79 @@ class LogicC
 			}
 			Redireccionar("?id=5");
 		}
-
+		
+		if($_GET['id']==1)
+		{
+			if($_GET['trato']==1)
+			{
+				$this->creacionBatallas();
+				Redireccionar("?id=1");	
+			}
+			if($_GET['trato']==2)
+			{
+				$buscarTorneo = new Torneo();
+				$buscarTorneo = $buscarTorneo->read();
+				for($i=0;$i<count($buscarTorneo);$i++)
+				{
+					if($buscarTorneo[$i]->getStatus()>0)
+					{
+						$esteTorneo = $buscarTorneo[$i];
+					}
+				}
+				$batallasU = new Batalla();
+				$batallasU->setTorneo($esteTorneo->getId());
+				$batallasU = $batallasU->read(true,1,array("Torneo"));
+				$fechas=array();
+				for($i=0;$i<count($batallasU);$i++)
+				{
+					$esta=0;
+					for($j=0;$j<count($fechas);$j++)
+					{
+						if($fechas[$j]==$batallasU[$i]->getFecha())
+						{
+							$esta++;
+						}					
+					}
+					if($esta == 0)
+					{
+						$fechas[] = $batallasU[$i]->getFecha();
+					}
+				}
+				for($i=0;$i<count($fechas);$i++)
+				{
+					$CFecha = $fechas[$i]." ".configuracion("Config","Hora Inicio");
+					$newSchedule = new schedule();
+					$newSchedule->setAccion(3);
+					$newSchedule->setFecha($CFecha);
+					$newSchedule->setHecho(-1);
+					$newSchedule->setTarget($fechas[$i]);
+					$newSchedule->save();
+					
+					$newSchedule = new schedule();
+					$newSchedule->setAccion(5);
+					$newSchedule->setFecha($CFecha);
+					$newSchedule->setHecho(-1);
+					$newSchedule->setTarget(3);
+					$newSchedule->save();
+						
+					$newFecha=cambioFecha($CFecha,configuracion("Config","Duracion Batalla"));
+					$newSchedule = new schedule();
+					$newSchedule->setAccion(5);
+					$newSchedule->setFecha($newFecha);
+					$newSchedule->setHecho(-1);
+					$newSchedule->setTarget(1);
+					$newSchedule->save();
+					
+					$newFecha=cambioFecha($newFecha,configuracion("Config","Extra conteo"));
+					$newSchedule = new schedule();
+					$newSchedule->setAccion(4);
+					$newSchedule->setFecha($newFecha);
+					$newSchedule->setHecho(-1);
+					$newSchedule->save();
+				}
+				Redireccionar("?id=1");
+			}			
+		}
 	}
 		
 	function Schedule()
@@ -676,5 +751,134 @@ class LogicC
 		$retornar[] = $datosGeneral;
 		return $retornar;
 	}
+	
+		function widget1()
+	{
+		$buscarTorneo = new Torneo();
+		$buscarTorneo = $buscarTorneo->read();
+		$hay = 0;
+		$text = "<h5>Last Match Result</h5>";
+		for($i=0;$i<count($buscarTorneo);$i++)
+		{
+			if($buscarTorneo[$i]->getStatus()>0)
+			{
+				$esteTorneo = $buscarTorneo[$i];
+				$hay++;
+			}
+		}
+		$text1="";
+		if($hay>0)
+		{
+			$BBatalla = new Batalla();
+			$BBatalla->setTorneo($esteTorneo->getId());
+			$BBatalla->setActiva(1);
+			$BBatalla = $BBatalla->read(true,2,array("Torneo","AND","Activa"),1,array("Fecha","DESC"));
+			if(count($BBatalla)>0)
+			{
+				$fechaCuenta = $BBatalla[0]->getFecha();
+				$i=0;
+				while(count($BBatalla)>$i&&$fechaCuenta==$BBatalla[$i]->getFecha())
+				{
+					$text1 .= "<h5>".$BBatalla[$i]->getRonda()."  ".$BBatalla[$i]->getGrupo()."</h5>";
+					$peleasB = new Pelea();
+					$peleasB->setIdBatalla($BBatalla[$i]->getId());
+					$peleasB = $peleasB->read(true,1,array("IdBatalla"),1,array("Votos","DESC"));
+					for($j=0;$j<count($peleasB);$j++)
+					{
+						$personaje = new Personaje();
+						$personaje->setId($peleasB[$j]->getIdPersonaje());
+						$personaje = $personaje->read(false,1,array("Id"));
+						$datos[$j][0]=$personaje->getNombre();
+						$datos[$j][1]=$peleasB[$j]->getVotos();
+					}
+					$i++;
+
+					$text1 .= table($datos,"0-200");
+				}
+				$text .= div($text1,"","fight");
+			}
+			else
+				$text .= div("No han habido enfrentamientos aun","","fight");
+		}
+		else
+			$text .= div("Aun no ha comenzado este torneo","","fight");
+		return $text;
+	}
+	function widget2()
+	{
+		$text ="";
+		$text .= "<h5>Next Event</h5>";
+		$text .= "<div class=\"fight\">Miss Anime Tournament 2013<br/>";
+		$reSchedule = new Schedule();
+		$reSchedule->setHecho(-1);
+		$reSchedule = $reSchedule->read(true,1,array("Hecho"),1,array("Fecha","ASC"));
+		if(count($reSchedule)!=0)
+		{
+			$Sale = false;
+			$i=0;
+			while(!$Sale && $i<count($reSchedule))
+			{
+				if($reSchedule[$i]->getAccion()==5)
+				{
+					if($reSchedule[$i]->getTarget()==2)
+					{
+						$text .= "Nominations<br/>
+						".$reSchedule[$i]->getFecha()."<br/>";
+						$Sale=true;
+					}
+				}
+				elseif($reSchedule[$i]->getAccion()==2)
+				{
+					$Deque = explode(",",$reSchedule[$i]->getTarget());
+					$text .= "Sorteo<br/>
+					Ronda ".$Deque[0]." Grupo ".$Deque[1]."<br/>
+						".$reSchedule[$i]->getFecha()."<br/>";
+					$Sale=true;
+				}
+				elseif($reSchedule[$i]->getAccion()==3)
+				{
+					$text .= "Enfrentamiento<br/>
+						".$reSchedule[$i]->getFecha()."<br/>";
+					$Enfrentamiento = new Batalla();
+					$Enfrentamiento->setFecha($reSchedule[$i]->getFecha());
+					$Enfrentamiento = $Enfrentamiento->read(true,1,array("Fecha"));
+					for($k=0;$k<count($Enfrentamiento);$k++)
+					{
+						$text .= "<h5>".$Enfrentamiento[$k]->getRonda()."  ".$Enfrentamiento[$k]->getGrupo()."</h5>";
+						$personajesBR = new Personaje();
+						$personajesBR->setRonda($Enfrentamiento[$k]->getRonda());
+						$personajesBR->setGrupo($Enfrentamiento[$k]->getGrupo());
+						$personajesBR=$personajesBR->read(true,2,array("Ronda","AND","Grupo"));
+						for($j=0;$j<count($personajesBR);$j++)
+						{
+							$text .= $personajesBR[$j]->getNombre()."(".$personajesBR[$j]->getSerie().")</br>";
+						}
+					}
+					$Sale=true;
+				}
+				$i++;
+			}
+			if($i==count($reSchedule))
+			{
+				$text .= "No hay eventos disponibles<br/>";
+			}
+		}
+		else
+		{
+			$text .= "No hay eventos disponibles<br/>";
+		}
+		$text .= "</div>";
+		return $text;
+	}
+	
+	function widget3()
+	{
+	$text = "<h5>Current Time (GMT)</h5>
+<div class=\"fight\"><table><tr><td id=\"Fecha_Reloj\"></td></tr></table></div>
+";
+	return $text;
+	}
+
+
 }
 ?>

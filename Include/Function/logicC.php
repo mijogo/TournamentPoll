@@ -758,7 +758,7 @@ class LogicC
 					}
 					$i++;
 
-					$text1 .= table($datos,"1-200");
+					$text1 .= table($datos,"0-200");
 				}
 				$text .= div($text1,"","fight");
 			}

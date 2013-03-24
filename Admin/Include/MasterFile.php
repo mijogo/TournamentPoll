@@ -67,7 +67,8 @@ class MasterClass
 	
 	function Cuerpo($contenido="")
 	{
-		return $this->estructura->body($contenido);
+		$moreLogicaCodigo = new LogicC();
+		return $this->estructura->body(array($moreLogicaCodigo->widget1(),$moreLogicaCodigo->widget2(),$moreLogicaCodigo->widget3()),$contenido);
 	}
 	
 	function Pie()
