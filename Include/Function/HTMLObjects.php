@@ -19,9 +19,9 @@ function div($content ="",$id="",$class="",$style="")
 	return $text;
 }
 
-function form($content="",$name="",$action="",$method="POST")
+function form($content="",$name="",$action="",$extra="",$method="POST")
 {
-	$text = "<form name=\"".$name."\" action=\"".$action."\" method=\"".$method."\">
+	$text = "<form name=\"".$name."\" action=\"".$action."\" method=\"".$method."\" ".$extra.">
 	".$content."
 	</form>";
 	return $text;

@@ -212,8 +212,130 @@ class LogicV
 			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
 			$text .= "<br><br>";
 
-		}		
+		}
+		if($_GET['id']==6)
+		{
+			$text.="<H1>Crear Torneo</H1>";
+			$text1="";
+			$valS[0][0]="Año";
+			$valS[0][1]=input("anio","text");
+			$valS[1][0]="Version";
+			$valS[1][1]=input("version","text");
+			$valS[2][0]="Nombre";
+			$valS[2][1]=input("nombre","text");
+			$valS[3][0]="";
+			$valS[3][1]=input("Enviar","submit","Crear","subboto");
+
+			$text1 .= table($valS,"0-150;1-200");
+			$text .= div(form($text1,"Torneo","?id=6&action=2&trato=1"),"","fight");
+			$text1="";
+			$text.="<H1>Seleccionar Torneo</H1>";
+			$torneosB=new Torneo();
+			$torneosB = $torneosB->read();
+			$rasD[0][0] = "Nombre";
+			$rasD[0][1] = "Version";			
+			$rasD[0][2] = "Año";	
+			$rasD[0][3] = "Estado";
+			$rasD[0][4] = "Seleccionar";
+			for($i=0;$i<count($torneosB);$i++)
+			{
+				$rasD[$i+1][0] = $torneosB[$i]->getNombre();				
+				$rasD[$i+1][1] = $torneosB[$i]->getVersion();			
+				$rasD[$i+1][2] = $torneosB[$i]->getAno();
+				if( $torneosB[$i]->getStatus()==0)
+				{
+					$rasD[$i+1][3] = "Inactivo";			
+					$rasD[$i+1][4] = input("Enviar","button","Seleccionar","opcionesBoton","onclick=\"cambiar(".$torneosB[$i]->getId().")\"");
+				}
+				else if( $torneosB[$i]->getStatus()==1)
+					$rasD[$i+1][3] = "Activo";
+				else if( $torneosB[$i]->getStatus()==2)
+					$rasD[$i+1][3] = "Nominaciones";
+				else if( $torneosB[$i]->getStatus()==3)
+					$rasD[$i+1][3] = "Batalla Activa";
+			}
+			$text1 .= table($rasD,"0-120;1-50;2-50;3-100");
+			$text .= div($text1,"","fight");
+
+		}
+		
+		if($_GET['id']==7)
+		{
+			if(!isset($_GET['trato']))
+				$_GET['trato']=1;
+			if($_GET['trato']==1)
+			{
+				$text1="";
+				$text.="<H1>Modificar Personaje</H1>";
+				$PersonajeM=new Personaje();
+				$PersonajeM= $PersonajeM->read(true,0,"",1,array("Inscripcion","DESC"));
+				$rasD[0][0] = "Nombre";
+				$rasD[0][1] = "Serie";			
+				$rasD[0][2] = "Imagen";	
+				$rasD[0][3] = "Inscrito";
+				$rasD[0][4] = "Seleccionar";
+				for($i=0;$i<count($PersonajeM);$i++)
+				{
+					$rasD[$i+1][0] = $PersonajeM[$i]->getNombre();				
+					$rasD[$i+1][1] = $PersonajeM[$i]->getSerie();
+					if($PersonajeM[$i]->getImagen()=="")		
+						$rasD[$i+1][2] = "No";
+					else
+						$rasD[$i+1][2] = "Si";
+					if($PersonajeM[$i]->getInscripcion()==1)		
+						$rasD[$i+1][3] = "Si";
+					else
+						$rasD[$i+1][3] = "No";				
+					$rasD[$i+1][4] = input("Enviar","button","Modificar","subboto","onclick=\"modificar(".$PersonajeM[$i]->getId().")\"");
+				}
+				$text1 .= table($rasD,"0-80;1-80;2-40;3-40");
+				$text .= div($text1,"","fight");
+	
+			}
+			elseif($_GET['trato']==2)
+			{
+				$text.="<H1>Modificar Personaje</H1>";
+				$text1="";
+				$personajemod = new Personaje();
+				$personajemod->setId($_GET['personaje']);
+				$personajemod = $personajemod->read(false,1,array("Id"));
+				$valS[0][0]="Nombre";
+				$valS[0][1]=input("nombre","text",$personajemod->getNombre());
+				$valS[1][0]="Serie";
+				$valS[1][1]=input("serie","text",$personajemod->getSerie());
+				$valS[2][0]="Inscripcion";
+				$valS[2][1]=input("inscripcion","text",$personajemod->getInscripcion());
+				$valS[3][0]="Eliminada";
+				$valS[3][1]=input("eliminada","text",$personajemod->getEliminada());
+				$valS[4][0]="Grupo";
+				$valS[4][1]=input("grupo","text",$personajemod->getGrupo());
+				$valS[5][0]="Ronda";
+				$valS[5][1]=input("ronda","text",$personajemod->getRonda());
+				$valS[6][0]="Imagen";
+				$valS[6][1]=input("imagen","file",$personajemod->getRonda());
+
+				$valS[7][0]="";
+				$valS[7][1]=input("Enviar","submit","Modificar","subboto");
+
+				$text1 .= table($valS,"0-150;1-200").input("id","hidden",$_GET['personaje']);
+				$text .= div(form($text1,"Torneo","?id=7&action=2&trato=2","enctype=\"multipart/form-data\"").img("../".$personajemod->getImagen()),"","fight");
+			}
+		}
+		if($_GET['id']==8)
+		{
+			$text .= "<h1>Crear Batalla de Exhibicion</h1>";
+			$text1="";
+			$datos[0][0]="Fecha";
+			$datos[0][1]=fechaGeneradorwoHora("Fecha");
+
+			$datos[1][0]="";
+			$datos[1][1]=input("Enviar","submit","Crear","subboto");
+			$text1 .= table($datos);
+			$text .= div(form($text1,"Torneo","?id=8&action=2"),"","fight");
+			$text .= "En Contruccion";
+		}
 		return $text;
 	}
+	
 }
 ?>

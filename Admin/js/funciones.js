@@ -253,7 +253,17 @@ function mod()
 function hacer(a)
 {
 	if(a==1)
-		location.href='?id=1&action=2&trato=1';
+		location.href='?id=1&action=2&trato=1'
 	if(a==2)
-		location.href='?id=1&action=2&trato=2';
+		location.href='?id=1&action=2&trato=2'
+}
+
+function cambiar(a)
+{
+	location.href="?id=6&action=2&trato=2&torneo="+a
+}
+
+function modificar(a)
+{
+	location.href="?id=7&action=1&trato=2&personaje="+a
 }

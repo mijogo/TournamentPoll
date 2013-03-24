@@ -200,7 +200,70 @@ class LogicC
 					$newSchedule->save();
 				}
 				Redireccionar("?id=1");
-			}			
+			}
+		
+		}
+		if($_GET['id']==6)
+		{
+			if($_GET['trato']==1)
+			{
+				$torneoCrear = new Torneo();
+				$torneoCrear->setAno($_POST['anio']);
+				$torneoCrear->setVersion($_POST['version']);				
+				$torneoCrear->setNombre($_POST['nombre']);				
+				$torneoCrear->setStatus(0);
+				Redireccionar("?id=6");
+			}
+			else if($_GET['trato']==2)
+			{
+				$torneoCrear = new Torneo();
+				$torneoCrear->setId($_GET['torneo']);
+				$torneoCrear = $torneoCrear->read(false,1,array("Id"));
+				$torneoCrear->setStatus(1);
+				$torneoCrear->update(1,array("Status"),1,array("Id"));
+				Redireccionar("?id=6");
+			}
+		}
+		if($_GET['id']==7)
+		{
+			if($_GET['trato']==2)
+			{
+				$personajemod = new Personaje();
+				$personajemod->setId($_POST['id']);
+				$personajemod = $personajemod->read(false,1,array("Id"));
+				$personajemod->setNombre($_POST['nombre']);
+				$personajemod->setSerie($_POST['serie']);
+				$personajemod->setInscripcion($_POST['inscripcion']);
+				$personajemod->setEliminada($_POST['eliminada']);
+				$personajemod->setGrupo($_POST['grupo']);
+				$personajemod->setRonda($_POST['ronda']);
+				if($_FILES[ 'imagen' ][ 'tmp_name' ] !="" )
+				{
+					$str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+					$cad = "";
+					for($i=0;$i<18;$i++) 
+					{
+						$cad .= substr($str,rand(0,62),1);
+					}
+					$tamano = $_FILES [ 'imagen' ][ 'size' ]; 
+					$tamaño_max="50000000000";
+					if( $tamano < $tamaño_max)
+					{ 
+						$destino = 'images' ;
+						$sep=explode('image/',$_FILES["imagen"]["type"]);
+						$tipo=$sep[1];
+						if($tipo == "gif" || $tipo == "pjpeg" || $tipo == "bmp" || $tipo == "png" || $tipo == "jpg" || $tipo == "jpeg")
+						{
+							move_uploaded_file ( $_FILES [ 'imagen' ][ 'tmp_name' ], "../".$destino . '/' .$cad.'.'.$tipo);
+							$personajemod->setImagen($destino . '/' .$cad.'.'.$tipo);
+						}
+						else echo "el tipo de archivo no es de los permitidos";
+					}
+					else echo "El archivo supera el peso permitido.";
+				}
+				$personajemod->update(7,array("Nombre","Serie","Inscripcion","Eliminada","Grupo","Ronda","Imagen"),1,array("Id"));
+				Redireccionar("?id=7");
+			}
 		}
 	}
 		
@@ -402,7 +465,6 @@ class LogicC
 					}
 				}while(!$termino);
 			}
-
 		}		
 	}
 	
