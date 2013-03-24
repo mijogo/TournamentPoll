@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 03-01-2013 a las 22:25:07
+-- Tiempo de generación: 24-03-2013 a las 16:22:51
 -- Versión del servidor: 5.5.24-log
--- Versión de PHP: 5.4.3
+-- Versión de PHP: 5.3.13
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -29,12 +29,12 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `admin` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `User` varchar(30) COLLATE utf8_bin NOT NULL,
-  `Pass` varchar(30) COLLATE utf8_bin NOT NULL,
+  `Pass` varchar(100) COLLATE utf8_bin NOT NULL,
   `Mail` varchar(50) COLLATE utf8_bin NOT NULL,
   `Authpass` varchar(30) COLLATE utf8_bin NOT NULL,
   `Nivel` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -44,13 +44,13 @@ CREATE TABLE IF NOT EXISTS `admin` (
 
 CREATE TABLE IF NOT EXISTS `batalla` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Fecha` datetime NOT NULL,
+  `Fecha` date NOT NULL,
   `Ronda` varchar(15) COLLATE utf8_bin NOT NULL,
   `Grupo` varchar(15) COLLATE utf8_bin NOT NULL,
   `Torneo` int(11) NOT NULL,
   `Activa` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=260 ;
 
 -- --------------------------------------------------------
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `ip` (
   `Tiempo` int(11) NOT NULL,
   `Usada` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=94 ;
 
 -- --------------------------------------------------------
 
@@ -79,18 +79,48 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `Titulo` varchar(25) COLLATE utf8_bin NOT NULL,
   `Descripcion` text COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=11 ;
 
 --
 -- Volcado de datos para la tabla `menu`
 --
 
 INSERT INTO `menu` (`Id`, `IdDependencia`, `Titulo`, `Descripcion`) VALUES
-(1, -1, 'Home', 'Aqui va la informacion principal del torneo'),
-(3, -1, 'Informacion', 'La informacion necesaria ira aca'),
-(4, -1, 'Zona de Votacion', ''),
-(5, 3, 'Manifiesto', ''),
-(6, 3, 'Calendario', '');
+(1, -1, 'Main', 'Aqui va la informacion principal del torneo'),
+(3, -1, 'Reglas', 'La informacion necesaria ira aca'),
+(4, -1, 'Calendario', ''),
+(5, -1, 'Votar', ''),
+(6, -1, 'Fixture', ''),
+(7, -1, 'Estadisticas', ''),
+(8, -1, 'Foro', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `menuadmin`
+--
+
+CREATE TABLE IF NOT EXISTS `menuadmin` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `IdDependencia` int(11) NOT NULL,
+  `Titulo` varchar(20) COLLATE utf8_bin NOT NULL,
+  `Descripcion` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+
+--
+-- Volcado de datos para la tabla `menuadmin`
+--
+
+INSERT INTO `menuadmin` (`Id`, `IdDependencia`, `Titulo`, `Descripcion`) VALUES
+(1, -1, 'Home', 'este es el menu de los administradores'),
+(2, -1, 'Programacion', ''),
+(3, 2, 'Acciones', ''),
+(4, 2, 'Calendario', ''),
+(5, -1, 'Nominacion', ''),
+(6, -1, 'Torneo', 'Aqui se guardan todas las opciones de torneo'),
+(7, -1, 'Personaje', 'Aqui se modificaran a los personajes'),
+(8, -1, 'Exhibicion', 'Aca se agregaran los match de exhibicion');
 
 -- --------------------------------------------------------
 
@@ -117,11 +147,11 @@ CREATE TABLE IF NOT EXISTS `personaje` (
   `Serie` varchar(40) COLLATE utf8_bin NOT NULL,
   `Imagen` varchar(30) COLLATE utf8_bin NOT NULL,
   `Inscripcion` int(11) NOT NULL,
-  `Eliminado` int(11) NOT NULL,
+  `Eliminada` int(11) NOT NULL,
   `Grupo` varchar(15) COLLATE utf8_bin NOT NULL,
   `Ronda` varchar(15) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=370 ;
 
 -- --------------------------------------------------------
 
@@ -136,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `schedule` (
   `Hecho` int(11) NOT NULL,
   `Target` varchar(20) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=246 ;
 
 -- --------------------------------------------------------
 
@@ -151,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `torneo` (
   `Nombre` varchar(30) COLLATE utf8_bin NOT NULL,
   `Status` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -160,12 +190,13 @@ CREATE TABLE IF NOT EXISTS `torneo` (
 --
 
 CREATE TABLE IF NOT EXISTS `voto` (
-  `Id` int(11) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Fecha` datetime NOT NULL,
   `IdBatalla` int(11) NOT NULL,
   `IdPersonaje` int(11) NOT NULL,
-  `IP` varchar(20) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `IP` varchar(20) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=250 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
