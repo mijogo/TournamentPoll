@@ -91,58 +91,65 @@ class LogicV
 		{
 			$buscarTorneo = new Torneo();
 			$buscarTorneo = $buscarTorneo->read();
+			$hay = 0;
 			for($i=0;$i<count($buscarTorneo);$i++)
 			{
 				if($buscarTorneo[$i]->getStatus()>0)
 				{
 					$esteTorneo = $buscarTorneo[$i];
+					$hay++;
 				}
 			}
-			if($esteTorneo->getStatus() == 1)
-			{	
-				$text.="No hay acciones disponibles";
-			}
-
-			if($esteTorneo->getStatus() == 2)
+			if($hay>0)
 			{
-				$text.=Nominaciones(configuracion("Config","NNominaciones"));
-			}
-			if($esteTorneo->getStatus() == 3)
-			{
-				$BatallasActivas = new Batalla();
-				$BatallasActivas->setActiva(0);
-				$consulta = array("Activa");
-				$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
-				$text .= "<h6>".fechaHoraActual("Y-m-d")."</h6>
-				<h1>Nominaciones</h1>";
-				$text1 = "";
-				$idBataAr=array();
-				for($i=0;$i<count($BatallasActivas);$i++)
+				if($esteTorneo->getStatus() == 1)
+				{	
+					$text.="No hay acciones disponibles";
+				}
+	
+				if($esteTorneo->getStatus() == 2)
 				{
-					$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br></h3>";
-					$buscarPersonajes = new Personaje();
-					$buscarPersonajes->setRonda($BatallasActivas[$i]->getRonda());
-					$buscarPersonajes->setGrupo($BatallasActivas[$i]->getGrupo());
-					$consulta = array("Ronda","AND","Grupo");
-					$buscarPersonajes = $buscarPersonajes->read(true,2,$consulta);
-					$secuencia="";
-					for($j=0;$j<count($buscarPersonajes);$j++)
-					{
-						$secuencia .= $buscarPersonajes[$j]->getId();
-						if($j+1!=count($buscarPersonajes))
-							$secuencia .= "-";
-					}
-				
-					for($j=0;$j<count($buscarPersonajes);$j++)
-					{
-						$datos[0][0] =  img($buscarPersonajes[$j]->getImagen(),"","","","bordes");
-						$datos[0][1] =  $buscarPersonajes[$j]->getNombre();
-						$text1 .= botonVoto($BatallasActivas[$i]->getId(),$buscarPersonajes[$j]->getId(),$secuencia,table($datos,"0-80"));							
-					}
-					$idBataAr[] = $BatallasActivas[$i]->getId();
+					$text.=Nominaciones(configuracion("Config","NNominaciones"));
 				}
-				$text .=  div($text1.formVoto("?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
+				if($esteTorneo->getStatus() == 3)
+				{
+					$BatallasActivas = new Batalla();
+					$BatallasActivas->setActiva(0);
+					$consulta = array("Activa");
+					$BatallasActivas = $BatallasActivas->read(true,1,$consulta);
+					$text .= "<h6>".fechaHoraActual("Y-m-d")."</h6>
+					<h1>Nominaciones</h1>";
+					$text1 = "";
+					$idBataAr=array();
+					for($i=0;$i<count($BatallasActivas);$i++)
+					{
+						$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br></h3>";
+						$buscarPersonajes = new Personaje();
+						$buscarPersonajes->setRonda($BatallasActivas[$i]->getRonda());
+						$buscarPersonajes->setGrupo($BatallasActivas[$i]->getGrupo());
+						$consulta = array("Ronda","AND","Grupo");
+						$buscarPersonajes = $buscarPersonajes->read(true,2,$consulta);
+						$secuencia="";
+						for($j=0;$j<count($buscarPersonajes);$j++)
+						{
+							$secuencia .= $buscarPersonajes[$j]->getId();
+							if($j+1!=count($buscarPersonajes))
+								$secuencia .= "-";
+						}
+					
+						for($j=0;$j<count($buscarPersonajes);$j++)
+						{
+							$datos[0][0] =  img($buscarPersonajes[$j]->getImagen(),"","","","bordes");
+							$datos[0][1] =  $buscarPersonajes[$j]->getNombre();
+							$text1 .= botonVoto($BatallasActivas[$i]->getId(),$buscarPersonajes[$j]->getId(),$secuencia,table($datos,"0-80"));							
+						}
+						$idBataAr[] = $BatallasActivas[$i]->getId();
+					}
+					$text .=  div($text1.formVoto("?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
+				}
 			}
+			else
+				$text .="<h1>Aun no empieza el torneo</h1>";
 		}
 		if($_GET['id']==7)
 		{

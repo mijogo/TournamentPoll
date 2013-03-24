@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-03-2013 a las 16:22:51
+-- Tiempo de generación: 24-03-2013 a las 16:38:23
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.3.13
 
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `menuadmin` (
   `Titulo` varchar(20) COLLATE utf8_bin NOT NULL,
   `Descripcion` text COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=10 ;
 
 --
 -- Volcado de datos para la tabla `menuadmin`
@@ -120,7 +120,8 @@ INSERT INTO `menuadmin` (`Id`, `IdDependencia`, `Titulo`, `Descripcion`) VALUES
 (5, -1, 'Nominacion', ''),
 (6, -1, 'Torneo', 'Aqui se guardan todas las opciones de torneo'),
 (7, -1, 'Personaje', 'Aqui se modificaran a los personajes'),
-(8, -1, 'Exhibicion', 'Aca se agregaran los match de exhibicion');
+(8, -1, 'Exhibicion', 'Aca se agregaran los match de exhibicion'),
+(9, -1, 'Logout', 'desloguearse');
 
 -- --------------------------------------------------------
 

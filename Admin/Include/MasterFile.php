@@ -12,7 +12,7 @@ class MasterClass
 		if(!isset($_GET['action']))
 			$_GET['action']=1;
 
-		if(!isset($_COOKIE['user']))
+		if(!isset($_COOKIE['user'])||$_COOKIE['user']=="Cerrado")
 		{
 			if(!isset($_GET['id']))
 				$_GET['id']=0;

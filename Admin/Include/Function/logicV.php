@@ -91,42 +91,49 @@ class LogicV
 			
 			$buscarTorneo = new Torneo();
 			$buscarTorneo = $buscarTorneo->read();
+			$hay=0;
 			for($i=0;$i<count($buscarTorneo);$i++)
 			{
 				if($buscarTorneo[$i]->getStatus()>0)
 				{
 					$esteTorneo = $buscarTorneo[$i];
+					$hay++;
 				}
 			}
-			$valS[0][0]="Fecha";
-			$valS[0][1]="Ronda";
-			$valS[0][2]="Grupo";
-			$valS[0][3]="Estado";
-			$valS[0][4]="Id";
-			
-			$datoBatalla = new Batalla();
-			$datoBatalla->setTorneo($esteTorneo->getId());
-			$ordenar = array("Fecha","ASC");
-			$consulta = array("Torneo");
-			$datoBatalla = $datoBatalla->read(true,1,$consulta,1,$ordenar);
-			
-			for($i=0;$i<count($datoBatalla);$i++)
+			if($hay>0)
 			{
-				$valS[$i+1][0]=$datoBatalla[$i]->getFecha();
-				$valS[$i+1][1]=$datoBatalla[$i]->getRonda();
-				$valS[$i+1][2]=$datoBatalla[$i]->getGrupo();
-				if($datoBatalla[$i]->getActiva()==-1)
-					$valS[$i+1][3]="No Cursado";
-				if($datoBatalla[$i]->getActiva()==0)
-					$valS[$i+1][3]="Activa";
-				if($datoBatalla[$i]->getActiva()==1)
-					$valS[$i+1][3]="Finalizado";
-				$valS[$i+1][4]=$datoBatalla[$i]->getId();	
-				$valS[$i+1][5]=input("changeBatalla[]","checkbox",$datoBatalla[$i]->getId());	
+				$valS[0][0]="Fecha";
+				$valS[0][1]="Ronda";
+				$valS[0][2]="Grupo";
+				$valS[0][3]="Estado";
+				$valS[0][4]="Id";
+				
+				$datoBatalla = new Batalla();
+				$datoBatalla->setTorneo($esteTorneo->getId());
+				$ordenar = array("Fecha","ASC");
+				$consulta = array("Torneo");
+				$datoBatalla = $datoBatalla->read(true,1,$consulta,1,$ordenar);
+				
+				for($i=0;$i<count($datoBatalla);$i++)
+				{
+					$valS[$i+1][0]=$datoBatalla[$i]->getFecha();
+					$valS[$i+1][1]=$datoBatalla[$i]->getRonda();
+					$valS[$i+1][2]=$datoBatalla[$i]->getGrupo();
+					if($datoBatalla[$i]->getActiva()==-1)
+						$valS[$i+1][3]="No Cursado";
+					if($datoBatalla[$i]->getActiva()==0)
+						$valS[$i+1][3]="Activa";
+					if($datoBatalla[$i]->getActiva()==1)
+						$valS[$i+1][3]="Finalizado";
+					$valS[$i+1][4]=$datoBatalla[$i]->getId();	
+					$valS[$i+1][5]=input("changeBatalla[]","checkbox",$datoBatalla[$i]->getId());	
+				}
+				$text1 .= table($valS,"0-80;1-100;2-50;3-80;4-40;5-20");
+				$text .= div(form($text1,"inscipcion","?id=4&action=2"));
+				//$text .= div($text0);
 			}
-			$text1 .= table($valS,"0-80;1-100;2-50;3-80;4-40;5-20");
-			$text .= div(form($text1,"inscipcion","?id=4&action=2"));
-			//$text .= div($text0);
+			else
+				$text .="<h1>No hay torneo</h1>";
 		}		
 		
 		if($_GET['id']==5)
@@ -334,6 +341,10 @@ class LogicV
 			$text .= div(form($text1,"Torneo","?id=8&action=2"),"","fight");
 			$text .= "En Contruccion";
 		}
+		if($_GET['id']==9)
+		{
+			setcookie("user", "Cerrado");
+		}		
 		return $text;
 	}
 	

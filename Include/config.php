@@ -3,7 +3,7 @@ define("AUTHPASS","sda7hbnc7hh33jf8syy");
 define("SERVER","localhost");
 define("USER","root");
 define("PASS","");
-define("MYDB","BroTournament");
+define("MYDB","PollTournament");
 
 function configuracion($instancia,$parte)
 {//NGrupo, cantidad de grupos & second , tiene segunda & clas1 y clas2 & nextRonda1 & grupoFijo & NBatalla

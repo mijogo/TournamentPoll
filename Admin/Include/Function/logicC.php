@@ -212,6 +212,7 @@ class LogicC
 				$torneoCrear->setVersion($_POST['version']);				
 				$torneoCrear->setNombre($_POST['nombre']);				
 				$torneoCrear->setStatus(0);
+				$torneoCrear->save();
 				Redireccionar("?id=6");
 			}
 			else if($_GET['trato']==2)
@@ -612,7 +613,7 @@ class LogicC
 			}
 		}
 		
-		$instancia = "Preeliminares";
+		$instancia = "Preliminares";
 		$sigue = true;		
 		$fecha = "2013-01-01";
 		while($sigue)
