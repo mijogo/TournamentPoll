@@ -122,12 +122,11 @@ $text .="</div>
 		return $text;
 	}
 	
-	function foot()
+	function foot($rev="")
 	{
 		$text = "";
 		$text ="<div id=\"Foot\">
-Aca iria los agradecimiento y las redes sociales<br/>
-tambien se le podrian agregar otras cosas</div>
+".$rev."
 </div>
   <!-- javascript at the bottom for fast page loading -->
   <script type=\"text/javascript\" src=\"js/jquery.js\"></script>

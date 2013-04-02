@@ -5,7 +5,7 @@ class PeleaBD extends DataBase
 	function PeleaBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Pelea (IdPersonaje,IdBatalla,Votos) VALUES 
+	{		$sql = "INSERT INTO pelea (IdPersonaje,IdBatalla,Votos) VALUES 
 		(
 		'".$this->IdPersonaje."',
 		'".$this->IdBatalla."',
@@ -15,7 +15,7 @@ class PeleaBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Pelea ";
+		$sql="SELECT * FROM pelea ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -62,7 +62,7 @@ class PeleaBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Pelea ";
+		$sql="UPDATE pelea ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

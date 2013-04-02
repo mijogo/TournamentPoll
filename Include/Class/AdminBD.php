@@ -5,7 +5,7 @@ class AdminBD extends DataBase
 	function AdminBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Admin (Id,User,Pass,Mail,Authpass,Nivel) VALUES 
+	{		$sql = "INSERT INTO admin (Id,User,Pass,Mail,Authpass,Nivel) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->User."',
@@ -18,7 +18,7 @@ class AdminBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Admin ";
+		$sql="SELECT * FROM admin ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -65,7 +65,7 @@ class AdminBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Admin ";
+		$sql="UPDATE admin ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

@@ -5,7 +5,7 @@ class LogicC
 		
 	function trabaja()
 	{
-		if($_GET['id']==4)
+		if($_GET['id']==5)
 		{
 			if($_GET['trato']==1)
 			{
@@ -159,14 +159,14 @@ class LogicC
 	}
 	function sorteo($instancia="",$numeroGrupo="")
 	{
-		if($instancia=="Preeliminares")
+		if($instancia=="Preliminares")
 		{
 			$personajesSortear = new Personaje();
 			$personajesSortear->setInscripcion(1);
 			$personajesSortear->setRonda("Nominacion");
 			$consulta = array("Inscripcion","AND","Ronda");
 			$personajesSortear = $personajesSortear->read(true,2,$consulta);
-			$cantidad = count($personajesSortear)/(configuracion("Preeliminares","NGrupos")-$numeroGrupo+1);
+			$cantidad = count($personajesSortear)/(configuracion("Preliminares","NGrupos")-$numeroGrupo+1);
 			$consultaUp = array("Id");
 			$cambio = array("Ronda","Grupo");
 
@@ -185,7 +185,7 @@ class LogicC
 						}
 						else
 							$grupoPoner = $numeroGrupo;
-						$personajesSortear[$num]->setRonda("Preeliminares");
+						$personajesSortear[$num]->setRonda("Preliminares");
 						$personajesSortear[$num]->setGrupo($grupoPoner);
 						$personajesSortear[$num]->update(2,$cambio,1,$consultaUp);
 					}
@@ -443,14 +443,15 @@ class LogicC
 			}
 		}
 		
-		$instancia = "Preeliminares";
+		$instancia = "Preliminares";
 		$sigue = true;		
 		$fecha = "2013-01-01";
 		while($sigue)
 		{
 			$cantidad = configuracion($instancia,"NGrupos");
-			if($instancia=="Preeliminares"||$instancia=="Repechaje"||$instancia=="Final-1"||$instancia=="Final-2"||$instancia=="Final-3"||$instancia=="Final-4")
+			if($instancia=="Preliminares"||$instancia=="Repechaje"||$instancia=="Final-1"||$instancia=="Final-2"||$instancia=="Final-3"||$instancia=="Final-4")
 			{
+				echo $instancia." ".$cantidad."<br>";
 				for($i=0;$i<$cantidad;$i++)
 				{
 					$nuevaBatalla = new Batalla();
@@ -787,7 +788,7 @@ class LogicC
 				{
 					if($reSchedule[$i]->getTarget()==2)
 					{
-						$text .= "Nominations<br/>
+						$text .= "Nominaciones<br/>
 						".$reSchedule[$i]->getFecha()."<br/>";
 						$Sale=true;
 					}
@@ -805,19 +806,19 @@ class LogicC
 					$text .= "Enfrentamiento<br/>
 						".$reSchedule[$i]->getFecha()."<br/>";
 					$Enfrentamiento = new Batalla();
-					$Enfrentamiento->setFecha($reSchedule[$i]->getFecha());
+					$Enfrentamiento->setFecha($reSchedule[$i]->getTarget());
 					$Enfrentamiento = $Enfrentamiento->read(true,1,array("Fecha"));
 					for($k=0;$k<count($Enfrentamiento);$k++)
 					{
 						$text .= "<h5>".$Enfrentamiento[$k]->getRonda()."  ".$Enfrentamiento[$k]->getGrupo()."</h5>";
-						$personajesBR = new Personaje();
+						/*$personajesBR = new Personaje();
 						$personajesBR->setRonda($Enfrentamiento[$k]->getRonda());
 						$personajesBR->setGrupo($Enfrentamiento[$k]->getGrupo());
 						$personajesBR=$personajesBR->read(true,2,array("Ronda","AND","Grupo"));
 						for($j=0;$j<count($personajesBR);$j++)
 						{
 							$text .= $personajesBR[$j]->getNombre()."(".$personajesBR[$j]->getSerie().")</br>";
-						}
+						}*/
 					}
 					$Sale=true;
 				}

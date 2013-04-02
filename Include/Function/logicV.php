@@ -87,6 +87,22 @@ class LogicV
 			}
 			
 		}
+		if($_GET['id']==3)
+		{
+			$file = fopen("Include/Function/reglas.html", "r") or exit("Unable to open file!");
+			//Output a line of the file until the end is reached
+			$text="";
+			while(!feof($file))
+			{
+				$text .= fgets($file);
+			}
+			$text = div($text,"","fight");
+			fclose($file);
+		}
+		if($_GET['id']==4)
+		{
+			$text .= div(img("images/calendariomsat.png"),"","fight");
+		}
 		if($_GET['id']==5)
 		{
 			$buscarTorneo = new Torneo();
@@ -145,7 +161,7 @@ class LogicV
 						}
 						$idBataAr[] = $BatallasActivas[$i]->getId();
 					}
-					$text .=  div($text1.formVoto("?id=4&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
+					$text .=  div($text1.formVoto("?id=5&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");			
 				}
 			}
 			else
@@ -318,6 +334,7 @@ class LogicV
 				}
 				$text = div($text,"","fight");
 			}
+
 		}
 		/*
 		for($j=0;$j<count($datosUtilizar);$j++)

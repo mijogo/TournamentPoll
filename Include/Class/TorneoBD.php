@@ -5,7 +5,7 @@ class TorneoBD extends DataBase
 	function TorneoBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Torneo (Id,Ano,Version,Nombre,Status) VALUES 
+	{		$sql = "INSERT INTO torneo(Id,Ano,Version,Nombre,Status) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Ano."',
@@ -17,7 +17,7 @@ class TorneoBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Torneo ";
+		$sql="SELECT * FROM torneo ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -64,7 +64,7 @@ class TorneoBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Torneo ";
+		$sql="UPDATE torneo ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

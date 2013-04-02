@@ -5,7 +5,7 @@ class BatallaBD extends DataBase
 	function BatallaBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Batalla (Id,Fecha,Ronda,Grupo,Torneo,Activa) VALUES 
+	{		$sql = "INSERT INTO batalla (Id,Fecha,Ronda,Grupo,Torneo,Activa) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Fecha."',
@@ -18,7 +18,7 @@ class BatallaBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Batalla ";
+		$sql="SELECT * FROM batalla ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -66,7 +66,7 @@ class BatallaBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Batalla ";
+		$sql="UPDATE batalla ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

@@ -5,7 +5,7 @@ class MenuAdminBD extends DataBase
 	function MenuAdminBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO MenuAdmin (Id,IdDependencia,Titulo,Descripcion) VALUES 
+	{		$sql = "INSERT INTO menuadmin (Id,IdDependencia,Titulo,Descripcion) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->IdDependencia."',
@@ -16,7 +16,7 @@ class MenuAdminBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM MenuAdmin ";
+		$sql="SELECT * FROM menuadmin ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -63,7 +63,7 @@ class MenuAdminBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE MenuAdmin ";
+		$sql="UPDATE menuadmin ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

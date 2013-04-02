@@ -5,7 +5,7 @@ class IpBD extends DataBase
 	function IpBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Ip (Id,Fecha,IP,Tiempo,Usada) VALUES 
+	{		$sql = "INSERT INTO ip (Id,Fecha,IP,Tiempo,Usada) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Fecha."',
@@ -17,7 +17,7 @@ class IpBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Ip ";
+		$sql="SELECT * FROM ip ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -64,7 +64,7 @@ class IpBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Ip ";
+		$sql="UPDATE ip ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

@@ -213,10 +213,10 @@ function Instancia(instancia,cantidad)
 
 function regresar()
 {
-	location.href='?id=9';
+	location.href='?id=7';
 }
 
 function ingresar(instancia,grupo)
 {
-	location.href="?id=9&trato=2&instancia="+instancia+"&grupo="+grupo;
+	location.href="?id=7&trato=2&instancia="+instancia+"&grupo="+grupo;
 }

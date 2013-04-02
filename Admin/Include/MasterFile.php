@@ -41,7 +41,7 @@ class MasterClass
 			$logicaCodigo = new LogicC();
 			if($_GET['action']==1)
 			{
-				$logicaCodigo->Schedule();
+				//$logicaCodigo->Schedule();
 
 				echo $this->Cabecera();	
 				echo $this->Principal();		

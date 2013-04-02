@@ -4,8 +4,8 @@
 	Minutos = marcacion.getUTCMinutes()  
 	Segundos = marcacion.getUTCSeconds()  
 	Anio = marcacion.getUTCFullYear()
-	Mes = marcacion.getUTCMonth()
-	Dia = marcacion.getUTCDay()
+	Mes = marcacion.getUTCMonth()+1
+	Dia = marcacion.getUTCDate()
 	if (Hora<=9) 
 		Hora = "0" + Hora
 	if (Minutos<=9) 
@@ -227,7 +227,7 @@ function mod()
 	if(document.inscipcion.Accion.value==2)
 	{
 		var option=""
-		option+="<OPTION VALUE=\"Preeliminares\">Preeliminares</OPTION>"
+		option+="<OPTION VALUE=\"Preliminares\">Preliminares</OPTION>"
 		option+="<OPTION VALUE=\"Repechaje\">Repechaje</OPTION>"
 		option+="<OPTION VALUE=\"Principal\">Principal</OPTION>"
 		option+="<OPTION VALUE=\"Final\">Final"

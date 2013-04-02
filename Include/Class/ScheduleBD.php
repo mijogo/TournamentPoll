@@ -5,7 +5,7 @@ class ScheduleBD extends DataBase
 	function ScheduleBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Schedule (Id,Accion,Fecha,Hecho,Target) VALUES 
+	{		$sql = "INSERT INTO schedule (Id,Accion,Fecha,Hecho,Target) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Accion."',
@@ -17,7 +17,7 @@ class ScheduleBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Schedule ";
+		$sql="SELECT * FROM schedule ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -64,7 +64,7 @@ class ScheduleBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Schedule ";
+		$sql="UPDATE schedule ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

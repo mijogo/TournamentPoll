@@ -279,3 +279,12 @@ clear:both;
  background: #91adde; 
  color: #ffffff; } */
  
+ .auto-style1 {
+	font-size: medium;
+}
+.auto-style2 {
+	text-decoration: underline;
+}
+.auto-style3 {
+	text-align: center;
+}

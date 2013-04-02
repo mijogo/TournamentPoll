@@ -5,7 +5,7 @@ class VotoBD extends DataBase
 	function VotoBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Voto (Id,Fecha,IdBatalla,IdPersonaje,IP) VALUES 
+	{		$sql = "INSERT INTO voto (Id,Fecha,IdBatalla,IdPersonaje,IP) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Fecha."',
@@ -17,7 +17,7 @@ class VotoBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Voto ";
+		$sql="SELECT * FROM voto ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -64,7 +64,7 @@ class VotoBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Voto ";
+		$sql="UPDATE voto ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

@@ -5,7 +5,7 @@ class PersonajeBD extends DataBase
 	function PersonajeBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Personaje (Id,Nombre,Serie,Imagen,Inscripcion,Eliminada,Grupo,Ronda) VALUES 
+	{		$sql = "INSERT INTO personaje (Id,Nombre,Serie,Imagen,Inscripcion,Eliminada,Grupo,Ronda) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Nombre."',
@@ -20,7 +20,7 @@ class PersonajeBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Personaje ";
+		$sql="SELECT * FROM personaje ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -68,7 +68,7 @@ class PersonajeBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Personaje ";
+		$sql="UPDATE personaje ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

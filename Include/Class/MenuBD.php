@@ -5,7 +5,7 @@ class MenuBD extends DataBase
 	function MenuBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO Menu (Id,IdDependencia,Titulo,Descripcion) VALUES 
+	{		$sql = "INSERT INTO menu (Id,IdDependencia,Titulo,Descripcion) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->IdDependencia."',
@@ -16,7 +16,7 @@ class MenuBD extends DataBase
 
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM Menu ";
+		$sql="SELECT * FROM menu ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -63,7 +63,7 @@ class MenuBD extends DataBase
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE Menu ";
+		$sql="UPDATE menu ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";

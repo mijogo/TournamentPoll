@@ -5,6 +5,7 @@ class MasterClass
 	function MasterClass()
 	{
 		$this->estructura = new structura();
+                $this->nombre="Nombre de la pagina";
 	}
 	
 	function Trabajar()
@@ -13,6 +14,8 @@ class MasterClass
 			$_GET['id']=1;
 		if(!isset($_GET['action']))
 			$_GET['action']=1;
+		if($_GET['id']==8)
+			Redireccionar("Nombre pag a redirigir");
 
 		$logicaVista = new LogicV();		
 		$logicaCodigo = new LogicC();
@@ -61,11 +64,11 @@ class MasterClass
 					$datos1=$moreLogicaCodigo->datosGrafo($cualesBatalla[$i]->getId(),configuracion("Config","Intervalo"),configuracion("Config","Hora Inicio"),configuracion("Config","Duracion Live"),configuracion("Config","Max Miembros Grafo"));
 					$text2.=grafico("Grupo ".$cualesBatalla[$i]->getGrupo(),"graf".$cualesBatalla[$i]->getId(),$datos1[0],$datos1[1]);
 				}
-				return $this->estructura->head("Certamen Brolicones",$text2);
+				return $this->estructura->head( $this->nombre,$text2);
 			}
 			else
 			{
-				return $this->estructura->head("Certamen Brolicones");
+				return $this->estructura->head( $this->nombre);
 			}
 		}
 		elseif($_GET['id']==9)
@@ -106,14 +109,14 @@ class MasterClass
 						}
 					}
 				}
-				return $this->estructura->head("Certamen Brolicones",$text2);
+				return $this->estructura->head( $this->nombre,$text2);
 			}
 			else
-				return $this->estructura->head("Certamen Brolicones");
+				return $this->estructura->head( $this->nombre);
 
 		}
 		else
-			return $this->estructura->head("Certamen Brolicones");
+			return $this->estructura->head($this->nombre);
 	}
 	
 	function Principal()
@@ -129,7 +132,16 @@ class MasterClass
 	
 	function Pie()
 	{
-		return $this->estructura->foot();
+		$file = fopen("Include/Function/foot.html", "r") or exit("Unable to open file!");
+		//Output a line of the file until the end is reached
+		$text="";
+		while(!feof($file))
+		{
+			$text .= fgets($file);
+		}
+		fclose($file);
+		return $this->estructura->foot($text);
+
 	}
 }
 ?>

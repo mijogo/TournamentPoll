@@ -34,8 +34,8 @@ class LogicV
 			$datos[1][1]=fechaGenerador("Fecha");
 			
 			$datos[2][0]="Extra";
-			$value2[0][0]="Preeliminares";
-			$value2[0][1]="Preeliminares";
+			$value2[0][0]="Preliminares";
+			$value2[0][1]="Preliminares";
 			$value2[1][0]="Repechaje";
 			$value2[1][1]="Repechaje";
 			$value2[2][0]="Principal";
@@ -43,7 +43,7 @@ class LogicV
 			$value2[3][0]="Final";
 			$value2[3][1]="Final";
 
-			$datos[2][1]=div(selected("Extra",$value2)." Grupo ".input("text","Extra2"),"Modi");
+			$datos[2][1]=div(selected("Extra",$value2)." Grupo ".input("Extra2","text"),"Modi");
 
 			$datos[3][0]="";
 			$datos[3][1]=input("Enviar","submit","Enviar","subboto");

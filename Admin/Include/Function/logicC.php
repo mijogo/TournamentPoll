@@ -619,7 +619,7 @@ class LogicC
 		while($sigue)
 		{
 			$cantidad = configuracion($instancia,"NGrupos");
-			if($instancia=="Preeliminares"||$instancia=="Repechaje"||$instancia=="Final-1"||$instancia=="Final-2"||$instancia=="Final-3"||$instancia=="Final-4")
+			if($instancia=="Preliminares"||$instancia=="Repechaje"||$instancia=="Final-1"||$instancia=="Final-2"||$instancia=="Final-3"||$instancia=="Final-4")
 			{
 				for($i=0;$i<$cantidad;$i++)
 				{

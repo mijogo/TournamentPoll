@@ -1,36 +1,38 @@
 <?php
-define("AUTHPASS","sda7hbnc7hh33jf8syy");
-define("SERVER","localhost");
-define("USER","root");
-define("PASS","");
-define("MYDB","PollTournament");
+define("AUTHPASS","Crear una auth pass");
+define("SERVER","el server sql");
+define("USER","usuario sql");
+define("PASS","pass sql");
+define("MYDB","nombre de la DB");
 
 function configuracion($instancia,$parte)
 {//NGrupo, cantidad de grupos & second , tiene segunda & clas1 y clas2 & nextRonda1 & grupoFijo & NBatalla
 	$text = "";
 	if($parte=="second")
 		$text = false;
+	if($parte == "LimiteVoto")
+		$text = 1;
 		
 	if($instancia == "Config")
 	{
 		//cantidad en minutos de la duracion del match
 		if($parte == "Duracion Batalla")
-			$text = 2760;
+			$text = 1320;
 		//el tiempo extra que toma sacar los resultados en minutos
 		if($parte == "Extra conteo")
-			$text = 20;
+			$text = 10;
 		//NÂ° Nominaciones
 		if($parte == "NNominaciones")
-			$text = 5;
+			$text = 12;
 		//Intervalo entre medicion y medicion en minutos
 		if($parte == "Intervalo")
 			$text = 20;
 		//marca la hora de inicio de los match
 		if($parte == "Hora Inicio")
-			$text = "1:00:00";
+			$text = "00:00:00";
 		//duracion del contador durante un match
 		if($parte == "Duracion Live")
-			$text = 2000;
+			$text = 1200;
 		//duracion del contador durante un match
 		if($parte == "Max Miembros Grafo")
 			$text = 10;
@@ -38,13 +40,13 @@ function configuracion($instancia,$parte)
 	if($instancia == "Preliminares")
 	{
 		if($parte == "NGrupos")
-			$text = 6;
+			$text = 16;
 		if($parte == "second")
 			$text = true;
 		if($parte == "clas1")
-			$text = 8;
+			$text = 12;
 		if($parte == "clas2")
-			$text = 18;
+			$text = 36;
 		if($parte == "nextRonda1")
 			$text = "Ronda-1";
 		if($parte == "nextRonda2")
@@ -52,25 +54,28 @@ function configuracion($instancia,$parte)
 		if($parte == "grupoFijo")
 			$text = false;
 		if($parte == "LimiteVoto")
-			$text = 8;
+			$text = 10;
 	}
 	else if($instancia == "Repechaje")
 	{
 		if($parte == "NGrupos")
-			$text = 3;
+			$text = 6;
 		if($parte == "second")
 			$text = false;
 		if($parte == "clas1")
-			$text = 8;
+			$text = 16;
 		if($parte == "nextRonda1")
 			$text = "Ronda-1";
 		if($parte == "grupoFijo")
 			$text = false;
+		if($parte == "LimiteVoto")
+			$text = 12;
+
 	}
 	else if($instancia == "Ronda-1")
 	{
 		if($parte == "NGrupos")
-			$text = 4;
+			$text = 8;
 		if($parte == "clas1")
 			$text = 1;
 		if($parte == "nextRonda1")
@@ -78,33 +83,47 @@ function configuracion($instancia,$parte)
 		if($parte == "grupoFijo")
 			$text = false;
 		if($parte == "NBatalla")
-			$text = 6;
+			$text = 12;
 	}
 
 	else if($instancia == "Ronda-2")
 	{
 		if($parte == "NGrupos")
-			$text = 4;
+			$text = 8;
 		if($parte == "clas1")
 			$text = 1;
 		if($parte == "nextRonda1")
 			$text = "Ronda-3";
 		if($parte == "grupoFijo")
-			$text = false;
+			$text = true;
 		if($parte == "NBatalla")
-			$text = 2;
+			$text = 4;
 	}
 	
 	else if($instancia == "Ronda-3")
 	{
 		if($parte == "NGrupos")
-			$text = 4;
+			$text = 8;
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "nextRonda1")
+			$text = "Ronda-4";
+		if($parte == "grupoFijo")
+			$text = true;
+		if($parte == "NBatalla")
+			$text = 2;
+	}
+
+	else if($instancia == "Ronda-4")
+	{
+		if($parte == "NGrupos")
+			$text = 8;
 		if($parte == "clas1")
 			$text = 1;
 		if($parte == "nextRonda1")
 			$text = "Final-1";
 		if($parte == "grupoFijo")
-			$text = false;
+			$text = true;
 		if($parte == "NBatalla")
 			$text = 1;
 	}
@@ -112,7 +131,7 @@ function configuracion($instancia,$parte)
 	else if($instancia == "Final-1")
 	{
 		if($parte == "NGrupos")
-			$text = 2;
+			$text = 4;
 		if($parte == "second")
 			$text = false;
 		if($parte == "clas1")
@@ -126,6 +145,20 @@ function configuracion($instancia,$parte)
 	else if($instancia == "Final-2")
 	{
 		if($parte == "NGrupos")
+			$text = 2;
+		if($parte == "second")
+			$text = false;
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "nextRonda1")
+			$text = "Final-3";
+		if($parte == "grupoFijo")
+			$text = true;
+	}
+	
+	else if($instancia == "Final-3")
+	{
+		if($parte == "NGrupos")
 			$text = 1;
 		if($parte == "second")
 			$text = false;
@@ -134,7 +167,7 @@ function configuracion($instancia,$parte)
 		if($parte == "nextRonda1")
 			$text = "Termino";
 		if($parte == "grupoFijo")
-			$text = false;
+			$text = true;
 	}
 
 	else if($instancia == "Grupo")
