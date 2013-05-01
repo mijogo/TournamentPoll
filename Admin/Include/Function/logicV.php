@@ -137,16 +137,18 @@ class LogicV
 		}		
 		
 		if($_GET['id']==5)
-		{		
+		{	
+			$text.=Nominaciones(configuracion("Config","NNominaciones"),true);
+
 			$opciones[0][0]=-1;	
 			$opciones[0][1]="Rechazada";
 			$opciones[1][0]=0;
 			$opciones[1][1]="Pendiente";
 			$opciones[2][0]=1;
 			$opciones[2][1]="Aceptada";
-			$text = "Ver Nominaciones";
+			$text .= "Ver Nominaciones";
 			
-	$valS="";
+			$valS="";
 			$text1="Pendientes";
 			$valS[0][0]="Nombre";
 			$valS[0][1]="Serie";
@@ -154,7 +156,7 @@ class LogicV
 			
 			$datoPersonaje = new Personaje();
 			$datoPersonaje->setInscripcion(0);
-			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"));
+			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"),2,array("Serie","ASC","Nombre","ASC"));
 			
 			for($i=0;$i<count($datoPersonaje);$i++)
 			{
@@ -168,7 +170,7 @@ class LogicV
 			$text1 .= selected("change",$opciones);
 			$text1 .= input("submit","submit");
 
-			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
+			$text .= div(form($text1,"inscipcion","?id=5&action=2&trato=2"));
 			$text .= "<br><br>";
 			$valS="";
 			$text1="Aceptadas";
@@ -178,7 +180,7 @@ class LogicV
 			
 			$datoPersonaje = new Personaje();
 			$datoPersonaje->setInscripcion(1);
-			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"));
+			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"),2,array("Serie","ASC","Nombre","ASC"));
 			
 			for($i=0;$i<count($datoPersonaje);$i++)
 			{
@@ -192,7 +194,7 @@ class LogicV
 			$text1 .= selected("change",$opciones);
 			$text1 .= input("submit","submit");
 
-			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
+			$text .= div(form($text1,"inscipcion","?id=5&action=2&trato=2"));
 			$text .= "<br><br>";
 			$valS="";
 			$text1="Rechazadas";
@@ -202,7 +204,7 @@ class LogicV
 			
 			$datoPersonaje = new Personaje();
 			$datoPersonaje->setInscripcion(-1);
-			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"));
+			$datoPersonaje= $datoPersonaje->read(true,1,array("Inscripcion"),2,array("Serie","ASC","Nombre","ASC"));
 			
 			for($i=0;$i<count($datoPersonaje);$i++)
 			{
@@ -216,7 +218,7 @@ class LogicV
 			$text1 .= selected("change",$opciones);
 			$text1 .= input("submit","submit");
 
-			$text .= div(form($text1,"inscipcion","?id=5&action=2"));
+			$text .= div(form($text1,"inscipcion","?id=5&action=2&trato=2"));
 			$text .= "<br><br>";
 
 		}
@@ -275,7 +277,7 @@ class LogicV
 				$text1="";
 				$text.="<H1>Modificar Personaje</H1>";
 				$PersonajeM=new Personaje();
-				$PersonajeM= $PersonajeM->read(true,0,"",1,array("Inscripcion","DESC"));
+				$PersonajeM= $PersonajeM->read(true,0,"",3,array("Inscripcion","DESC","Serie","ASC","Nombre","ASC"));
 				$rasD[0][0] = "Nombre";
 				$rasD[0][1] = "Serie";			
 				$rasD[0][2] = "Imagen";	
@@ -295,7 +297,7 @@ class LogicV
 						$rasD[$i+1][3] = "No";				
 					$rasD[$i+1][4] = input("Enviar","button","Modificar","subboto","onclick=\"modificar(".$PersonajeM[$i]->getId().")\"");
 				}
-				$text1 .= table($rasD,"0-80;1-80;2-40;3-40");
+				$text1 .= table($rasD,"0-140;1-140;2-40;3-40");
 				$text .= div($text1,"","fight");
 	
 			}
@@ -334,12 +336,24 @@ class LogicV
 			$text1="";
 			$datos[0][0]="Fecha";
 			$datos[0][1]=fechaGeneradorwoHora("Fecha");
-
-			$datos[1][0]="";
-			$datos[1][1]=input("Enviar","submit","Crear","subboto");
 			$text1 .= table($datos);
+			$datoPersonaje = new Personaje();
+			$datoPersonaje = $datoPersonaje->read();
+			$valS[0][0]="Nombre";	
+			$valS[0][1]="Serie";	
+			$valS[0][2]="";	
+
+			for($i=0;$i<count($datoPersonaje);$i++)
+			{
+				$valS[$i+1][0]=$datoPersonaje[$i]->getNombre();	
+				$valS[$i+1][1]=$datoPersonaje[$i]->getSerie();	
+				$valS[$i+1][2]=input("agregarPer[]","checkbox",$datoPersonaje[$i]->getId());	
+
+			}
+			$text1 .= table($valS);
+			$text1 .= input("Enviar","submit","Crear","subboto");
+
 			$text .= div(form($text1,"Torneo","?id=8&action=2"),"","fight");
-			$text .= "En Contruccion";
 		}
 		if($_GET['id']==9)
 		{

@@ -97,6 +97,17 @@ function botonVoto($idBatalla,$idPersonaje,$idPersonajesBatalla,$content)
 	return $text;
 }
 
+function botonAct($content)
+{
+	$text = "";
+	$text .="<div class=\"botoncito\">
+<button class=\"buttonAct\">
+".$content."
+</button>
+</div>";
+	return $text;
+}
+
 function botonEscoger($content,$instancia,$cantidad)
 {
 	$text = "";
@@ -127,7 +138,7 @@ $text .="\" name=\"votacion\" />
 	return $text;
 }
 
-function Nominaciones($cant)
+function Nominaciones($cant,$Admin=false)
 {
 	$text ="";
 	$text .="
@@ -135,16 +146,19 @@ function Nominaciones($cant)
 <div class=\"fight\">
 ";
 	$datos[0][0]="Nombre";
-	$datos[0][1]="Series";
+	$datos[0][1]="Serie";
 for($i=0;$i<$cant;$i++)
 {
-	$datos[$i+1][0]=input("Nombre[]","text");
-	$datos[$i+1][1]=input("Serie[]","text");
+	$datos[$i+1][0]=input("Nombre[]","text","","","size=\"25\"");
+	$datos[$i+1][1]=input("Serie[]","text","","","size=\"35\"");
 }
 $datos[$cant+1][0]="";
-$datos[$cant+1][1]=input("submit","submit");
-$text1 = table($datos);
-$text .= form($text1,"inscipcion","?id=4&action=2&trato=1");
+$datos[$cant+1][1]=input("Enviar","submit","Enviar","subboto");
+$text1 = table($datos,"0-200");
+if($Admin)
+	$text .= form($text1,"inscipcion","?id=5&action=2&trato=1");
+else
+	$text .= form($text1,"inscipcion","?id=5&action=2&trato=1");
 $text .="</div>";
 return $text;
 }

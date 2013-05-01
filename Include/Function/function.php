@@ -1,6 +1,7 @@
 <?php
 function fechaHoraActual($format="Y-m-d H:i:s")
 {
+ 	date_default_timezone_set('UTC');
 	return date($format);
 }
 function FechaMayor($fecha1,$fecha2)
@@ -259,4 +260,33 @@ function getRealIP()
        
         return $_SERVER['REMOTE_ADDR'];
  }
+ 
+function TransformDato($stringEntrada)
+{
+	$batallasB=explode(";",$stringEntrada);
+	$valido=true;
+	
+	for($i=0;$i<count($batallasB)&&$valido;$i++)
+	{
+		$datosNa=explode("-",$batallasB[$i]);
+		$nBatalla=substr($datosNa[0],1);
+		$valoCom = explode("/",substr($datosNa[1],1));
+		if($valoCom[0]>$valoCom[1])
+			$valido=false;
+		$contar[$nBatalla]["nVotos"]=$valoCom[0];
+		if(count($datosNa)!=$contar[$nBatalla]["nVotos"]+2)
+			$valido=false;
+		for($j=2;$j<count($datosNa)&&$valido;$j++)
+		{
+			if($j==2)
+				$contar[$nBatalla][$j-2]=substr($datosNa[$j],1);
+			else
+				$contar[$nBatalla][$j-2]=$datosNa[$j];
+		}
+	}
+	$regresar=array();
+	$regresar[]=$valido;
+	$regresar[]=$contar;
+	return $regresar;
+}
 ?>

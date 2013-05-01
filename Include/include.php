@@ -6,4 +6,5 @@ include_once "Function/logicC.php";
 include_once "Function/logicV.php";
 include_once "Function/structura.php";
 include_once "Function/HTMLObjects.php";
+include_once "Function/schedule.php";
 ?>

@@ -1,24 +1,18 @@
 <?php
 require_once "DataBase.php";
-class IpBD extends DataBase
+class ExhibicionBD extends DataBase
 {
-	function IpBD(){}
+	function ExhibicionBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO ip (Id,Fecha,IP,Tiempo,Usada,OptionPoll,CodePass) VALUES 
-		(
-		'".$this->Id."',
-		'".$this->Fecha."',
-		'".$this->IP."',
-		'".$this->Tiempo."',
-		'".$this->Usada."',
-		'".$this->OptionPoll."',
-		'".$this->CodePass."')";
+	{		
+		$sql = "INSERT INTO exhibicion (IdBatalla,IdPersonaje) VALUES ('".$this->IdBatalla."','".$this->IdPersonaje."')";
 		return $this->insert($sql);
 	}
+
 	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
 	{
-		$sql="SELECT * FROM ip ";
+		$sql="SELECT * FROM exhibicion ";
 		if($cantConsulta != 0)
 		{
 			$sql .= "WHERE ";
@@ -43,36 +37,36 @@ class IpBD extends DataBase
 		if($multi)
 		{
 			$result = $this->select($sql);
-			$Ips = array();
+			$Exhibicions = array();
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Ips[]=new Ip($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$Exhibicions[]=new Exhibicion($row[$i++],$row[$i++]);
 			}
 			$this->close();
-			return $Ips;
+			return $Exhibicions;
 		}
 		else
 		{
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Ips= new Ip($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$Exhibicions= new Exhibicion($row[$i++],$row[$i++]);
 			$this->close();
-			return $Ips;
+			return $Exhibicions;
 		}
 	}
 	
 	function update($cantSet = 0 , $Set = "" , $cantConsulta = 0 , $Consulta= "")
 	{
-		$sql="UPDATE ip ";
+		$sql="UPDATE exhibicion ";
 		if($cantSet != 0)
 		{
 			$sql .= "SET ";
 			for($i=0;$i<$cantSet;$i++)
 			{
 				$sql .= $Set[$i]." = '".$this->$Set[$i]."' ";
-				if($i != $cantConsulta-1)
+				if($i != $cantSet-1)
 					$sql .= ",";
 			}
 		}
@@ -90,5 +84,4 @@ class IpBD extends DataBase
 		return $this->insert($sql);
 	}
 }
-
 ?>

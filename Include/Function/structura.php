@@ -34,7 +34,7 @@ class structura
 <div id=\"page\">
 <div id=\"Header\">
 <div id=\"Banner\">
-	<a href=\"pruebas.html\">
+	<a href=\"?id=1\">
 	<img height=\"200\" src=\"images/Banner.png\" width=\"900\" /></a></div>
 <div id=\"Menu\">
  <nav>

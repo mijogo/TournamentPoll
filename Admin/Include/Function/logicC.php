@@ -120,13 +120,26 @@ class LogicC
 		}
 		if($_GET['id']==5)
 		{
-			for($i=0;$i<count($_POST['changePersonaje']);$i++)
+			if($_GET['trato']==1)
 			{
-				$chaPer = new Personaje();
-				$chaPer->setId($_POST['changePersonaje'][$i]);
-				$chaPer->setInscripcion($_POST['change']);
-				$chaPer->update(1,array("Inscripcion"),1,array("Id"));
+				for($i=0;$i<count($_POST['Serie']);$i++)
+				{
+					if($_POST['Nombre'][$i]!=""&&$_POST['Serie'][$i]!="")
+					{
+						$nombre = $_POST['Nombre'][$i];
+						$serie = $_POST['Serie'][$i];
+						$this->inscripcion($nombre,$serie);
+					}
+				}
 			}
+			if($_GET['trato']==2)
+				for($i=0;$i<count($_POST['changePersonaje']);$i++)
+				{
+					$chaPer = new Personaje();
+					$chaPer->setId($_POST['changePersonaje'][$i]);
+					$chaPer->setInscripcion($_POST['change']);
+					$chaPer->update(1,array("Inscripcion"),1,array("Id"));
+				}
 			Redireccionar("?id=5");
 		}
 		
@@ -265,6 +278,78 @@ class LogicC
 				$personajemod->update(7,array("Nombre","Serie","Inscripcion","Eliminada","Grupo","Ronda","Imagen"),1,array("Id"));
 				Redireccionar("?id=7");
 			}
+		}
+		
+		if($_GET['id']==8)
+		{
+			$buscarTorneo = new Torneo();
+			$buscarTorneo = $buscarTorneo->read();
+			$hay=0;
+			for($i=0;$i<count($buscarTorneo);$i++)
+			{
+				if($buscarTorneo[$i]->getStatus()>0)
+				{
+					$esteTorneo = $buscarTorneo[$i];
+					$hay=$esteTorneo->getId();
+				}
+			}
+
+			$cuantasBatallas = new Batalla();
+			$cuantasBatallas->setRonda("Exhibición");
+			$cuantasBatallas = $cuantasBatallas->read(true,1,array("Ronda"));
+			$batallaC = new Batalla();
+			$batallaC->setFecha($_POST['FechaAnio']."-".$_POST['FechaMes']."-".$_POST['FechaDia']);
+			$batallaC->setRonda("Exhibición");
+			$batallaC->setGrupo(count($cuantasBatallas)+1);
+			$batallaC->setTorneo($hay);
+			$batallaC->setActiva(-1);
+			$batallaC->save();
+			
+			$batallaC = $batallaC->read(true,1,array("Fecha"));
+			$id_Batalla_Ut = $batallaC[count($batallaC)-1]->getId();
+			if(count($batallaC)==1)
+			{
+				$fechaU = $_POST['FechaAnio']."-".$_POST['FechaMes']."-".$_POST['FechaDia'];
+				$CFecha = $fechaU." ".configuracion("Config","Hora Inicio");
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(3);
+				$newSchedule->setFecha($CFecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget($fechaU);
+				$newSchedule->save();
+					
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(5);
+				$newSchedule->setFecha($CFecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget(4);
+				$newSchedule->save();
+						
+				$newFecha=cambioFecha($CFecha,configuracion("Config","Duracion Batalla"));
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(5);
+				$newSchedule->setFecha($newFecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->setTarget(1);
+				$newSchedule->save();
+					
+				$newFecha=cambioFecha($newFecha,configuracion("Config","Extra conteo"));
+				$newSchedule = new schedule();
+				$newSchedule->setAccion(4);
+				$newSchedule->setFecha($newFecha);
+				$newSchedule->setHecho(-1);
+				$newSchedule->save();
+			}
+			
+			for($i=0;$i<count($_POST['agregarPer']);$i++)
+			{
+				$agregarParticipante = new Exhibicion();
+				$agregarParticipante->setIdBatalla($id_Batalla_Ut);
+				$agregarParticipante->setIdPersonaje($_POST['agregarPer'][$i]);
+				$agregarParticipante->save();	
+			}
+			Redireccionar("?id=8");
+
 		}
 	}
 		

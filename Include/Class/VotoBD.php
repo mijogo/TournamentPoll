@@ -15,7 +15,7 @@ class VotoBD extends DataBase
 		return $this->insert($sql);
 	}
 
-	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
+	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "",$fecha="")
 	{
 		$sql="SELECT * FROM voto ";
 		if($cantConsulta != 0)
@@ -29,6 +29,11 @@ class VotoBD extends DataBase
 			}
 		}
 		
+		if($fecha!="")
+		{
+			$sql .= " AND Fecha <= '".$fecha."' ";
+		}
+
 		if($cantOrden != 0)
 		{
 			$sql .= "ORDER BY ";
@@ -39,6 +44,9 @@ class VotoBD extends DataBase
 					$sql .= ",";
 			}
 		}
+
+		//echo $sql."<br>";
+		
 		if($multi)
 		{
 			$result = $this->select($sql);

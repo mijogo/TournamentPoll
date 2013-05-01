@@ -1,14 +1,13 @@
 <?php
-$NombreTabla="MenuAdmin";
+$NombreTabla="ip";
 $ElementosTabla=array();
 $ElementosTabla[]="Id";
-$ElementosTabla[]="IdDependencia";
-$ElementosTabla[]="Titulo";
-$ElementosTabla[]="Descripcion";
-//$ElementosTabla[]="Authpass";
-//$ElementosTabla[]="Nivel";
-//$ElementosTabla[]="Grupo";
-//$ElementosTabla[]="Ronda";
+$ElementosTabla[]="Fecha";
+$ElementosTabla[]="IP";
+$ElementosTabla[]="Tiempo";
+$ElementosTabla[]="Usada";
+$ElementosTabla[]="OptionPoll";
+$ElementosTabla[]="CodePass";
 
 $text = "";
 $text = "

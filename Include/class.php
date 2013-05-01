@@ -20,6 +20,8 @@ include_once "Class/Admin.php";
 include_once "Class/AdminBD.php";
 include_once "Class/MenuAdmin.php";
 include_once "Class/MenuAdminBD.php";
+include_once "Class/Exhibicion.php";
+include_once "Class/ExhibicionBD.php";
 
 
 ?>

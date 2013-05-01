@@ -2,13 +2,15 @@
 require_once "IpBD.php";
 class Ip extends IpBD
 {
-	function Ip($Id="",$Fecha="",$IP="",$Tiempo="",$Usada="")
+	function ip($Id="",$Fecha="",$IP="",$Tiempo="",$Usada="",$OptionPoll="",$CodePass="")
 	{
 		$this->Id = $Id;
 		$this->Fecha = $Fecha;
 		$this->IP = $IP;
 		$this->Tiempo = $Tiempo;
 		$this->Usada = $Usada;
+		$this->OptionPoll = $OptionPoll;
+		$this->CodePass = $CodePass;
 	}
 	function setId($Id)
 	{
@@ -49,6 +51,22 @@ class Ip extends IpBD
 	function getUsada()
 	{
 		return $this->Usada;
+	}
+		function setOptionPoll($OptionPoll)
+	{
+		$this->OptionPoll=$OptionPoll;
+	}
+	function getOptionPoll()
+	{
+		return $this->OptionPoll;
+	}
+	function setCodePass($CodePass)
+	{
+		$this->CodePass=$CodePass;
+	}
+	function getCodePass()
+	{
+		return $this->CodePass;
 	}
 }
 ?>

@@ -218,5 +218,8 @@ function regresar()
 
 function ingresar(instancia,grupo)
 {
-	location.href="?id=7&trato=2&instancia="+instancia+"&grupo="+grupo;
+	if(instancia=="Exhibición")
+		location.href="?id=7&trato=2&instancia=Exhibición&grupo=0";
+	else
+		location.href="?id=7&trato=2&instancia="+instancia+"&grupo="+grupo;
 }
