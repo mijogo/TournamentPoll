@@ -1,9 +1,9 @@
-<?php
-define("AUTHPASS","Crear una auth pass");
-define("SERVER","el server sql");
-define("USER","usuario sql");
-define("PASS","pass sql");
-define("MYDB","nombre de la DB");
+﻿<?php
+define("AUTHPASS","Escribe una authpass");
+define("SERVER","host del server");
+define("USER","user de la dabase");
+define("PASS","passDB");
+define("MYDB","anombreBD");
 
 function configuracion($instancia,$parte)
 {//NGrupo, cantidad de grupos & second , tiene segunda & clas1 y clas2 & nextRonda1 & grupoFijo & NBatalla
@@ -23,7 +23,7 @@ function configuracion($instancia,$parte)
 			$text = 10;
 		//NÂ° Nominaciones
 		if($parte == "NNominaciones")
-			$text = 12;
+			$text = 40;
 		//Intervalo entre medicion y medicion en minutos
 		if($parte == "Intervalo")
 			$text = 20;
@@ -37,6 +37,15 @@ function configuracion($instancia,$parte)
 		if($parte == "Max Miembros Grafo")
 			$text = 10;
 	}
+	
+	if($instancia == "Exhibición")
+	{
+		if($parte == "clas1")
+			$text = 1;
+		if($parte == "LimiteVoto")
+			$text = 1;
+	}
+
 	if($instancia == "Preliminares")
 	{
 		if($parte == "NGrupos")

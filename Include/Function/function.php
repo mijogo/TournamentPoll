@@ -274,7 +274,7 @@ function TransformDato($stringEntrada)
 		if($valoCom[0]>$valoCom[1])
 			$valido=false;
 		$contar[$nBatalla]["nVotos"]=$valoCom[0];
-		if(count($datosNa)!=$contar[$nBatalla]["nVotos"]+2)
+		if(($contar[$nBatalla]["nVotos"]!=0&&count($datosNa)!=$contar[$nBatalla]["nVotos"]+2)||($contar[$nBatalla]["nVotos"]==0&&count($datosNa)!=3))
 			$valido=false;
 		for($j=2;$j<count($datosNa)&&$valido;$j++)
 		{

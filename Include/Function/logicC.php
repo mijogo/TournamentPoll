@@ -26,7 +26,6 @@ class LogicC
 				
 				if(!$esta)
 				{
-
 					for($i=0;$i<count($_POST['Serie']);$i++)
 					{
 						if($_POST['Nombre'][$i]!=""&&$_POST['Serie'][$i]!="")
@@ -62,7 +61,7 @@ class LogicC
 				}
 				if($esteTorneo->getStatus()==3||$esteTorneo->getStatus()==4)
 				{
-					$buscarIp = new Ip();
+					/*$buscarIp = new Ip();
 					$buscarIp->setIp(getRealIP());
 					$buscarIp=$buscarIp->read(true,1,array("IP"));
 					$esta = false;
@@ -75,7 +74,7 @@ class LogicC
 							$esta = true;
 						}
 					}
-					if(!$esta)
+					if(!$esta&&isset($_COOKIE['CodePassVote']))
 					{
 						$buscarIp = new Ip();
 						$buscarIp->setCodePass($_COOKIE['CodePassVote']);
@@ -89,8 +88,31 @@ class LogicC
 								$esta = true;
 							}
 						}
+					}*/
+					
+					$puede=false;
+					$esta=false;
+					$fechaA = fechaHoraActual("Y-m-d");
+					if(isset($_COOKIE['CodePassVote']))
+					{
+						$buscarIp = new Ip();
+						$buscarIp->setIp(getRealIP());
+						$buscarIp->setCodePass($_COOKIE['CodePassVote']);
+						$buscarIp=$buscarIp->read(true,2,array("IP","AND","CodePass"));
+						for($i=0;$i<count($buscarIp);$i++)
+						{
+							$fechaB = explode(" ",$buscarIp[$i]->getFecha());
+							if($fechaB[0] == $fechaA)
+							{
+								$puede = true;
+								$ipUsar = $buscarIp[$i];
+							}
+						}
 					}
-					if(!$esta)
+					if($puede && $ipUsar->getUsada()==1)
+						$esta=true;
+
+					if($puede && !$esta)
 					{
 						$BatallasActivas = new Batalla();
 						$BatallasActivas->setActiva(0);
@@ -116,48 +138,76 @@ class LogicC
 							}
 						}
 						*/
+						$ipUsVot=getRealIP();
 						$capVoto = TransformDato($voto);
+						$votoReal=false;
 						if($capVoto[0])
 						{
 							for($i=0;$i<count($BatallasActivas);$i++)
 							{
-								for($j=0;$j<$capVoto[0][$BatallasActivas->getId()]["nVotos"];$j++)
+								if($capVoto[1][$BatallasActivas[$i]->getId()]["nVotos"]>0)
+									$votoReal=true;
+								for($j=0;$j<$capVoto[1][$BatallasActivas[$i]->getId()]["nVotos"];$j++)
 								{
 									$agregarVotos = new voto();
 									$agregarVotos->setIdBatalla($BatallasActivas[$i]->getId());
 									$agregarVotos->setFecha(fechaHoraActual());
-									$agregarVotos->setIdPersonaje($capVoto[0][$BatallasActivas->getId()][$j]);
-									$agregarVotos->setIp($newIp->getIp());
+									$agregarVotos->setIdPersonaje($capVoto[1][$BatallasActivas[$i]->getId()][$j]);
+									$agregarVotos->setIp($ipUsVot);	
 									$agregarVotos->save();
 								}
 							}
 						}
-						$str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+						/*$str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 						$cad = "";
 						for($i=0;$i<20;$i++) 
 						{
 							$cad .= substr($str,rand(0,62),1);
-						}
-
-						$newIp = new Ip();
-						$newIp->setFecha(fechaHoraActual());
-						$newIp->setTiempo(20);
-						if($capVoto[0])
-							$newIp->setIp(getRealIP());
-						else
-							$newIp->setIp("NotAccept");
-						$newIp->setUsada(1);
-						$newIp->OptionPoll($voto);
-						if($capVoto[0])
+						}*/
+						if($votoReal)
 						{
-							setcookie("CodePassVote", $cad, time()+(60*60*24));
-							$newIp->setCodePass($cad);
+							$ipVarias = new ip();
+							$ipVarias->setMasterIP($ipUsar->getMasterIP());
+							$ipVarias->setMasterCode($ipUsar->getMasterCode());	
+							$ipVarias=$ipVarias->read(true,2,array("MasterIP","AND","MasterCode"));
+							for($i=0;$i<count($ipVarias);$i++)
+							{
+								$fechaB = explode(" ",$ipVarias[$i]->getFecha());
+								if($fechaB[0] == $fechaA)
+								{
+									$ipVarias[$i]->setMasterIP($ipUsar->getIP());
+									$ipVarias[$i]->setMasterCode($ipUsar->getCodePass());
+									$ipVarias[$i]->setUsada(6);
+									$ipVarias[$i]->update(3,array("Usada","MasterIP","MasterCode"),1,array("Id"));
+								}
+							}							
+							$ipUsar->setUsada(1);
+							$ipUsar->setOptionPoll($voto);
+							$ipUsar->setMasterIP($ipUsar->getIP());
+							$ipUsar->setMasterCode($ipUsar->getCodePass());
+							$ipUsar->update(4,array("Usada","OptionPoll","MasterIP","MasterCode"),1,array("Id"));
+							
+						/*
+							$newIp = new Ip();
+							$newIp->setFecha(fechaHoraActual());
+							$newIp->setTiempo(20);
+							if($capVoto[0])
+								$newIp->setIp($ipUsVot);
+							else
+								$newIp->setIp("NotAccept");
+							$newIp->setUsada(1);
+							$newIp->setOptionPoll($voto);
+							if($capVoto[0])
+							{
+								setcookie("CodePassVote", $cad, time()+(60*60*24));
+								$newIp->setCodePass($cad);
+							}
+							else
+							{
+								$newIp->setCodePass("NotAccept");
+							}
+							$newIp->save();*/
 						}
-						else
-						{
-							$newIp->setCodePass("NotAccept");
-						}
-						$newIp->save();
 					}
 				}
 				Redireccionar("?id=1");	
@@ -236,7 +286,20 @@ class LogicC
 			$cantidad = count($personajesSortear)/(configuracion("Preliminares","NGrupos")-$numeroGrupo+1);
 			$consultaUp = array("Id");
 			$cambio = array("Ronda","Grupo");
-
+			$personajeGrupo = new Personaje();
+			if($numeroGrupo<10)
+			{
+				$grupoPoner = "0".$numeroGrupo;
+			}
+			else
+				$grupoPoner = $numeroGrupo;
+			
+			$personajeGrupo->setRonda("Preliminares");
+			$personajeGrupo->setGrupo($grupoPoner);
+			$personajeGrupo = $personajeGrupo->read(true,2,array("Grupo","AND","Ronda"));
+			$cantidadHabida = count($personajeGrupo);
+			$cantidad = $cantidad-$cantidadHabida;
+			
 			for($i=0;$i<$cantidad;$i++)
 			{
 				do
@@ -362,7 +425,6 @@ class LogicC
 					}
 				}while(!$termino);
 			}
-
 		}		
 	}
 	
@@ -1001,6 +1063,201 @@ class LogicC
 ";
 	return $text;
 	}
+	
+	function agregarUser()
+	{
+		$codePass = "";
+		$ip = getRealIP();
+		$tieneIp=-1;
+		$usada=0;
+		if(isset($_COOKIE['CodePassVote']))
+		{
 
+			$codePass = $_COOKIE['CodePassVote'];
+			$buscarIp = new Ip();
+			$buscarIp->setCodePass($_COOKIE['CodePassVote']);
+			$buscarIp=$buscarIp->read(true,1,array("CodePass"),0,array(""),fechaHoraActual("Y-m-d"));
+			if(count($buscarIp)>0)
+			{
+				for($i=0;$i<count($buscarIp);$i++)
+					if($buscarIp[$i]->getIP()==$ip)
+						$tieneIp=$i;
+				if($tieneIp==-1)
+				{
+					$usada=0;
+					for($i=0;$i<count($buscarIp);$i++)
+						if($buscarIp[$i]->getUsada()!=0)
+							$usada++;
+					/*if($usada!=count($buscarIp)&&$usada!=0)
+						for($i=0;$i<count($buscarIp);$i++)
+							if($buscarIp[$i]->getUsada()==0)
+							{
+								$buscarIp[$i]->setUsada(2);
+								$buscarIp[$i]->update(1,array("Usada"),1,array("Id"));
+							}*/
+					if($usada == 0)
+						$bonito = $this->crearIp($ip,$codePass,$buscarIp[0]->getMasterCode(),$buscarIp[0]->getMasterIP());
+					else
+					{
+						$buscarIp3 = new Ip();
+						$buscarIp3->setCodePass($_COOKIE['CodePassVote']);
+						$buscarIp3=$buscarIp3->read(true,1,array("CodePass"),0,array(""),fechaHoraActual("Y-m-d"),true);
+						$bonito = $this->crearIp($ip,$codePass,$buscarIp3[0]->getMasterCode(),$buscarIp3[0]->getMasterIP(),3);
+					}
+				}
+			}
+			else
+				$bonito = $this->crearIp($ip,$codePass);
+		}
+		if($codePass == "")
+		{
+			$buscarIp = new Ip();
+			$buscarIp->setIP($ip);
+			$buscarIp=$buscarIp->read(true,1,array("IP"),0,array(""),fechaHoraActual("Y-m-d"));
+			if(count($buscarIp)==0)
+				$bonito = $this->crearIp($ip);
+			else
+			{
+				$usada=0;
+				for($i=0;$i<count($buscarIp);$i++)
+					if($buscarIp[$i]->getUsada()!=0)
+						$usada++;
+				/*if($usada!=count($buscarIp)&&$usada!=0)
+					for($i=0;$i<count($buscarIp);$i++)
+						if($buscarIp[$i]->getUsada()==0)
+						{
+							$buscarIp[$i]->setUsada(4);
+							$buscarIp[$i]->update(1,array("Usada"),1,array("Id"));
+						}*/
+				if($usada==0)
+					$bonito = $this->crearIp($ip,"",$buscarIp[0]->getMasterCode(),$buscarIp[0]->getMasterIP());
+				else
+				{
+					$buscarIp4 = new Ip();
+					$buscarIp4->setIP($ip);
+					$buscarIp4 = $buscarIp4->read(true,1,array("IP"),0,array(""),fechaHoraActual("Y-m-d"),true);
+					$bonito = $this->crearIp($ip,"",$buscarIp4[0]->getMasterCode(),$buscarIp4[0]->getMasterIP(),5);	
+				}			
+			}
+		}
+		if(isset($_COOKIE['CodePassVote']))
+		{
+			$buscarIp = new Ip();
+			$buscarIp->setCodePass($_COOKIE['CodePassVote']);
+			$buscarIp=$buscarIp->read(true,1,array("CodePass"),0,array(""),fechaHoraActual("Y-m-d"));
+			for($i=0;$i<count($buscarIp);$i++)
+				if($buscarIp[$i]->getUsada()!=0)
+					$usada++;
+		}
+		$buscarIp2 = new Ip();
+		$buscarIp2->setIP($ip);
+		$buscarIp2 = $buscarIp2->read(true,1,array("IP"),0,array(""),fechaHoraActual("Y-m-d"));
+		for($i=0;$i<count($buscarIp2);$i++)
+			if($buscarIp2[$i]->getUsada()!=0)
+				$usada++;
+		
+		if($usada > 0)
+		{
+			$buscarIp3 = array();
+			if(isset($_COOKIE['CodePassVote']))
+			{
+				$buscarIp3 = new Ip();
+				$buscarIp3->setCodePass($_COOKIE['CodePassVote']);
+				$buscarIp3=$buscarIp3->read(true,1,array("CodePass"),0,array(""),fechaHoraActual("Y-m-d"),true);
+			}
+			$buscarIp4 = new Ip();
+			$buscarIp4->setIP($ip);
+			$buscarIp4 = $buscarIp4->read(true,1,array("IP"),0,array(""),fechaHoraActual("Y-m-d"),true);
+			
+			if(count($buscarIp3)>0&&count($buscarIp4)>0)
+				if(FechaMayor($buscarIp3[0]->getFecha(),$buscarIp2[0]->getFecha())==1)
+					$ipUsar = $buscarIp4[0];
+				else
+					$ipUsar = $buscarIp3[0];
+			elseif($buscarIp3>0)
+				$ipUsar = $buscarIp3[0];
+			else
+				$ipUsar = $buscarIp4[0];
+		}
+		if(isset($_COOKIE['CodePassVote']))
+		{
+			for($i=0;$i<count($buscarIp);$i++)
+				if($buscarIp[$i]->getUsada()==0)
+				{
+					if($usada==0)
+					{
+						$buscarIp[$i]->setUsada(0);
+						$buscarIp[$i]->setMasterIP($buscarIp[0]->getMasterIP());
+						$buscarIp[$i]->setMasterCode($buscarIp[0]->getMasterCode());
+					}
+					else
+					{
+						$buscarIp[$i]->setUsada(2);	
+						$buscarIp[$i]->setMasterIP($ipUsar->getMasterIP());
+						$buscarIp[$i]->setMasterCode($ipUsar->getMasterCode());
+					}		
+					$buscarIp[$i]->update(3,array("Usada","MasterIP","MasterCode"),1,array("Id"));				
+				}
+		}
+		
+		for($i=0;$i<count($buscarIp2);$i++)
+			if($buscarIp2[$i]->getUsada()==0)
+			{
+				if($usada==0)
+				{
+					$buscarIp2[$i]->setUsada(0);
+					$buscarIp2[$i]->setMasterIP($buscarIp2[0]->getMasterIP());
+					$buscarIp2[$i]->setMasterCode($buscarIp2[0]->getMasterCode());
+				}
+				else
+				{
+					$buscarIp2[$i]->setUsada(4);	
+					$buscarIp2[$i]->setMasterIP($ipUsar->getMasterIP());
+					$buscarIp2[$i]->setMasterCode($ipUsar->getMasterCode());
+				}		
+				$buscarIp2[$i]->update(3,array("Usada","MasterIP","MasterCode"),1,array("Id"));				
+			}
+	}
+	
+	function crearIp($ip,$codePass="",$MasterCode="",$MasterIp="",$tipoUsada="")
+	{
+		$creaIp = new Ip();
+		$creaIp->setFecha(fechaHoraActual());
+		$creaIp->setIP($ip);
+		$creaIp->setTiempo(rand(20,90));
+		if($tipoUsada=="")
+			$creaIp->setUsada(0);
+		else
+			$creaIp->setUsada($tipoUsada);
+		if($codePass=="")
+		{
+			$str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+			$cad = "";
+			for($i=0;$i<20;$i++) 
+				$cad .= substr($str,rand(0,62),1);
+			$creaIp->setCodePass($cad);
+			setcookie("CodePassVote", $creaIp->getCodePass(), time()+(14*60*60*24));
+		}
+		else
+			$creaIp->setCodePass($codePass);
+		
+		if($MasterCode=="")
+			$creaIp->setMasterCode($creaIp->getCodePass());
+		else
+			$creaIp->setMasterCode($MasterCode);
+						
+		if($MasterIp=="")
+			$creaIp->setMasterIP($creaIp->getIP());
+		else
+			$creaIp->setMasterIP($MasterIp);			
+		
+		$ster = $_SERVER['HTTP_USER_AGENT'];
+		/*$moreD = get_browser(null, true);
+		$ster .= ";".$moreD['platform'].";".$moreD['browser']."(".$moreD['version'].")";*/
+		$creaIp->setInfo($ster);
+		$creaIp->save();
+		
+		return $creaIp;
+	}
 }
 ?>

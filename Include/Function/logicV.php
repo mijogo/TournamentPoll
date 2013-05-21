@@ -27,7 +27,7 @@ class LogicV
 				{	
 					/*$text.="<h6>".fechaHoraActual("d/m/Y")."</h6>
 					<h1>No hay nada disputandose</h1>";*/
-					$text.="<h6>".fechaHoraActual("Y-m-d")."</h6>
+					/*$text.="<h6>".fechaHoraActual("Y-m-d")."</h6>
 					<h1>Periodo de Nominaciones</h1>";
 					$personajesB = new Personaje();
 					$personajesB->setInscripcion(1);
@@ -39,8 +39,21 @@ class LogicV
 						$datosD[$rf+1][0] = $personajesB[$rf]->getNombre();
 						$datosD[$rf+1][1] = $personajesB[$rf]->getSerie();
 					}
-					$text.=div(table($datosD,"0-180"),"","fight");
-
+					$text.=div(table($datosD,"0-180"),"","fight");*/
+					$text.="<h6>".fechaHoraActual("d/m/Y")."</h6>
+					<h1>Personajes Clasificados</h1>";
+					$personajesClasificados = new Personaje();
+					$personajesClasificados->setRonda("Ronda-1");
+					$personajesClasificados = $personajesClasificados->read(true,1,array("Ronda"),2,array("Serie","ASC","Nombre","ASC"));		
+					for($i=0;$i<count($personajesClasificados);$i++)
+					{	
+						$text2=img($personajesClasificados[$i]->getImagen(),"","","","bordes");
+						$queBonito[$i][0]=div($text2,"","elem");
+						$text2=div($personajesClasificados[$i]->getNombre()."<br>".$personajesClasificados[$i]->getSerie(),"","Grandes");
+						$queBonito[$i][1]=div($text2,"","elem");
+					}
+					$text1 = table($queBonito);
+					$text .= div($text1,"","fight");
 				}
 
 				if($esteTorneo->getStatus() == 2)
@@ -77,7 +90,7 @@ class LogicV
 							$PersonajeUtil = $PersonajeUtil->read(false,1,array("Id"));
 							$text2=img($PersonajeUtil->getImagen(),"","","","bordes");
 							$queBonito[$j][0]=div($text2,"","elem");
-							$text2=div($PersonajeUtil->getNombre(),"","Grandes");
+							$text2=div($PersonajeUtil->getNombre()."<br>".$PersonajeUtil->getSerie(),"","Grandes");
 							$queBonito[$j][1]=div($text2,"","elem");
 							if($j==0||$Valor>0)
 							{
@@ -101,7 +114,7 @@ class LogicV
 							}
 						}
 						$text1 = table($queBonito);
-						$text .= "<h1>Ronda ".$cualesBatalla[$i]->getRonda()." Grupo ".$cualesBatalla[$i]->getGrupo()."</h1>".div($text1,"","fight").div("","graf".$cualesBatalla[$i]->getId(),"","width: 450px; height: 200px;");
+						$text .= "<h1>Ronda ".$cualesBatalla[$i]->getRonda()." Grupo ".$cualesBatalla[$i]->getGrupo()."</h1>".div($text1,"","fight").div("","graf".$cualesBatalla[$i]->getId(),"","width: 480px; height: 200px;");
 					}
 				}
 				if($esteTorneo->getStatus() == 4)
@@ -228,8 +241,28 @@ class LogicV
 					$text .= "<h6>".fechaHoraActual("Y-m-d")."</h6>";
 					$text1 = "";
 					$idBataAr=array();
-					
-					$buscarIp = new Ip();
+					$puede=false;
+					$esta=false;
+					if(isset($_COOKIE['CodePassVote']))
+					{
+						$buscarIp = new Ip();
+						$buscarIp->setIp(getRealIP());
+						$buscarIp->setCodePass($_COOKIE['CodePassVote']);
+						$buscarIp=$buscarIp->read(true,2,array("IP","AND","CodePass"));
+						$fechaA = fechaHoraActual("Y-m-d");
+						for($i=0;$i<count($buscarIp);$i++)
+						{
+							$fechaB = explode(" ",$buscarIp[$i]->getFecha());
+							if($fechaB[0] == $fechaA)
+							{
+								$puede = true;
+								$ipUsar = $buscarIp[$i];
+							}
+						}
+					}
+					if($puede && $ipUsar->getUsada()>0)
+						$esta=true;
+/*					$buscarIp = new Ip();
 					$buscarIp->setIp(getRealIP());
 					$buscarIp=$buscarIp->read(true,1,array("IP"));
 					$esta = false;
@@ -244,7 +277,7 @@ class LogicV
 						}
 					}
 					
-					if(!$esta)
+					if(!$esta&&isset($_COOKIE['CodePassVote']))
 					{
 						$buscarIp = new Ip();
 						$buscarIp->setCodePass($_COOKIE['CodePassVote']);
@@ -259,18 +292,23 @@ class LogicV
 								$ipUsar = $buscarIp[$i]->getIp();
 							}
 						}
-					}
-
+					}*/
+					if($puede)
 					if(!$esta)
 					{
 						for($i=0;$i<count($BatallasActivas);$i++)
 						{
-							$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br></h3>";
+							$estaListo = false;
+							$fechaActual = fechaHoraActual();
+							if(FechaMayor($fechaActual,cambioFecha($ipUsar->getFecha(),$ipUsar->getTiempo()))!=-1)
+								$estaListo=true;
+							
+							$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."</h3><br>Puedes votar Luego de ".cambioFecha($ipUsar->getFecha(),$ipUsar->getTiempo())."<br>";
 							$buscarPersonajes = new Personaje();
 							$buscarPersonajes->setRonda($BatallasActivas[$i]->getRonda());
 							$buscarPersonajes->setGrupo($BatallasActivas[$i]->getGrupo());
 							$consulta = array("Ronda","AND","Grupo");
-							$buscarPersonajes = $buscarPersonajes->read(true,2,$consulta);
+							$buscarPersonajes = $buscarPersonajes->read(true,2,$consulta,2,array("Serie","ASC","Nombre","ASC"));
 							$secuencia="";
 							for($j=0;$j<count($buscarPersonajes);$j++)
 							{
@@ -282,16 +320,17 @@ class LogicV
 							for($j=0;$j<count($buscarPersonajes);$j++)
 							{
 								$datos[0][0] =  img($buscarPersonajes[$j]->getImagen(),"","","","bordes");
-								$datos[0][1] =  $buscarPersonajes[$j]->getNombre();
+								$datos[0][1] =  $buscarPersonajes[$j]->getNombre()."<br>".$buscarPersonajes[$j]->getSerie();
 								$text1 .= botonVoto($BatallasActivas[$i]->getId(),$buscarPersonajes[$j]->getId(),$secuencia,table($datos,"0-80"));							
 							}
 							$idBataAr[] = $BatallasActivas[$i]->getId();
 						}
-						$text .=  div($text1.formVoto("?id=5&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")),"","fight");
-						if(configuracion("Exhibición","LimiteVoto")==1)
+						$text .=  div($text1.formVoto("?id=5&action=2&trato=2",$idBataAr,configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto"),$estaListo),"","fight");
+						/*if(configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")==1)
 							$text .= "<h6>*Solo puedes votar por un personaje</h6>";
 						else
-							$text .= "<h6>*puedes votar por ".configuracion("Exhibición","LimiteVoto")." personajes</h6>";
+							$text .= "<h6>*puedes votar por ".configuracion($BatallasActivas[0]->getRonda(),"LimiteVoto")." personajes</h6>";*/
+						$text .= "<h6>*puedes votar por 10 personajes</h6>";
 						$text .= "<h6>*Haz click sobre los personajes que deseas votar y presiona el botón votar </h6>";
 						$text .= "<h6>*Al hacer click sobre un personaje, este cambiara a color azul, lo que significa que lo haz seleccionado, cuando los demás se vuelven de color rojo, significa que no puedes votar por mas personajes, para cambiar el voto solo debes hacer click sobre uno seleccionado y se volverá naranjo </h6>";
 					}
@@ -301,9 +340,8 @@ class LogicV
 						{
 							$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br></h3>";
 							$VotoS = new Voto();
-							$VotoS->setIP($ipUsar);
+							$VotoS->setIP($ipUsar->getMasterIP());
 							$VotoS->setIdBatalla($BatallasActivas[$i]->getId());
-							
 							$VotoS = $VotoS->read(true,2,array("IP","AND","IdBatalla"));
 							
 							for($j=0;$j<count($VotoS);$j++)
@@ -318,7 +356,12 @@ class LogicV
 							$text .=  div($text1,"","fight");
 							$text .= "<h6>*Votos emitidos </h6>";
 						}
-					}		
+					}
+					else
+					{
+						$text1 .= "<h3>Ronda ".$BatallasActivas[$i]->getRonda()." Grupo ".$BatallasActivas[$i]->getGrupo()."<br></h3><br>No puede votar, configure su browser para que esta página pueda guardar datos en el <br>";
+						$text .=  div($text1,"","fight");
+					}
 				}
 				if($esteTorneo->getStatus() == 4)
 				{
@@ -346,7 +389,7 @@ class LogicV
 						}
 					}
 					
-					if(!$esta)
+					if(!$esta&&isset($_COOKIE['CodePassVote']))
 					{
 						$buscarIp = new Ip();
 						$buscarIp->setCodePass($_COOKIE['CodePassVote']);
@@ -504,11 +547,11 @@ class LogicV
 									$PersonajeUtil = $PersonajeUtil->read(false,1,array("Id"));
 									$text2=img($PersonajeUtil->getImagen(),"","","","bordes");
 									$queBonito[$j][0]=div($text2,"","elem");
-									$text2=div($PersonajeUtil->getNombre(),"","Grandes");
+									$text2=div($PersonajeUtil->getNombre()."<br>".$PersonajeUtil->getSerie(),"","Grandes");
 									$queBonito[$j][1]=div($text2,"","elem");
 									if($j==0||$Valor>0)
 									{
-										if($datosUtilizar[$j]["Votos"]!=0&&($j==0||$datosUtilizar[$j]["Votos"]==$Valor))
+										if($datosNec[$j]["Votos"]!=0&&($j==0||$datosNec[$j]["Votos"]==$Valor))
 										{
 											$text2=div($datosNec[$j]["Votos"],"","masGrandesR");
 											$queBonito[$j][2]=div($text2,"","elem");
@@ -535,7 +578,7 @@ class LogicV
 								$personajesB = new Personaje();
 								$personajesB->setRonda($batallasB[$i]->getRonda());
 								$personajesB->setGrupo($batallasB[$i]->getGrupo());
-								$personajesB = $personajesB->read(true,2,array("Ronda","AND","Grupo"));
+								$personajesB = $personajesB->read(true,2,array("Ronda","AND","Grupo"),2,array("Serie","ASC","Nombre","ASC"));
 								$text .= "<h1>Ronda ".$batallasB[$i]->getRonda()." Grupo ".$batallasB[$i]->getGrupo()." (".$batallasB[$i]->getFecha().")</h1>";
 								if(count($personajesB)!=0)
 								{
@@ -636,48 +679,96 @@ class LogicV
 						{
 							$text1 = "";
 							$text1 .=" Fecha ".$batallasB[$i]->getFecha()."</h6>";
+							$pos=1;
+							$staticpos=1;
+							$firstprem = 12;
+							$secondfirst = 36;
 							if($batallasB[$i]->getActiva()==1)
 							{
 								$datosNec = $utilLogic->batallaDatosPasada($batallasB[$i]->getId());
-								for($j=0;$j<count($datosNec);$j++)
+								for($j=0;$j<count($datosNec);$j++,$staticpos++)
 								{
+									if($j==0)
+									{
+										$lastvot=$datosNec[$j]["Votos"];
+									}
+									else
+									{
+										if($lastvot!=$datosNec[$j]["Votos"])
+										{
+											$pos=$staticpos;
+											$lastvot=$datosNec[$j]["Votos"];
+										}
+										else
+										{
+											if($staticpos==$firstprem+1)
+											{
+												$firstprem++;
+												$secondfirst++;
+											}
+											elseif($staticpos==$secondfirst+1)
+											{
+												$secondfirst++;											
+											}
+										}
+									}
 									$PersonajeUtil = new Personaje();
 									$PersonajeUtil->setId($datosNec[$j]["Id"]);
 									$PersonajeUtil = $PersonajeUtil->read(false,1,array("Id"));
-									$text2=img($PersonajeUtil->getImagen(),"","","","bordes");
+									if($batallasB[$i]->getRonda()=="Preliminares")
+									{
+										if($staticpos<=$firstprem)
+											$text2=div($pos,"","masGrandes1");
+										elseif($staticpos<=$secondfirst)
+											$text2=div($pos,"","masGrandes2");
+										else
+											$text2=div($pos,"","masGrandes3");
+									}
+									else
+									{
+										$text2=div($pos,"","masGrandes");
+									}
 									$queBonito[$j][0]=div($text2,"","elem");
-									$text2=div($PersonajeUtil->getNombre(),"","Grandes");
+
+									$text2=img($PersonajeUtil->getImagen(),"","","","bordes");								
+									//$queBonito[$j][0]=div($pos,"","masGrandesR");
 									$queBonito[$j][1]=div($text2,"","elem");
+									$text2=div($PersonajeUtil->getNombre()."<br>".$PersonajeUtil->getSerie(),"","Grandes");
+									$queBonito[$j][2]=div($text2,"","elem");
 									if($j==0||$Valor>0)
 									{
 										if($datosNec[$j]["Votos"]!=0&&($j==0||$datosNec[$j]["Votos"]==$Valor))
 										{
 											$text2=div($datosNec[$j]["Votos"],"","masGrandesR");
-											$queBonito[$j][2]=div($text2,"","elem");
+											$queBonito[$j][3]=div($text2,"","elem");
 											$Valor=$datosNec[$j]["Votos"];
 										}
 										else
 										{
 											$text2=div($datosNec[$j]["Votos"],"","masGrandes");
-											$queBonito[$j][2]=div($text2,"","elem");
+											$queBonito[$j][3]=div($text2,"","elem");
 											$Valor=0;								
 										}
 									}
 									else
 									{
 										$text2=div($datosNec[$j]["Votos"],"","masGrandes");
-										$queBonito[$j][2]=div($text2,"","elem");
+										$queBonito[$j][3]=div($text2,"","elem");
 									}
 								}
 								$text1 .= table($queBonito);
-								$text .= "<h1>Ronda ".$batallasB[$i]->getRonda()." Grupo ".$batallasB[$i]->getGrupo()."</h1>".div($text1,"","fight").div("","graf".$batallasB[$i]->getId(),"","width: 450px; height: 200px;");
+								$contarIp = new Ip();
+								$contarIp->setUsada(1);
+								$contarIp = $contarIp->read(true,1,array("Usada"),0,array(""),$batallasB[$i]->getFecha());
+
+								$text .= "<h1>Ronda ".$batallasB[$i]->getRonda()." Grupo ".$batallasB[$i]->getGrupo()."</h1>Cantidad de votantes : ".count($contarIp)."<br>".div($text1,"","fight").div("","graf".$batallasB[$i]->getId(),"","width: 450px; height: 200px;");
 							}
 							else
 							{
 								$personajesB = new Personaje();
 								$personajesB->setRonda($batallasB[$i]->getRonda());
 								$personajesB->setGrupo($batallasB[$i]->getGrupo());
-								$personajesB = $personajesB->read(true,2,array("Ronda","AND","Grupo"));
+								$personajesB = $personajesB->read(true,2,array("Ronda","AND","Grupo"),2,array("Serie","ASC","Nombre","ASC"));
 								$text .= "<h1>Ronda ".$batallasB[$i]->getRonda()." Grupo ".$batallasB[$i]->getGrupo()." (".$batallasB[$i]->getFecha().")</h1>";
 								if(count($personajesB)!=0)
 								{

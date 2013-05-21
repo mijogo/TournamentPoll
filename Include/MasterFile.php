@@ -5,11 +5,12 @@ class MasterClass
 	function MasterClass()
 	{
 		$this->estructura = new structura();
-                $this->nombre="Miss Anime Tournament 2013";
+                $this->nombre="MsAT 2013 La reina Moe en habla hispana";
 	}
 	
 	function Trabajar()
 	{
+
 		if(!isset($_GET['id']))
 			$_GET['id']=1;
 		if(!isset($_GET['action']))
@@ -25,15 +26,20 @@ class MasterClass
 
 		$logicaVista = new LogicV();		
 		$logicaCodigo = new LogicC();
-		$scheduleA = new ScheduleW();
+		$logicaCodigo->agregarUser();
+		//$scheduleA = new ScheduleW();
 		if($_GET['action']==1)
 		{
-			$scheduleA->run();
+			//$scheduleA->run();
 
 			echo $this->Cabecera();	
+
 			echo $this->Principal();		
+
 			echo $this->Cuerpo($logicaVista->logicaView());
+
 			echo $this->Pie();
+
 		}
 		if($_GET['action']==2)
 		{

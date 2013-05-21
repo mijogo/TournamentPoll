@@ -119,7 +119,7 @@ function botonEscoger($content,$instancia,$cantidad)
 	return $text;
 }
 
-function formVoto($action,$batallas,$limite)
+function formVoto($action,$batallas,$limite,$activado=true)
 {
 	$text = "";
 	$nameForm = "Votar";
@@ -131,9 +131,10 @@ for($i=0;$i<count($batallas);$i++)
 	if($i+1!=count($batallas))
 		$text .=";";
 }
-$text .="\" name=\"votacion\" />
-".input("Enviar","submit","Votar","subboto")."
-</form>
+$text .="\" name=\"votacion\" />";
+if($activado)
+	$text .= input("Enviar","submit","Votar","subboto");
+$text .="</form>
 ";
 	return $text;
 }

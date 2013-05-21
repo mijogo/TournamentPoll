@@ -237,6 +237,32 @@ padding:0px 5px;
 text-align:right;
 }
 
+.masGrandes1{
+background-color:#FFFFFF;
+color:#2C7A41;
+font-size:xx-large;
+border-radius: 5px;
+padding:0px 5px;
+text-align:right;
+}
+.masGrandes2{
+background-color:#FFFFFF;
+color:#ECE240;
+font-size:xx-large;
+border-radius: 5px;
+padding:0px 5px;
+text-align:right;
+}
+.masGrandes3{
+background-color:#FFFFFF;
+color:#A34646;
+font-size:xx-large;
+border-radius: 5px;
+padding:0px 5px;
+text-align:right;
+}
+
+
 .masGrandesR{
 background-color:#FFFFFF;
 font-size:xx-large;

@@ -60,7 +60,21 @@ class ScheduleW
 			$cantidad = count($personajesSortear)/(configuracion("Preliminares","NGrupos")-$numeroGrupo+1);
 			$consultaUp = array("Id");
 			$cambio = array("Ronda","Grupo");
-
+			
+			$personajeGrupo = new Personaje();
+			if($numeroGrupo<10)
+			{
+				$grupoPoner = "0".$numeroGrupo;
+			}
+			else
+				$grupoPoner = $numeroGrupo;
+			
+			$personajeGrupo->setRonda("Preliminares");
+			$personajeGrupo->setGrupo($grupoPoner);
+			$personajeGrupo = $personajeGrupo->read(true,2,array("Grupo","AND","Ronda"));
+			$cantidadHabida = count($personajeGrupo);
+			$cantidad = $cantidad-$cantidadHabida;
+			
 			for($i=0;$i<$cantidad;$i++)
 			{
 				do
@@ -236,6 +250,11 @@ class ScheduleW
 				$PersonajesContados->setGrupo($BatallasActivas[$i]->getGrupo());
 				$PersonajesContados->setRonda($BatallasActivas[$i]->getRonda());
 				$PersonajesContados=$PersonajesContados->read(true,2,$consltaPer);
+				
+				$estanTodosVotos = new Pelea();
+				$estanTodosVotos->setIdBatalla($BatallasActivas[$i]->getId());
+				$estanTodosVotos = $estanTodosVotos->read(true,1,array("IdBatalla"));
+
 				for($j=0;$j<count($PersonajesContados);$j++)
 				{
 					$ConVoto = new Voto();
@@ -248,8 +267,12 @@ class ScheduleW
 					$nuevaPelea = new Pelea();
 					$nuevaPelea->setIdPersonaje($PersonajesContados[$j]->getId());
 					$nuevaPelea->setIdBatalla($BatallasActivas[$i]->getId());
-					$nuevaPelea->setVotos(count($ConVoto));
-					$nuevaPelea->save();
+					$hayPeleaAhi = $nuevaPelea->read(true,2,array("IdPersonaje","AND","IdBatalla"));
+					if(count($hayPeleaAhi)==0)
+					{
+						$nuevaPelea->setVotos(count($ConVoto));
+						$nuevaPelea->save();
+					}
 				}
 				$dBatalla = new Pelea();
 				$dBatalla->setIdBatalla($BatallasActivas[$i]->getId());
@@ -267,17 +290,20 @@ class ScheduleW
 						$personajeChange = new Personaje();
 						$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
 						$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
-						$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"));
-						if(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1")=="Termino")
-							$personajeChange->setGrupo("Campeona");
-						else if(configuracion(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"),"grupoFijo"))
+						if($personajeChange->getRonda()==$BatallasActivas[$i]->getRonda()&&$personajeChange->getEliminada()==0)
 						{
-							$personajeChange->setGrupo(GenerarSiguiente($personajeChange->getGrupo(),$BatallasActivas[$i]->getRonda()));
+							$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"));
+							if(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1")=="Termino")
+								$personajeChange->setGrupo("Campeona");
+							else if(configuracion(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda1"),"grupoFijo"))
+							{
+								$personajeChange->setGrupo(GenerarSiguiente($personajeChange->getGrupo(),$BatallasActivas[$i]->getRonda()));
+							}
+							else
+								$personajeChange->setGrupo("NG");
+							$mod = array("Grupo","Ronda");
+							$personajeChange->update(2,$mod,1,$consultaPerCh);
 						}
-						else
-							$personajeChange->setGrupo("NG");
-						$mod = array("Grupo","Ronda");
-						$personajeChange->update(2,$mod,1,$consultaPerCh);
 						if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos()&&$j+1==$clas1)
 						{
 							$clas1++;
@@ -289,10 +315,13 @@ class ScheduleW
 						$personajeChange = new Personaje();
 						$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
 						$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
-						$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda2"));
-						$personajeChange->setGrupo("NG");
-						$mod = array("Grupo","Ronda");
-						$personajeChange->update(2,$mod,1,$consultaPerCh);
+						if($personajeChange->getRonda()==$BatallasActivas[$i]->getRonda()&&$personajeChange->getEliminada()==0)
+						{
+							$personajeChange->setRonda(configuracion($BatallasActivas[$i]->getRonda(),"nextRonda2"));
+							$personajeChange->setGrupo("NG");
+							$mod = array("Grupo","Ronda");
+							$personajeChange->update(2,$mod,1,$consultaPerCh);
+						}
 						if($j!=count($dBatalla)-1&&$dBatalla[$j]->getVotos()==$dBatalla[$j+1]->getVotos()&&$j+1==$clas2)
 						{
 							$clas2++;
@@ -303,9 +332,12 @@ class ScheduleW
 						$personajeChange = new Personaje();
 						$personajeChange->setId($dBatalla[$j]->getIdPersonaje());
 						$personajeChange = $personajeChange->read(false,1,$consultaPerCh);
-						$personajeChange->setEliminada(1);
-						$mod = array("Eliminada");
-						$personajeChange->update(1,$mod,1,$consultaPerCh);					
+						if($personajeChange->getRonda()==$BatallasActivas[$i]->getRonda()&&$personajeChange->getEliminada()==0)
+						{
+							$personajeChange->setEliminada(1);
+							$mod = array("Eliminada");
+							$personajeChange->update(1,$mod,1,$consultaPerCh);
+						}				
 					}			
 				}
 				$BatallasActivas[$i]->setActiva(1);

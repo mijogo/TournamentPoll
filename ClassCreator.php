@@ -8,7 +8,9 @@ $ElementosTabla[]="Tiempo";
 $ElementosTabla[]="Usada";
 $ElementosTabla[]="OptionPoll";
 $ElementosTabla[]="CodePass";
-
+$ElementosTabla[]="MasterIP";
+$ElementosTabla[]="MasterCode";
+$ElementosTabla[]="Info";
 $text = "";
 $text = "
 require_once \"".$NombreTabla."BD.php\";

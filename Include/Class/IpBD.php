@@ -1,11 +1,11 @@
 <?php
 require_once "DataBase.php";
-class IpBD extends DataBase
+class ipBD extends DataBase
 {
-	function IpBD(){}
+	function ipBD(){}
 	
 	function save()
-	{		$sql = "INSERT INTO ip (Id,Fecha,IP,Tiempo,Usada,OptionPoll,CodePass) VALUES 
+	{		$sql = "INSERT INTO ip (Id,Fecha,IP,Tiempo,Usada,OptionPoll,CodePass,MasterIP,MasterCode,Info) VALUES 
 		(
 		'".$this->Id."',
 		'".$this->Fecha."',
@@ -13,10 +13,14 @@ class IpBD extends DataBase
 		'".$this->Tiempo."',
 		'".$this->Usada."',
 		'".$this->OptionPoll."',
-		'".$this->CodePass."')";
+		'".$this->CodePass."',
+		'".$this->MasterIP."',
+		'".$this->MasterCode."',
+		'".$this->Info."')";
 		return $this->insert($sql);
 	}
-	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "")
+
+	function read($multi=true , $cantConsulta = 0 , $Consulta = "" , $cantOrden = 0 , $Orden = "",$fecha="",$restriccion=false)
 	{
 		$sql="SELECT * FROM ip ";
 		if($cantConsulta != 0)
@@ -40,26 +44,34 @@ class IpBD extends DataBase
 					$sql .= ",";
 			}
 		}
+		if($fecha!="")
+			if($cantConsulta==0)
+				$sql = "SELECT * FROM ip WHERE Fecha < '".$fecha." 22:00:00' AND Fecha > '".$fecha." 00:00:00' ORDER BY Fecha ASC";
+			else
+				if($restriccion)
+					$sql = "SELECT * FROM ip WHERE ".$Consulta[0]." = '".$this->$Consulta[0]."' AND Fecha < '".$fecha." 22:00:00' AND Fecha > '".$fecha." 00:00:00' AND Usada != 0 ORDER BY Fecha ASC";
+				else
+					$sql = "SELECT * FROM ip WHERE ".$Consulta[0]." = '".$this->$Consulta[0]."' AND Fecha < '".$fecha." 22:00:00' AND Fecha > '".$fecha." 00:00:00' ORDER BY Fecha ASC";						
 		if($multi)
 		{
 			$result = $this->select($sql);
-			$Ips = array();
+			$ips = array();
 			while($row = $this->fetch($result))
 			{
 				$i=0;
-				$Ips[]=new Ip($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+				$ips[]=new ip($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			}
 			$this->close();
-			return $Ips;
+			return $ips;
 		}
 		else
 		{
 			$result = $this->select($sql);
 			$row = $this->fetch($result);
 			$i=0;
-			$Ips= new Ip($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
+			$ips= new ip($row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++],$row[$i++]);
 			$this->close();
-			return $Ips;
+			return $ips;
 		}
 	}
 	
@@ -72,7 +84,7 @@ class IpBD extends DataBase
 			for($i=0;$i<$cantSet;$i++)
 			{
 				$sql .= $Set[$i]." = '".$this->$Set[$i]."' ";
-				if($i != $cantConsulta-1)
+				if($i != $cantSet-1)
 					$sql .= ",";
 			}
 		}
@@ -90,5 +102,4 @@ class IpBD extends DataBase
 		return $this->insert($sql);
 	}
 }
-
 ?>
